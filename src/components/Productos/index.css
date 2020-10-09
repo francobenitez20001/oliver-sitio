@@ -1,0 +1,43 @@
+.ordenarProductos .select_ordenar{
+    height: 34px;
+    padding: 5px 20px 5px 10px;
+    border: 1px solid #eee;
+    -webkit-box-shadow: 0 1px 0 0 #ccc;
+    -moz-box-shadow: 0 1px 0 0 #ccc;
+    box-shadow: 0 1px 0 0 #ccc;
+    color: #666;
+    max-width: 170px;
+    background: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 0 8px 3px 0
+}
+
+.boton-filtrar-mobile{
+    display: none !important;
+}
+
+#label__filtro-busqueda{
+    background-color:#FFB347;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+#label__filtro-busqueda .item-filtro-busqueda{
+    margin-left: 10px;
+}
+
+#label__filtro-busqueda span.text-muted{
+    color: white !important;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+@media(max-width:768px){
+    .boton-filtrar-mobile{
+        display: block !important;
+    }
+}

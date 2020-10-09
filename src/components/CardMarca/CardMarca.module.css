@@ -1,0 +1,16 @@
+.card__marca{
+    -webkit-box-shadow: 0 2px 5px rgb(163, 161, 161);
+    height: 160px;
+    cursor: pointer;
+}
+
+.card__marca .img{
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.card__marca:hover{
+    filter: brightness(70%); 
+    transition: all .5s ease;
+    border-radius: 5px;
+}

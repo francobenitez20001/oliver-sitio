@@ -1,0 +1,180 @@
+.navbar{
+    font-family: 'Quicksand', sans-serif;
+    width: 100%;
+    background-color: #FFB347;
+    height: auto;
+    max-height: 65px;
+    box-shadow: 0px 2px 1px -1px rgba(228, 224, 224, 0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    padding: .5rem 1rem;
+}
+
+.container__logo .logo{
+  height: 50px;
+  width: 50px;
+}
+
+.container__login_menu .boton__menu{
+    background-color: transparent;
+    padding: 10px 20px;
+}
+
+.container__login_menu .btn_account{
+    color:white;
+    font-weight: 400;
+    font-size:16px;
+    cursor: pointer;
+}
+
+.container__login_menu .btn_carrito{
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.carrito_mobile{
+    display: none;
+}
+
+.container__login_menu .btn_account:hover{text-decoration:none}
+
+.container__login_menu .btn_account:hover{
+    background-color: rgba(29, 29, 29, 0.12);
+    border-radius: 5px;
+    transition: all .5s ease;
+}
+
+.icon_menu{
+    display: none !important;
+}
+
+.menu__collapsed{display: none;}
+.form_search_menu::-webkit-input-placeholder { color:#F7BC33!important;font-weight: 400;font-size:14px }
+.form_search_menu{border-color: #F7BC33 !important;}
+
+.wrapper__navbar #lupa_buscador{
+    width: 22px;
+    height: 22px;
+}
+
+.wrapper__navbar .input-group-text{
+    background-color: white!important;
+}
+
+@media(max-width:1200px){
+    .container__login_menu .boton__menu{
+        background-color: transparent;
+        padding: 10px 10px;
+    }
+}
+
+
+@media(max-width:992px){
+    .container__login_menu .boton__menu{
+        padding: 10px 5px;
+    }
+    .container__login_menu .btn_account{
+        font-size:14px;
+    }
+    
+    .container__login_menu .btn_carrito{
+        font-size: 15px;
+    }
+}
+
+@media(max-width:768px){
+    nav .container__logo img{
+        position: relative;
+        left: -15px;
+    }
+    
+    .navbar .container__login_menu, .navbar .buscador{
+        display: none !important;
+    }
+    .icon_menu{
+        display: block !important;
+        position: absolute;
+        right: 40px;
+        top: 35%;
+        color: white;
+        font-size: 20px;    
+    }
+
+    .menu__collapsed{
+        left: -60% !important;
+        transition: all .6s ease;
+        display: block;
+        position: absolute;
+        top: 0px;
+        width: 60%;
+        left: 0px;
+        height: 100vh;
+        box-shadow: 0px 2px 1px -1px rgba(2, 2, 2, 0.2), 0px 5px 1px 0px rgba(3, 3, 3, 0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+        z-index: 1000;
+        background-color: white; 
+    }
+
+    .menu__collapsed .header__collapsed_nav{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        background-color: #FFB347;
+        box-shadow: 0px 2px 1px -1px rgba(228, 224, 224, 0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);    
+    }
+
+    .menu__collapsed .header__collapsed_nav img{
+        width: 45px;
+    }
+    .menu__collapsed .header__collapsed_nav .close_btn_menu{
+        color: white;
+        font-size: 20px;
+    }
+
+    .menu__collapsed .main__collapsed{
+        padding: 14px 20px;
+    }
+    .list__menu__collapsed{list-style: none;}
+    .menu__collapsed a{color: black;}
+    .menu__collapsed .main__collapsed .icon__itemMenu__collapsed{
+        font-size: 20px;
+        color:#FFB347;
+        margin: 10px;
+    }
+    .menu__collapsed .main__collapsed .item__menu__collapsed{
+        padding: 10px 0px;
+        border-bottom-style: solid;
+        border-bottom-color: #FFB347;
+        border-bottom-width: 1px;
+    }
+    .menu__collapsed .main__collapsed .label__item__menu{font-size: 13px;}
+
+    .menu__collapsed .collapsed_info{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        background-color: #FFB347;
+        padding: 8px 0px;
+    }
+    .collapsed_info .redes__collapsed .iconoRed{
+        margin: 0px 10px;
+        color: white;
+    }
+    .collapsed_info span{
+        font-size: 14px;
+        color: white !important;
+        font-weight: 400;
+    }
+    .carrito_mobile{
+        display: block;
+        position: absolute;
+        right: 80px;
+        top: 26%;
+        font-size: 20px;
+        color: white;
+    }
+
+    .showCollapsed{
+        left:0% !important;
+    }
+}
+

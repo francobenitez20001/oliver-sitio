@@ -1,0 +1,36 @@
+.carrito__container{
+    height: 400px;
+}
+
+.carrito__container .footer__carrito{
+    font-family: 'Quicksand', sans-serif;
+    position: absolute;
+    width: 92%;
+    bottom: 13px;
+}
+.carrito__container .footer__carrito .section__carrito__total{
+    padding:7px;
+}
+
+.subtotal__carrito{
+    color: #FFB347;
+    font-weight: 600;
+}
+
+.carrito__container .carrito__productos{
+    max-height: 275px;
+    overflow-y: scroll;
+}
+
+.carrito__productos::-webkit-scrollbar {
+    width: 5px;     /* Tamaño del scroll en vertical */
+}
+
+.carrito__productos::-webkit-scrollbar-thumb {
+    background: #FFB347;
+    border-radius: 4px;
+}
+.carrito__productos::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}

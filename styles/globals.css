@@ -1,16 +1,106 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Quicksand&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Quicksand', sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+body{
+    background-color: #f1eded!important;
 }
 
-* {
-  box-sizing: border-box;
+.body__disabled{
+    background-color: rgba(0,0,0,0.12)!important;
+}
+
+.text-black{
+    color:#080808ab!important
+}
+
+.boton{
+    width: 100%;
+    display: block;
+    padding: 7px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0px 2px 1px -1px rgba(228, 224, 224, 0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.boton:hover{
+    text-decoration:none;
+}
+
+.bg-yellow{
+    background-color: #FFB347;
+    color: white!important;
+}
+
+.boton.bg-yellow{
+    border: 1px solid #FFB347;
+}
+
+.boton.bg-gris{
+    backgroung-color:#c2c0c0;
+    border:1px solid #c2c2c2;
+}
+
+.bg-green{
+    background-color: #169211;
+    color: white;
+}
+
+.bg-red{
+    background-color: orangered;
+    color: white;
+}
+
+.bg-blue{
+    background-color: #23b7e4;
+    color: white;
+}
+.bg-blue:hover{
+    color: white;
+    box-shadow: 0px 2px 1px -1px rgba(19, 18, 18, 0.2), 0px 1px 10px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.bg-white{
+    background-color: #fffffa;
+    color:#FFB347;
+}
+
+.boton.bg-outline-yellow{
+    background-color: white;
+    color:#FFB347;
+    border:1px solid #FFB347;
+}
+
+.boton.bg-outline-yellow:hover{
+    transition: all .5s ease;
+    background-color:#FFB347;
+    color: white;
+}
+
+
+.txt-yellow{
+    color: #FFB347!important;
+}
+
+footer{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+}
+
+
+a:hover{text-decoration: none!important;}
+
+
+@media(max-width:768px){
+    footer .container{
+        flex-direction: column-reverse!important;
+        text-align: center;
+    }
 }

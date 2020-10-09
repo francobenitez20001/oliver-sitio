@@ -1,0 +1,87 @@
+.descripcionProducto{
+    font-family: 'Quicksand', sans-serif;
+}
+
+.descripcionProducto h3{
+    font-size: 13px;
+}
+
+.descripcionProducto h1{
+    font-size: 27px;
+}
+
+.descripcionProducto .precios{
+    align-items: center;
+}
+
+.descripcionProducto .indicador__precio{
+    width: 30%;
+    background-color: #f1eded;
+    padding: 12px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.descripcionProducto .indicador__precio p{
+    margin: 0px !important;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.descripcionProducto .indicador__precio .valor__precio{
+    color: #FFB347;
+    font-weight: 600;
+    font-size: 32px;
+}
+
+.descripcionProducto .indicador__cantidad{
+    width: 70%;
+    padding:0px 0px 0px 15px;
+}
+
+.descripcionProducto .indicador__cantidad .titulo__indicadorCantidad{margin:0px}
+
+.descripcionProducto .indicador__cantidad .row{
+    padding: 0px 0px 0px 15px;
+}
+
+.descripcionProducto .indicador__cantidad .caja_cantidadKg{
+    width: 45%;
+    text-align: center;
+    margin: 4px 7px 4px 0px;
+    border: 1px solid #cccbcb;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.descripcionProducto .indicador__cantidad .caja_cantidadKg:hover{
+    transition: all .6s ease;
+    border-color: #FFB347;
+}
+
+.descripcionProducto .indicador__cantidad .caja_cantidadKg.active{
+    border: 2px solid #FFB347;
+}
+
+.descripcionProducto .indicador__cantidad .caja_cantidadKg p{
+    margin: 0px;
+}
+
+.descripcionProducto .indicador__cantidad .input-group-prepend,.descripcionProducto .indicador__cantidad .input-group-append{
+    cursor: pointer;
+}
+.descripcionProducto .indicador__cantidad .input-group-text{
+    background-color: white!important;
+}
+
+.descripcionProducto .indicador__cantidad .input-group-text:hover{
+    background-color: #FFB347!important;
+    color: white !important;
+    transition: all .6s ease;
+}
+
+.descripcionProducto .indicador__cantidad .input-group{
+    padding-left: 12px;
+}

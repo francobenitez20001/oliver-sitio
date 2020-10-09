@@ -1,0 +1,30 @@
+.col-modal-marca{
+    box-shadow: 0px 2px 1px 1px rgba(0,0,0,0.16), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.col-modal-marca:hover{
+    background-color: #f7f3f3;
+}
+
+.col-modal-marca p{
+    margin: 0px!important;
+    font-size: 13px;
+}
+
+
+
+.Modal .modal-content{
+    height: 100% !important;
+}
+
+.Modal .modal-content .row{
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.col-modal-marca p.achicarTamaño{
+    font-size: 10px;
+}

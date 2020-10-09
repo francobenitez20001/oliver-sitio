@@ -1,0 +1,57 @@
+.container__subfooter .redes__footer{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container__subfooter .redes__footer .iconos__footer{
+    color: white;
+    background-color: #FFB347;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 35px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.container__subfooter .legales__footer{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.container__subfooter .legales__footer ul{margin: 0px;}
+
+.container__subfooter .legales__footer a{
+    font-size: 1rem;
+    font-family: 'Quicksand', sans-serif;
+    color: #080808ab!important;
+}
+
+.container__subfooter .legales__footer a:hover{text-decoration:none;font-weight: 600;}
+
+
+@media(max-width:768px){
+    .container__subfooter .container{
+        display: block !important;
+    }
+    .container__subfooter .redes__footer,.container__subfooter .legales__footer{width: 100%;}
+    .container__subfooter .legales__footer{
+        flex-direction: row;
+    }
+    .container__subfooter .legales__footer ul{
+        display: flex;
+        list-style: none;
+    }
+    .container__subfooter .legales__footer ul li{
+        text-align: center;
+        margin: 10px 5px;
+    }
+    .container__subfooter .legales__footer a{
+        font-size: 14px;
+    }
+}

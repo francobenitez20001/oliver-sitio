@@ -1,0 +1,64 @@
+.container__producto{
+    background-color: white;
+    padding: 20px;
+}
+
+.container__producto:hover{
+    background-color: #d8d6d6;
+    -webkit-box-shadow: 1px 2px 7px #2e2e2e;
+    border-radius: 10px;
+    transition: all .5s ease;
+}
+
+.container__producto .header__card{
+    height: 250px;
+    padding: 0px 30px;
+}
+
+.container__producto .header__card .img{
+    width: 100%;
+    height: 100%;
+}
+
+.container__producto .body__card .cantidad{
+    float: right;
+    background-color: #FFB347;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 5px;
+    color: black;
+}
+
+.container__producto .label__descuento{
+    position: absolute;
+    top: 35px;
+    left: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 13px;
+}
+
+@media(max-width:768px){
+    .container__producto{
+        padding: 15px;
+    }
+    .container__producto .header__card {
+        height: 190px;
+        padding: 0px 22px 12px 22px;
+    }
+    
+    .container__producto .body__card .nombre__producto{
+        font-size: 13px;
+    }
+
+    .container__producto .body__card .cantidad{
+        font-size: 10px;
+    }
+
+    .container__producto .body__card h3{
+        font-size: 20px;
+    }
+}
