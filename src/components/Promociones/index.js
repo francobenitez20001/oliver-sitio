@@ -1,30 +1,29 @@
 import React, { useEffect } from 'react';
 import CardProducto from '../CardProducto/index';
-import Data from '../../promociones.json';
-//import {connect} from 'react-redux';
-//import * as productosActions from '../../actions/productosActions';
+import {connect} from 'react-redux';
+import * as productosActions from '../../../store/actions/productosActions';
 import Loader from '../Loader/index';
 
 const Promociones = (props) => {
     useEffect(() => {
-       //getPromociones();
+       getPromociones();
     }, []);
 
-    /*const getPromociones = ()=>{
+    const getPromociones = ()=>{
         if(props.promociones.length===0){
             props.traerPromociones();
         }
-    }*/
+    }
 
-
+    console.log(props);
     return (
         <div className="my-5">
             <h4 className="text-black">Nuestras Promociones</h4>
             <div className="row">
                 {(props.loading)?<Loader/>:
-                    Data.map(prd=>(
-                        <div key={prd.idProducto} className="col-6 col-md-4 col-xl-3">
-                            <CardProducto imagen='./prd.jpg' prd={prd}/>
+                    props.promociones.map(prd=>(
+                        <div key={prd.idSubProducto} className="col-6 col-md-4 col-xl-3">
+                            <CardProducto imagen={prd.foto} prd={prd}/>
                         </div>
                     ))
                 }
@@ -33,10 +32,8 @@ const Promociones = (props) => {
     );
 }
 
-export default Promociones;
-
-/*const mapStateToProps = reducers=>{
+const mapStateToProps = reducers=>{
     return reducers.productosReducer;
 }
 
-export default connect(mapStateToProps,productosActions)(Promociones);*/
+export default connect(mapStateToProps,productosActions)(Promociones);

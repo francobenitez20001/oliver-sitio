@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import './index.css';
+import FiltroStyle from './Filtro.module.css';
 import Modal from '../Modal';
 import ModalMarca from '../ModalMarca';
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import { connect } from 'react-redux';
 //import * as productosActions from '../../actions/productosActions';
 
@@ -23,11 +25,11 @@ const Filtro = (props) => {
     }
 
     //loop de efecto para ejecutar solo una vez cuando el componente se monte en el caso de que se este filtrando directo desde la url
-    useEffect(() => {
+    /*useEffect(() => {
         if(props.location.match.url !== '/productos'){
             activarFiltroPorUrl();
         }
-    },[]);
+    },[]);*/
 
     //loop de efecto para hacer render cada vez que se agrega o elimina un filtro
     useEffect(() => {
@@ -103,7 +105,7 @@ const Filtro = (props) => {
             for (const key in estadoFiltro) {
                 if(estadoFiltro[key] && estadoFiltro[key]!=='' && estadoFiltro[key]!==true){
                     if(document.getElementsByName(`${estadoFiltro[key]}`)[0]){//pregunto si existe el elemento con la clase del filtro para agregarle el active, si no existe lo creo. (si no existe es porque viene desde modal de marcas)
-                        document.getElementsByName(`${estadoFiltro[key]}`)[0].classList.add('active');
+                        document.getElementsByName(`${estadoFiltro[key]}`)[0].classList.add(FiltroStyle.active);
                         document.getElementById(`close-${estadoFiltro[key]}`).classList.remove('d-none');
                     }else{
                         //creo los elementos del item
@@ -203,103 +205,103 @@ const Filtro = (props) => {
     }
     //console.log(props);
     return (
-        <div className="filtros__contanier">
+        <div className={FiltroStyle.filtros__contanier}>
             <div>
-                <i className="fas fa-times cerrar-filtro-mobile" onClick={closeFiltrosMobile}></i>
+                <FontAwesomeIcon icon={faTimes} className={FiltroStyle.cerrar_filtro_mobile} onClick={closeFiltrosMobile}/>
                 <h4 className="titulo_filtros">Mascota</h4>
                 <ul>
                     <li>
-                        <div className="item-filtro" name="perro" onClick={()=>activarFiltro('mascota','perro')}>
+                        <div className={FiltroStyle.item_filtro} name="perro" onClick={()=>activarFiltro('mascota','perro')}>
                             <span className="text-muted">Perro</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('mascota')} id="close-perro" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id="close-perro"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="gato" onClick={()=>activarFiltro('mascota','gato')}>
+                        <div className={FiltroStyle.item_filtro} name="gato" onClick={()=>activarFiltro('mascota','gato')}>
                             <span className="text-muted">Gato</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('mascota')} id="close-gato" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id="close-gato"/>
                     </li>
                 </ul>
                 <h4 className="titulo_filtros">Alimentos</h4>
                 <ul>
                     <li>
-                        <div className="item-filtro" name="alimentoSeco" onClick={()=>activarFiltro('subcategoria','alimentoSeco')}>
+                        <div className={FiltroStyle.item_filtro} name="alimentoSeco" onClick={()=>activarFiltro('subcategoria','alimentoSeco')}>
                             <span className="text-muted">Alimentos Secos</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoSeco" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoSeco"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="alimentoHumedo" onClick={()=>activarFiltro('subcategoria','alimentoHumedo')}>
+                        <div className={FiltroStyle.item_filtro} name="alimentoHumedo" onClick={()=>activarFiltro('subcategoria','alimentoHumedo')}>
                             <span className="text-muted">Alimentos Húmedos</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoHumedo" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoHumedo"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="alimentoMedicados" onClick={()=>activarFiltro('subcategoria','alimentoMedicados')}>
+                        <div className={FiltroStyle.item_filtro} name="alimentoMedicados" onClick={()=>activarFiltro('subcategoria','alimentoMedicados')}>
                             <span className="text-muted">Alimentos Medicados</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoMedicados" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoMedicados"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="alimentoNatural" onClick={()=>activarFiltro('subcategoria','alimentoNatural')}>
+                        <div className={FiltroStyle.item_filtro} name="alimentoNatural" onClick={()=>activarFiltro('subcategoria','alimentoNatural')}>
                             <span className="text-muted">Alimentos Naturales</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoNatural" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoNatural"/>
                     </li>
                 </ul>
                 <h4 className="titulo_filtros">Accesorios</h4>
                 <ul>
                     <li>
-                        <div className="item-filtro" name="camasmantas" onClick={()=>activarFiltro('subcategoria','camasmantas')}>
+                        <div className={FiltroStyle.item_filtro} name="camasmantas" onClick={()=>activarFiltro('subcategoria','camasmantas')}>
                             <span className="text-muted">Camas y mantas</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-camasmantas" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-camasmantas"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="comederos" onClick={()=>activarFiltro('subcategoria','comederos')}>
+                        <div className={FiltroStyle.item_filtro} name="comederos" onClick={()=>activarFiltro('subcategoria','comederos')}>
                             <span className="text-muted">Comederos y bebederos</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-comederos" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-comederos"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="ropa" onClick={()=>activarFiltro('subcategoria','ropa')}>
+                        <div className={FiltroStyle.item_filtro} name="ropa" onClick={()=>activarFiltro('subcategoria','ropa')}>
                             <span className="text-muted">Ropa</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-ropa" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-ropa"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="paseo" onClick={()=>activarFiltro('subcategoria','paseo')}>
+                        <div className={FiltroStyle.item_filtro} name="paseo" onClick={()=>activarFiltro('subcategoria','paseo')}>
                             <span className="text-muted">elementos de paseo</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('subcategoria')} id="close-paseo" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-paseo"/>
                     </li>
                 </ul>
                 <h4 className="titulo_filtros">Marca</h4>
                 <ul className="sinBorderBottom lista__marca">
                     <li>
-                        <div className="item-filtro" name="proplan" onClick={()=>activarFiltro('marca','proplan')}>
+                        <div className={FiltroStyle.item_filtro} name="proplan" onClick={()=>activarFiltro('marca','proplan')}>
                             <span className="text-muted">Pro Plan</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('marca')} id="close-proplan" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-proplan"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="canin" onClick={()=>activarFiltro('marca','canin')}>
+                        <div className={FiltroStyle.item_filtro} name="canin" onClick={()=>activarFiltro('marca','canin')}>
                             <span className="text-muted">Royal Canin</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('marca')} id="close-canin" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-canin"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="eukanuba" onClick={()=>activarFiltro('marca','eukanuba')}>
+                        <div className={FiltroStyle.item_filtro} name="eukanuba" onClick={()=>activarFiltro('marca','eukanuba')}>
                             <span className="text-muted">Eukanuba</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('marca')} id="close-eukanuba" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-eukanuba"/>
                     </li>
                     <li>
-                        <div className="item-filtro" name="sabrositos" onClick={()=>activarFiltro('marca','sabrositos')}>
+                        <div className={FiltroStyle.item_filtro} name="sabrositos" onClick={()=>activarFiltro('marca','sabrositos')}>
                             <span className="text-muted">Sabrositos</span>
                         </div>
-                        <i onClick={()=>limpiarFiltro('marca')} id="close-sabrositos" className="fas fa-times icon-close-filtro d-none"></i>
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-sabrositos"/>
                     </li>
                 </ul>
                 <button onClick={()=>setModalIsOpen(true)} className="boton bg-gris">Ver todas</button>

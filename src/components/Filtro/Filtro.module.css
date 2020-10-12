@@ -12,7 +12,7 @@
     border-bottom: 1px solid #b6b6b6;
 }
 
-.filtros__contanier ul li .item-filtro{
+.filtros__contanier ul li .item_filtro{
     margin: 10px 0px;
     font-size: 13px;
     font-family: 'Lato',sans-serif;
@@ -22,7 +22,7 @@
     justify-content: space-between;
 }
 
-.filtros__contanier ul li .item-filtro.active{
+.filtros__contanier ul li .item_filtro.active{
     background-color: #c2c0c0;
     padding: 5px;
     border-radius: 5px;
@@ -40,7 +40,7 @@
     font-size: 13px;
 }
 
-.filtros__contanier i.cerrar-filtro-mobile{
+.filtros__contanier i.cerrar_filtro_mobile{
     display: none;
 }
 
@@ -74,7 +74,7 @@
     .filtros__contanier.show_filtros{
         left: 0% !important;
     }
-    .filtros__contanier i.cerrar-filtro-mobile{
+    .filtros__contanier i.cerrar_filtro_mobile{
         display: block;
         position: absolute;
         top: 10px;

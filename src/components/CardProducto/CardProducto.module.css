@@ -40,6 +40,9 @@
     font-family: 'Quicksand', sans-serif;
     border-radius: 13px;
 }
+.container__producto .body__card .nombre__producto{
+    font-size: 15px;
+}
 
 @media(max-width:768px){
     .container__producto{

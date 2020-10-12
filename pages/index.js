@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import Head from 'next/head'
+import Header from '../src/components/Head';
 import styles from '../styles/Home.module.css'
 import SliderPublicidad from '../src/components/SliderPublicidad/index';
 import { faLock,faCreditCard,faThumbtack } from "@fortawesome/free-solid-svg-icons";
@@ -19,10 +19,7 @@ const Home = () => {
     }, [])
     return (
         <>
-            <Head>
-              <title>Oliver PetShop - Inicio</title>
-              <link rel="icon" href="/Perro.png" />
-            </Head>
+            <Header title="Oliver - Home"/>
             <SliderPublicidad img='./PublicidadProducto.jpg' img_dos='./envios.jpg' img_tres='./negocio.jpg'/>
             <section className={styles.info_deCompra}>
                 <div className="container">
