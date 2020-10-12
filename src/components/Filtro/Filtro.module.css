@@ -6,13 +6,13 @@
     padding: 17px 0px 0px 0px;
 }
 
-.filtros__contanier ul{
+.filtros__contanier .lista{
     list-style: none;
     padding: 0px 0px 0px 20px;
     border-bottom: 1px solid #b6b6b6;
 }
 
-.filtros__contanier ul li .item_filtro{
+.filtros__contanier .lista .item_filtro{
     margin: 10px 0px;
     font-size: 13px;
     font-family: 'Lato',sans-serif;
@@ -22,15 +22,15 @@
     justify-content: space-between;
 }
 
-.filtros__contanier ul li .item_filtro.active{
+.filtros__contanier .lista .item_filtro.active{
     background-color: #c2c0c0;
     padding: 5px;
     border-radius: 5px;
 }
-.filtros__contanier ul.sinBorderBottom{
+.filtros__contanier .lista.sinBorderBottom{
     border-bottom:none!important;
 }
-.filtros__contanier ul li i{
+.filtros__contanier .lista .icon_close_filtro{
     color: #6c757d;
     bottom: 31px;
     float: right;
@@ -40,8 +40,18 @@
     font-size: 13px;
 }
 
-.filtros__contanier i.cerrar_filtro_mobile{
+.filtros__contanier .cerrar_filtro_mobile{
     display: none;
+}
+
+@media(min-width:1920px){
+    .filtros__contanier{
+        height: 100vh;
+        position: fixed;
+        top: 66px;
+        width: 12%;
+        padding: 17px 0px 0px 0px;
+    }
 }
 
 @media(max-width:768px){
@@ -56,25 +66,25 @@
         transition: all .6s ease;
     }
 
-    .filtros__contanier h4{
+    .filtros__contanier .titulo_filtros{
         font-size: 20px;
     }
 
-    .filtros__contanier ul li span{
+    .filtros__contanier .lista li span{
         font-size: 12px;
     }
 
     .filtros__contanier .boton{
         padding: 4px !important;
     }
-    .filtros__contanier ul{
+    .filtros__contanier .lista{
         border-bottom: 1px solid #F7BC33;
     }
 
     .filtros__contanier.show_filtros{
         left: 0% !important;
     }
-    .filtros__contanier i.cerrar_filtro_mobile{
+    .filtros__contanier .cerrar_filtro_mobile{
         display: block;
         position: absolute;
         top: 10px;

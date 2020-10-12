@@ -21,6 +21,7 @@ const Filtro = (props) => {
     //manejo de Modal marcas
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const onCloseModal = ()=>{
+        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         setModalIsOpen(false);
     }
 
@@ -93,10 +94,10 @@ const Filtro = (props) => {
 
     const switchItemActive = ()=>{
         // console.log(estadoFiltro);
-        for (let index = 0; index < document.getElementsByClassName('item-filtro').length; index++) {
-            const element = document.getElementsByClassName('item-filtro')[index];
-            element.classList.remove('active');
-            document.getElementsByClassName('icon-close-filtro')[index].classList.add('d-none');
+        for (let index = 0; index < document.getElementsByClassName(FiltroStyle.item_filtro).length; index++) {
+            const element = document.getElementsByClassName(FiltroStyle.item_filtro)[index];
+            element.classList.remove(FiltroStyle.active);
+            document.getElementsByClassName(FiltroStyle.icon_close_filtro)[index].classList.add('d-none');
         };
 
         //si no hay nada en buscador, puedo setear un active en algun elemento de la lista
@@ -112,17 +113,33 @@ const Filtro = (props) => {
                         let newItemMarca = document.createElement('li');
                         let divItemMarca = document.createElement('div');
                         let spanItemMarca = document.createElement('span');
-                        let iconClose = document.createElement('i');
+                        let iconClose = document.createElement('svg');
+                        let pathIconClose = document.createElement('path');
     
                         //asigno las clases, atributos y eventos necesarios.
-                        divItemMarca.className = 'item-filtro active';
+                        divItemMarca.className =`${FiltroStyle.item_filtro} ${FiltroStyle.active}`;
                         divItemMarca.setAttribute('name',`${estadoFiltro.marca}`);
                         divItemMarca.addEventListener('click',()=>activarFiltro('marca',estadoFiltro.marca));
                         spanItemMarca.className = 'text-muted';
                         spanItemMarca.innerHTML = estadoFiltro.marca;
-                        iconClose.className="fas fa-times icon-close-filtro";
+
+
+                        iconClose.setAttribute('aria-hidden',true);
+                        iconClose.setAttribute('focusable',false);
+                        iconClose.setAttribute('data-prefix','fas');
+                        iconClose.setAttribute('data-icon','times');
+                        iconClose.setAttribute('role','img');
+                        iconClose.setAttribute('xmlns','http://www.w3.org/2000/svg');
+                        iconClose.setAttribute('viewBox','0 0 352 512');
+                        iconClose.className = `svg-inline--fa fa-times fa-w-11 ${FiltroStyle.icon_close_filtro}`;
                         iconClose.setAttribute('id',`close-${estadoFiltro.marca}`);
                         iconClose.addEventListener('click',()=>limpiarFiltro('marca'));
+
+                        pathIconClose.setAttribute('fill','currentColor');
+                        pathIconClose.setAttribute('d','M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z');
+
+                        iconClose.appendChild(pathIconClose);
+                        
     
                         //voy ubicando los elementos dentro de cada padre
                         divItemMarca.appendChild(spanItemMarca);
@@ -130,10 +147,9 @@ const Filtro = (props) => {
                         newItemMarca.appendChild(iconClose);
                         
                         //Obtengo el primer item de la lista y lo elimino, para tener siempre la misma cantidad de marcas en la lista.
-                        let firstItemMarca = document.querySelector('.lista__marca').children[0];
-                        let listaMarcas = document.querySelector('.lista__marca');
+                        let firstItemMarca = document.querySelector(`#listaMarca`).children[0];
+                        let listaMarcas = document.querySelector(`#listaMarca`);
                         listaMarcas.removeChild(firstItemMarca);
-    
                         //ahora agrego el item creado a la lista
                         listaMarcas.appendChild(newItemMarca);
                     }
@@ -203,13 +219,13 @@ const Filtro = (props) => {
         }
         return url;
     }
-    //console.log(props);
+    console.log(props);
     return (
         <div className={FiltroStyle.filtros__contanier}>
             <div>
                 <FontAwesomeIcon icon={faTimes} className={FiltroStyle.cerrar_filtro_mobile} onClick={closeFiltrosMobile}/>
-                <h4 className="titulo_filtros">Mascota</h4>
-                <ul>
+                <h4 className={FiltroStyle.titulo_filtros}>Mascota</h4>
+                <ul className={FiltroStyle.lista}>
                     <li>
                         <div className={FiltroStyle.item_filtro} name="perro" onClick={()=>activarFiltro('mascota','perro')}>
                             <span className="text-muted">Perro</span>
@@ -223,8 +239,8 @@ const Filtro = (props) => {
                         <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id="close-gato"/>
                     </li>
                 </ul>
-                <h4 className="titulo_filtros">Alimentos</h4>
-                <ul>
+                <h4 className={FiltroStyle.titulo_filtros}>Alimentos</h4>
+                <ul className={FiltroStyle.lista}>
                     <li>
                         <div className={FiltroStyle.item_filtro} name="alimentoSeco" onClick={()=>activarFiltro('subcategoria','alimentoSeco')}>
                             <span className="text-muted">Alimentos Secos</span>
@@ -250,8 +266,8 @@ const Filtro = (props) => {
                         <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoNatural"/>
                     </li>
                 </ul>
-                <h4 className="titulo_filtros">Accesorios</h4>
-                <ul>
+                <h4 className={FiltroStyle.titulo_filtros}>Accesorios</h4>
+                <ul className={FiltroStyle.lista}>
                     <li>
                         <div className={FiltroStyle.item_filtro} name="camasmantas" onClick={()=>activarFiltro('subcategoria','camasmantas')}>
                             <span className="text-muted">Camas y mantas</span>
@@ -277,8 +293,8 @@ const Filtro = (props) => {
                         <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-paseo"/>
                     </li>
                 </ul>
-                <h4 className="titulo_filtros">Marca</h4>
-                <ul className="sinBorderBottom lista__marca">
+                <h4 className={FiltroStyle.titulo_filtros}>Marca</h4>
+                <ul id="listaMarca" className={`sinBorderBottom`+ ' ' + FiltroStyle.lista}>
                     <li>
                         <div className={FiltroStyle.item_filtro} name="proplan" onClick={()=>activarFiltro('marca','proplan')}>
                             <span className="text-muted">Pro Plan</span>

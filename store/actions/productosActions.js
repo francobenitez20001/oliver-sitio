@@ -62,12 +62,12 @@ export const filtrarProductos = url=>async dispatch=>{
         type:LOADING
     });
     try {
-        setTimeout(() => {
+        fetch(`${API}/subproducto?desde=1&limite=5`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,
-                payload:productos
+                payload:data.data
             })
-        }, 1000);
+        })
     } catch (error) {
         dispatch({
             type:ERROR,

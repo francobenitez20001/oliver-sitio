@@ -4,7 +4,7 @@
 }
 
 .container__producto:hover{
-    background-color: #d8d6d6;
+    cursor: pointer;
     -webkit-box-shadow: 1px 2px 7px #2e2e2e;
     border-radius: 10px;
     transition: all .5s ease;
