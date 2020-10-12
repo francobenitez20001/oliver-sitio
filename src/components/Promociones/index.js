@@ -14,8 +14,6 @@ const Promociones = (props) => {
             props.traerPromociones();
         }
     }
-
-    console.log(props);
     return (
         <div className="my-5">
             <h4 className="text-black">Nuestras Promociones</h4>

@@ -42,12 +42,6 @@ const BannerMarcas = (props) => {
     );
 }
 
-BannerMarcas.getStaticProps = async({req})=>{
-    const res = await fetch('https://api.github.com/repos/developit/preact')
-    const json = await res.json()
-    console.log(json);
-}
-
 const mapStateToProps = reducers=>{
     return reducers.marcasReducer;
 }

@@ -5,10 +5,12 @@ export const traerTodos = ()=>async (dispatch)=>{
         type:LOADING
     });
     try {
-        dispatch({
-            type:TRAER_TODOS,
-            payload:productos
-        });
+        fetch(`${API}/subproducto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
+            dispatch({
+                type:TRAER_TODOS,
+                payload:data.data
+            });
+        })
     } catch (error) {
         dispatch({
             type:ERROR,

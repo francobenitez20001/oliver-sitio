@@ -4,8 +4,8 @@ import Modal from '../Modal';
 import ModalMarca from '../ModalMarca';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import { connect } from 'react-redux';
-//import * as productosActions from '../../actions/productosActions';
+import { connect } from 'react-redux';
+import * as productosActions from '../../../store/actions/productosActions';
 
 const Filtro = (props) => {
 
@@ -25,11 +25,11 @@ const Filtro = (props) => {
     }
 
     //loop de efecto para ejecutar solo una vez cuando el componente se monte en el caso de que se este filtrando directo desde la url
-    /*useEffect(() => {
-        if(props.location.match.url !== '/productos'){
-            activarFiltroPorUrl();
-        }
-    },[]);*/
+    useEffect(() => {
+        //if(props.location.match.url !== '/productos'){
+        //    activarFiltroPorUrl();
+        //}
+    },[]);
 
     //loop de efecto para hacer render cada vez que se agrega o elimina un filtro
     useEffect(() => {
@@ -315,9 +315,8 @@ const Filtro = (props) => {
     );
 }
 
-export default Filtro;
-/*const mapStateToProps = reducers=>{
+const mapStateToProps = reducers=>{
     return reducers.productosReducer;
 }
 
-export default connect(mapStateToProps,productosActions)(Filtro);*/
+export default connect(mapStateToProps,productosActions)(Filtro);

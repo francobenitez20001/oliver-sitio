@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import CardProducto from '../CardProducto';
-//import {connect} from 'react-redux';
-//import * as productosActions from '../../actions/productosActions';
+import {connect} from 'react-redux';
+import * as productosActions from '../../../store/actions/productosActions';
 import ProductosStyle from './Productos.module.css';
 import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Productos = (props) => {
-    /*useEffect(() => {
-        //if(props.match.path === '/productos/search/:query'){
-        //    document.getElementById('valor-busqueda').innerHTML = props.match.params.query;
-        //    document.getElementById('label__filtro-busqueda').classList.remove('d-none');
-        //};
-        //getProductos();
-    }, [props.productos]);*/
+    useEffect(() => {
+        /*if(props.match.path === '/productos/search/:query'){
+            document.getElementById('valor-busqueda').innerHTML = props.match.params.query;
+            document.getElementById('label__filtro-busqueda').classList.remove('d-none');
+        };*/
+        getProductos();
+    }, []);
 
     const showFiltrosMobile = ()=>{
         document.getElementsByClassName('filtros__contanier')[0].classList.add('show_filtros');
@@ -59,12 +59,12 @@ const Productos = (props) => {
                             <option value="asc">Menor precio</option>
                         </select>
                     </div>
-                    <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
+                    <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
                 <div className="row">
                     {props.productos.map(prd=>(
-                        <div key={prd.idProducto} className="col-6 col-md-4">
-                            <CardProducto imagen={imgprd} prd={prd}/>
+                        <div key={prd.idSubProducto} className="col-6 col-md-4">
+                            <CardProducto imagen={prd.foto} prd={prd}/>
                         </div>
                     ))}
                 </div>
@@ -74,10 +74,8 @@ const Productos = (props) => {
     );
 }
 
-export default Productos;
-
-/*const mapStateToProps = reducers=>{
+const mapStateToProps = reducers=>{
     return reducers.productosReducer;
 }
 
-export default connect(mapStateToProps,productosActions)(Productos);*/
+export default connect(mapStateToProps,productosActions)(Productos);
