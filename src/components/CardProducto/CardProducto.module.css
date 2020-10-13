@@ -1,6 +1,7 @@
 .container__producto{
     background-color: white;
     padding: 20px;
+    height: 420px;
 }
 
 .container__producto:hover{
@@ -21,7 +22,6 @@
 }
 
 .container__producto .body__card .cantidad{
-    float: right;
     background-color: #FFB347;
     padding: 3px 6px;
     font-size: 12px;
@@ -29,6 +29,9 @@
     font-family: 'Quicksand', sans-serif;
     border-radius: 5px;
     color: black;
+    position: absolute;
+    right: 35px;
+    bottom: 85px;
 }
 
 .container__producto .label__descuento{
@@ -44,9 +47,22 @@
     font-size: 15px;
 }
 
+.container__producto .body__card .precio{
+    position: absolute;
+    bottom: 75px;
+}
+
+.container__producto .btn_comprar{
+    position: absolute;
+    bottom: 30px;
+    width: 75%;
+}
+
+
 @media(max-width:768px){
     .container__producto{
         padding: 15px;
+        height: 355px;
     }
     .container__producto .header__card {
         height: 190px;

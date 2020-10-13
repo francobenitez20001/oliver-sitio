@@ -14,7 +14,7 @@
     margin: 0 8px 3px 0
 }
 
-.boton-filtrar-mobile{
+.boton_filtrar_mobile{
     display: none !important;
 }
 
@@ -25,11 +25,11 @@
     color: white;
 }
 
-#label__filtro-busqueda .item-filtro-busqueda{
+#label__filtro-busqueda .item_filtro_busqueda{
     margin-left: 10px;
 }
 
-#label__filtro-busqueda span.text-muted{
+#label__filtro-busqueda .text-muted{
     color: white !important;
     font-family: 'Quicksand', sans-serif;
     font-size: 13px;
@@ -37,7 +37,7 @@
 }
 
 @media(max-width:768px){
-    .boton-filtrar-mobile{
+    .boton_filtrar_mobile{
         display: block !important;
     }
 }

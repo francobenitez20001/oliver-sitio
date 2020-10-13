@@ -11,10 +11,8 @@ const Producto = (props) => {
             <Header title="Oliver - Productos"/>
             <section className="main__productos container">
                 <div className="row">
-                    <div className="col-12 col-md-3">
-                        <Filtro location={props}/>
-                    </div>
-                    <div className="col-12 col-md-9 py-3">
+                    <Filtro location={props}/>
+                    <div className="col-12 py-3">
                         <Productos match={props.match}/>
                     </div>
                 </div>

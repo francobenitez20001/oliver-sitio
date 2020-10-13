@@ -2,10 +2,19 @@ import React, { useState,useEffect } from 'react';
 import FiltroStyle from './Filtro.module.css';
 import Modal from '../Modal';
 import ModalMarca from '../ModalMarca';
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes,faBroom,faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from 'react-redux';
 import * as productosActions from '../../../store/actions/productosActions';
+import * as marcasActions from '../../../store/actions/marcasActions';
+import * as categoriasActions from '../../../store/actions/categoriasAction';
+import * as subcategoriasActions from '../../../store/actions/subcategoriasAction';
+import Loader from '../Loader';
+
+const {traerTodas:marcasTraerTodas} = marcasActions;
+const {filtrarProductos:productosFiltrarProductos} = productosActions;
+const {traerTodas:categoriasTraerTodas} = categoriasActions;
+const {traerTodas:subcategoriaTraerTodas} = subcategoriasActions;
 
 const Filtro = (props) => {
 
@@ -27,10 +36,23 @@ const Filtro = (props) => {
 
     //loop de efecto para ejecutar solo una vez cuando el componente se monte en el caso de que se este filtrando directo desde la url
     useEffect(() => {
+        getData();
         //if(props.location.match.url !== '/productos'){
-        //    activarFiltroPorUrl();
-        //}
+            //    activarFiltroPorUrl();
+            //}
     },[]);
+        
+    const getData = async()=>{
+        if(props.marcasReducer.marcas.length===0){
+            await props.marcasTraerTodas();
+        }
+        if(props.categoriasReducer.categorias.length===0){
+            await props.categoriasTraerTodas();
+        }
+        if(props.subcategoriaReducer.subcategorias.length===0){
+            await props.subcategoriaTraerTodas();
+        }
+    }
 
     //loop de efecto para hacer render cada vez que se agrega o elimina un filtro
     useEffect(() => {
@@ -159,7 +181,7 @@ const Filtro = (props) => {
         //la primera vez que se carga el componente, filtrando es false, por eso pregunto para que no se ejecuta la funcion de ir a filtrar apenas se monte el componente. Sino que se ejecute cuando de verdad se quiera filtrar.
         if(estadoFiltro.filtrando){
             let urlFiltro = armarUrlFiltro();//armo la url que mando a la api para traer los resultados de lo filtrado.
-            props.filtrarProductos(urlFiltro);
+            props.productosFiltrarProductos(urlFiltro);
         };
     }
 
@@ -189,7 +211,7 @@ const Filtro = (props) => {
     }
 
     const closeFiltrosMobile = ()=>{
-        document.getElementsByClassName('filtros__contanier')[0].classList.remove('show_filtros');
+        document.getElementsByClassName(FiltroStyle.filtros__contanier)[0].classList.remove(FiltroStyle.show_filtros);
     }
 
     const armarUrlFiltro = ()=>{
@@ -219,108 +241,71 @@ const Filtro = (props) => {
         }
         return url;
     }
+
+    const showFiltros = ()=>{
+        let element = document.getElementsByClassName(FiltroStyle.filtros__contanier)[0];
+        element.classList.toggle(FiltroStyle.show);
+        document.getElementById('iconFiltroContainer').classList.toggle(FiltroStyle.rotar);
+    }
+
     console.log(props);
     return (
         <div className={FiltroStyle.filtros__contanier}>
+            <button className={FiltroStyle.btn_close_filtro} onClick={showFiltros}>
+                <FontAwesomeIcon id="iconFiltroContainer" icon={faChevronRight}/>
+            </button>
             <div>
-                <FontAwesomeIcon icon={faTimes} className={FiltroStyle.cerrar_filtro_mobile} onClick={closeFiltrosMobile}/>
-                <h4 className={FiltroStyle.titulo_filtros}>Mascota</h4>
-                <ul className={FiltroStyle.lista}>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="perro" onClick={()=>activarFiltro('mascota','perro')}>
-                            <span className="text-muted">Perro</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id="close-perro"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="gato" onClick={()=>activarFiltro('mascota','gato')}>
-                            <span className="text-muted">Gato</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id="close-gato"/>
-                    </li>
-                </ul>
-                <h4 className={FiltroStyle.titulo_filtros}>Alimentos</h4>
-                <ul className={FiltroStyle.lista}>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="alimentoSeco" onClick={()=>activarFiltro('subcategoria','alimentoSeco')}>
-                            <span className="text-muted">Alimentos Secos</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoSeco"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="alimentoHumedo" onClick={()=>activarFiltro('subcategoria','alimentoHumedo')}>
-                            <span className="text-muted">Alimentos Húmedos</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoHumedo"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="alimentoMedicados" onClick={()=>activarFiltro('subcategoria','alimentoMedicados')}>
-                            <span className="text-muted">Alimentos Medicados</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoMedicados"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="alimentoNatural" onClick={()=>activarFiltro('subcategoria','alimentoNatural')}>
-                            <span className="text-muted">Alimentos Naturales</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-alimentoNatural"/>
-                    </li>
-                </ul>
-                <h4 className={FiltroStyle.titulo_filtros}>Accesorios</h4>
-                <ul className={FiltroStyle.lista}>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="camasmantas" onClick={()=>activarFiltro('subcategoria','camasmantas')}>
-                            <span className="text-muted">Camas y mantas</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-camasmantas"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="comederos" onClick={()=>activarFiltro('subcategoria','comederos')}>
-                            <span className="text-muted">Comederos y bebederos</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-comederos"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="ropa" onClick={()=>activarFiltro('subcategoria','ropa')}>
-                            <span className="text-muted">Ropa</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-ropa"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="paseo" onClick={()=>activarFiltro('subcategoria','paseo')}>
-                            <span className="text-muted">elementos de paseo</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id="close-paseo"/>
-                    </li>
-                </ul>
-                <h4 className={FiltroStyle.titulo_filtros}>Marca</h4>
-                <ul id="listaMarca" className={`sinBorderBottom`+ ' ' + FiltroStyle.lista}>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="proplan" onClick={()=>activarFiltro('marca','proplan')}>
-                            <span className="text-muted">Pro Plan</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-proplan"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="canin" onClick={()=>activarFiltro('marca','canin')}>
-                            <span className="text-muted">Royal Canin</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-canin"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="eukanuba" onClick={()=>activarFiltro('marca','eukanuba')}>
-                            <span className="text-muted">Eukanuba</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-eukanuba"/>
-                    </li>
-                    <li>
-                        <div className={FiltroStyle.item_filtro} name="sabrositos" onClick={()=>activarFiltro('marca','sabrositos')}>
-                            <span className="text-muted">Sabrositos</span>
-                        </div>
-                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id="close-sabrositos"/>
-                    </li>
-                </ul>
-                <button onClick={()=>setModalIsOpen(true)} className="boton bg-gris">Ver todas</button>
+                {(props.categoriasReducer.categorias.length==0 || props.subcategoriaReducer.subcategorias.length==0 || props.marcasReducer.marcas.length==0)?<Loader/>:
+                    <>  
+                        {(estadoFiltro.filtrando)?<button className="boton bg-yellow mb-3">
+                            <FontAwesomeIcon icon={faBroom}/> Limpiar Filtros
+                        </button>:null}
+                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.cerrar_filtro_mobile} onClick={closeFiltrosMobile}/>
+                        <h4 className={FiltroStyle.titulo_filtros}>Mascota</h4>
+                        <ul className={FiltroStyle.lista}>
+                            {
+                                props.categoriasReducer.categorias.map(cat=>(
+                                    <li key={cat.idCategoria}>
+                                        <div className={FiltroStyle.item_filtro} name={cat.categoria} onClick={()=>activarFiltro('mascota',`${cat.categoria}`)}>
+                                            <span className="text-muted">{cat.categoria}</span>
+                                        </div>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id={`close-${cat.categoria}`}/>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+
+                        <h4 className={FiltroStyle.titulo_filtros}>Alimentos</h4>
+                        <ul className={FiltroStyle.lista}>
+                            {
+                                props.subcategoriaReducer.subcategorias.map(sc=>(
+                                    <li key={sc.idSubCategoria}>
+                                        <div className={FiltroStyle.item_filtro} name={sc.subcategoria} onClick={()=>activarFiltro('subcategoria',`${sc.subcategoria}`)}>
+                                            <span className="text-muted">{sc.subcategoria}</span>
+                                        </div>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id={`close-${sc.subcategoria}`}/>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+
+                        <h4 className={FiltroStyle.titulo_filtros}>Marca</h4>
+                        <ul id="listaMarca" className={FiltroStyle.sinBorderBottom+ ' ' + FiltroStyle.lista}>
+                            {
+                                props.marcasReducer.marcas.map((marca,key)=>(
+                                    (key>3)?false:
+                                    <li key={marca.idMarca}>
+                                        <div className={FiltroStyle.item_filtro} name={marca.marca} onClick={()=>activarFiltro('marca',`${marca.marca}`)}>
+                                            <span className="text-muted">{marca.marca}</span>
+                                        </div>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id={`close-${marca.marca}`}/>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <button onClick={()=>setModalIsOpen(true)} className="boton bg-gris">Ver todas</button>
+                    </>
+                }
             </div>
             {(!modalIsOpen)?null:
                 <Modal closeModal={onCloseModal}>
@@ -331,8 +316,20 @@ const Filtro = (props) => {
     );
 }
 
-const mapStateToProps = reducers=>{
-    return reducers.productosReducer;
+const mapStateToProps = ({marcasReducer,productosReducer,categoriasReducer,subcategoriaReducer})=>{
+    return {
+        marcasReducer,
+        productosReducer,
+        categoriasReducer,
+        subcategoriaReducer
+    };
 }
 
-export default connect(mapStateToProps,productosActions)(Filtro);
+const mapDispatchToProps = {
+    marcasTraerTodas,
+    productosFiltrarProductos,
+    categoriasTraerTodas,
+    subcategoriaTraerTodas
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Filtro);

@@ -6,6 +6,7 @@ import ProductosStyle from './Productos.module.css';
 import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import FiltroStyle from '../Filtro/Filtro.module.css';
 
 const Productos = (props) => {
     useEffect(() => {
@@ -17,7 +18,7 @@ const Productos = (props) => {
     }, []);
 
     const showFiltrosMobile = ()=>{
-        document.getElementsByClassName('filtros__contanier')[0].classList.add('show_filtros');
+        document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.add(FiltroStyle.show_filtros);
     }
 
     const getProductos = ()=>{
@@ -63,7 +64,7 @@ const Productos = (props) => {
                 </div>
                 <div className="row">
                     {props.productos.map(prd=>(
-                        <div key={prd.idSubProducto} className="col-6 col-md-4">
+                        <div key={prd.idSubProducto} className="col-6 col-md-3">
                             <CardProducto imagen={prd.foto} prd={prd}/>
                         </div>
                     ))}

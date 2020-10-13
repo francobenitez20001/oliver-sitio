@@ -10,13 +10,15 @@ const CardProducto = ({imagen,prd}) => {
             </section>
             <section className={CardProductoModule.body__card}>
                 {/*<span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>Marca</span>*/}
-                <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>{prd.subProducto}</h6>
+                <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
+                    {prd.subProducto}
+                </h6>
                 <span className={CardProductoModule.cantidad}>{prd.peso} KG</span>
-                <h3 className="text-black">${prd.precioUnidad}</h3>
+                <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
             </section>
             <section className={CardProductoModule.footer__card}>
                 <Link href={`/subproducto/${prd.idSubProducto}`}>
-                    <a className="boton bg-blue">Comprar</a>
+                    <a className={CardProductoModule.btn_comprar + ' ' +`boton bg-blue`}>Comprar</a>
                 </Link>
             </section>
             <span className={CardProductoModule.label__descuento+ ' ' + `bg-red`}>15% Off</span>
