@@ -1,6 +1,7 @@
 import React from 'react';
 import CardProductoModule from  './CardProducto.module.css';
-import Link from 'next/link';
+import {Link} from '../../../routes';
+import slug from '../../../helpers/index';
 
 const CardProducto = ({imagen,prd}) => {
     return (
@@ -17,7 +18,10 @@ const CardProducto = ({imagen,prd}) => {
                 <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
             </section>
             <section className={CardProductoModule.footer__card}>
-                <Link href={`/subproducto/${prd.idSubProducto}`}>
+                <Link route='producto' params={{
+                    slugProducto:slug(prd.subProducto),
+                    idSubProducto:`${prd.idSubProducto}`
+                }}>
                     <a className={CardProductoModule.btn_comprar + ' ' +`boton bg-blue`}>Comprar</a>
                 </Link>
             </section>

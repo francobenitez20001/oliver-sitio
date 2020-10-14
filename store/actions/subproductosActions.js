@@ -1,5 +1,5 @@
 import {API} from '../../config/index';
-import {TRAER_TODOS,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../../store/types/productosTypes';
+import {TRAER_TODOS,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/subproductosTypes';
 export const traerTodos = ()=>async (dispatch)=>{
     dispatch({
         type:LOADING
@@ -9,6 +9,25 @@ export const traerTodos = ()=>async (dispatch)=>{
             dispatch({
                 type:TRAER_TODOS,
                 payload:data.data
+            });
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error
+        })
+    }
+}
+
+export const traerPorId = id=>async(dispatch)=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        fetch(`${API}/subproducto/${id}`).then(res=>res.json()).then(data=>{
+            dispatch({
+                type:TRAER_TODOS,
+                payload:data.data[0]
             });
         })
     } catch (error) {

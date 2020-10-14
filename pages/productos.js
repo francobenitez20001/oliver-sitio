@@ -5,7 +5,7 @@ import Filtro from '../src/components/Filtro';
 //import BotonScrollTop from '../src/components/botonScrollToTop';
 import Buscador from '../src/components/Buscador';
 
-const Producto = (props) => {
+const ProductosPage = (props) => {
     return ( 
         <>
             <Header title="Oliver - Productos"/>
@@ -22,4 +22,4 @@ const Producto = (props) => {
     );
 }
  
-export default Producto;
+export default ProductosPage;

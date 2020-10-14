@@ -104,3 +104,10 @@ a:hover{text-decoration: none!important;}
         text-align: center;
     }
 }
+
+
+.nav-tabs .nav-link.active{
+    color: #495057;
+    background-color: #fff;
+    border-color: #FFB347 #FFB347 #fff !important;
+}

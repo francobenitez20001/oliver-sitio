@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import CardProducto from '../CardProducto/index';
 import {connect} from 'react-redux';
-import * as productosActions from '../../../store/actions/productosActions';
+import * as subproductosActions from '../../../store/actions/subproductosActions';
 import Loader from '../Loader/index';
 
 const Promociones = (props) => {
@@ -31,7 +31,7 @@ const Promociones = (props) => {
 }
 
 const mapStateToProps = reducers=>{
-    return reducers.productosReducer;
+    return reducers.subproductosReducer;
 }
 
-export default connect(mapStateToProps,productosActions)(Promociones);
+export default connect(mapStateToProps,subproductosActions)(Promociones);
