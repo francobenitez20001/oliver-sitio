@@ -19,7 +19,7 @@ const Home = () => {
     }, [])
     return (
         <>
-            <Header title="Oliver - Home"/>
+            <Header title="Oliver PetShop"/>
             <SliderPublicidad img='./PublicidadProducto.jpg' img_dos='./envios.jpg' img_tres='./negocio.jpg'/>
             <section className={styles.info_deCompra}>
                 <div className="container">

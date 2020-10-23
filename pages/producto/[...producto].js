@@ -1,11 +1,12 @@
 import {useEffect} from 'react';
-import Head from '../src/components/Head';
+import Head from '../../src/components/Head';
 import { connect } from "react-redux";
-import * as subproductosAction from '../store/actions/subproductosActions';
-import Loader from '../src/components/Loader/index';
-import ProductoSingle from '../src/components/ProductoSingle';
-import InfoProducto from '../src/components/ProductoSingle/infoProducto';
-import Promociones from '../src/components/Promociones';
+import * as subproductosAction from '../../store/actions/subproductosActions';
+import Loader from '../../src/components/Loader/index';
+import ProductoSingle from '../../src/components/ProductoSingle';
+import InfoProducto from '../../src/components/ProductoSingle/infoProducto';
+import Promociones from '../../src/components/Promociones';
+import {useRouter} from 'next/router';
 
 const Producto = (props) => {
     useEffect(() => {
@@ -19,7 +20,7 @@ const Producto = (props) => {
             console.log(error);
         }
     }
-
+    const router = useRouter();
     const render = ()=>{
         if(props.loading) return <Loader/>
         if(props.error) return <Error/>
@@ -43,7 +44,7 @@ const Producto = (props) => {
 }
 
 Producto.getInitialProps = async({query})=>{
-    let idSubProducto = query.idSubProducto;
+    let idSubProducto = query.producto[1];
     return {idSubProducto};
 };
  

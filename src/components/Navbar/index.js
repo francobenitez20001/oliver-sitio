@@ -8,6 +8,7 @@ import Carrito from '../Carrito';
 import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {PUBLIC_URL} from '../../../config/index';
 const Navbar = () => {
 
     const [busqueda, setBusqueda] = useState('');
@@ -74,7 +75,7 @@ const Navbar = () => {
                         <div className={NavbarStyle.container__logo}>
                             <Link href="/">
                                 <a>
-                                    <img src='./Perro.png' className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop"/>
+                                    <img src={`${PUBLIC_URL}/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop"/>
                                 </a>
                             </Link>
                         </div>

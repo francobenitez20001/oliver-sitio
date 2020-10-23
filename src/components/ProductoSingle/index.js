@@ -61,7 +61,7 @@ const ProductoSingle = (props) => {
             </div>
             <div className={`col-12 col-sm-6 pt-5`+' '+ ProductoSingleStyle.descripcionProducto}>
                 <h3 className={ProductoSingleStyle.marca}>PURINA EXCELLENT</h3>
-                <h1>{producto}</h1>
+                <h1>{subProducto}</h1>
                 <div className={ProductoSingleStyle.precios + ' ' + `d-flex my-3`}>
                     <div className={ProductoSingleStyle.indicador__precio}>
                         <p>Precio</p>

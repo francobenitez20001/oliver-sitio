@@ -4,6 +4,8 @@ import Loader from '../Loader/index';
 import CardMarca from '../CardMarca';
 import * as marcasActions from '../../../store/actions/marcasActions';
 import { connect } from "react-redux";
+import Link from 'next/link';
+import slug from '../../../helpers/index';
 const BannerMarcas = (props) => {
     useEffect(() => {
         getMarcas();
@@ -26,8 +28,12 @@ const BannerMarcas = (props) => {
                     <div className="row">
                         {props.marcas.map((marca,key)=>{
                             if(key>=12) return false;
-                            return <div key={marca.idMarca} className="col-6 col-md-3 col-lg-2 my-2">
-                                <CardMarca imagen={marca.imagen}/>
+                            return <div className="col-6 col-md-3 col-lg-2 my-2" key={marca.idMarca}>
+                                    <a href={`productos/${slug(`${marca.marca}`)}/${marca.idMarca}?type=marca`}>
+                                        <CardMarca imagen={marca.imagen}
+                                                    marca={marca.marca}
+                                                    id={marca.idMarca}/>
+                                    </a>
                             </div>
                         })}
                     </div>

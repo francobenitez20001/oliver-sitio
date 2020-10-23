@@ -12,7 +12,7 @@ import * as subcategoriasActions from '../../../store/actions/subcategoriasActio
 import Loader from '../Loader';
 
 const {traerTodas:marcasTraerTodas} = marcasActions;
-const {filtrarProductos:subproductosFiltrarProductos} = subproductosActions;
+const {filtrarProductos:subproductosFiltrarProductos,traerTodos:subproductosTraerTodos} = subproductosActions;
 const {traerTodas:categoriasTraerTodas} = categoriasActions;
 const {traerTodas:subcategoriaTraerTodas} = subcategoriasActions;
 
@@ -21,7 +21,7 @@ const Filtro = (props) => {
     //state for the filters
     const [estadoFiltro, setEstadoFiltro] = useState({
         filtrando:false,
-        mascota:'',
+        categoria:'',
         subcategoria:'',
         marca:'',
         buscador:''
@@ -37,9 +37,6 @@ const Filtro = (props) => {
     //loop de efecto para ejecutar solo una vez cuando el componente se monte en el caso de que se este filtrando directo desde la url
     useEffect(() => {
         getData();
-        //if(props.location.match.url !== '/productos'){
-            //    activarFiltroPorUrl();
-            //}
     },[]);
         
     const getData = async()=>{
@@ -52,6 +49,9 @@ const Filtro = (props) => {
         if(props.subcategoriaReducer.subcategorias.length===0){
             await props.subcategoriaTraerTodas();
         }
+        if(props.location !== '/productos'){
+            activarFiltroPorUrl();
+        }
     }
 
     //loop de efecto para hacer render cada vez que se agrega o elimina un filtro
@@ -59,18 +59,22 @@ const Filtro = (props) => {
         switchItemActive();
     }, [estadoFiltro]);
 
+    // const formatearString = string=>{
+    //     let newString = string.replace("-"," ").toLowerCase();
+    //     return newString;
+    // }
 
     const activarFiltroPorUrl = ()=>{
-        switch (props.location.match.path) {
-            case '/productos/categoria/:id':
-                return activarFiltro('mascota','perro');
-            case '/productos/subcategoria/:id':
-                return activarFiltro('subcategoria','alimentoSeco');
-            case '/productos/marca/:id':
-                return activarFiltro('marca','sabrositos');
-            case '/productos/search/:query':
-                const {match:{params:{query}}} = props.location;
-                return activarFiltro('buscador',query);
+        switch (props.query.type){
+            case 'categoria':
+                return activarFiltro('categoria','perro');
+            case 'subcategoria':
+                return activarFiltro('subcategoria',props.query.index[1]);
+            case 'marca':
+                return activarFiltro('marca',props.query.index[1]);
+            // case '/productos/search/:query':
+            //     const {match:{params:{query}}} = props.location;
+            //     return activarFiltro('buscador',query);
             default:
                 break;
         }
@@ -78,10 +82,10 @@ const Filtro = (props) => {
 
     const activarFiltro = (tipoFiltro,nameItem)=>{
         switch (tipoFiltro) {
-            case 'mascota':
+            case 'categoria':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    mascota:nameItem,
+                    categoria:nameItem,
                     buscador:'',
                     filtrando:true
                 });
@@ -116,64 +120,71 @@ const Filtro = (props) => {
 
     const switchItemActive = ()=>{
         // console.log(estadoFiltro);
+
         for (let index = 0; index < document.getElementsByClassName(FiltroStyle.item_filtro).length; index++) {
             const element = document.getElementsByClassName(FiltroStyle.item_filtro)[index];
             element.classList.remove(FiltroStyle.active);
             document.getElementsByClassName(FiltroStyle.icon_close_filtro)[index].classList.add('d-none');
         };
-
+        if(!estadoFiltro.filtrando) return;
         //si no hay nada en buscador, puedo setear un active en algun elemento de la lista
         if(estadoFiltro.buscador.trim()===''){
             //recorro el state para obtener las claves y agregar active el elemento correspondiente
             for (const key in estadoFiltro) {
                 if(estadoFiltro[key] && estadoFiltro[key]!=='' && estadoFiltro[key]!==true){
-                    if(document.getElementsByName(`${estadoFiltro[key]}`)[0]){//pregunto si existe el elemento con la clase del filtro para agregarle el active, si no existe lo creo. (si no existe es porque viene desde modal de marcas)
-                        document.getElementsByName(`${estadoFiltro[key]}`)[0].classList.add(FiltroStyle.active);
-                        document.getElementById(`close-${estadoFiltro[key]}`).classList.remove('d-none');
+                    //console.log(key);
+                    //console.log(estadoFiltro[key]);
+                    if(document.getElementsByName(`${key}-${estadoFiltro[key]}`)[0]){//pregunto si existe el elemento con el name del filtro para agregarle el active, si no existe lo creo. (si no existe es porque viene desde modal de marcas)
+                        document.getElementsByName(`${key}-${estadoFiltro[key]}`)[0].classList.add(FiltroStyle.active);
+                        document.getElementById(`close-${key}-${estadoFiltro[key]}`).classList.remove('d-none');
                     }else{
-                        //creo los elementos del item
-                        let newItemMarca = document.createElement('li');
-                        let divItemMarca = document.createElement('div');
-                        let spanItemMarca = document.createElement('span');
-                        let iconClose = document.createElement('svg');
-                        let pathIconClose = document.createElement('path');
+                        if(estadoFiltro.marca!==''){
+                            //creo los elementos del item
+                            let newItemMarca = document.createElement('li');
+                            let divItemMarca = document.createElement('div');
+                            let spanItemMarca = document.createElement('span');
+                            let iconClose = document.createElement('svg');
+                            let pathIconClose = document.createElement('path');
+        
+                            //asigno las clases, atributos y eventos necesarios.
+                            divItemMarca.className =`${FiltroStyle.item_filtro} ${FiltroStyle.active}`;
+                            divItemMarca.setAttribute('name',`marca-${estadoFiltro.marca}`);
+                            divItemMarca.addEventListener('click',()=>activarFiltro('marca',estadoFiltro.marca));
+                            spanItemMarca.className = 'text-muted';
+                            spanItemMarca.innerHTML = estadoFiltro.marca;
     
-                        //asigno las clases, atributos y eventos necesarios.
-                        divItemMarca.className =`${FiltroStyle.item_filtro} ${FiltroStyle.active}`;
-                        divItemMarca.setAttribute('name',`${estadoFiltro.marca}`);
-                        divItemMarca.addEventListener('click',()=>activarFiltro('marca',estadoFiltro.marca));
-                        spanItemMarca.className = 'text-muted';
-                        spanItemMarca.innerHTML = estadoFiltro.marca;
-
-
-                        iconClose.setAttribute('aria-hidden',true);
-                        iconClose.setAttribute('focusable',false);
-                        iconClose.setAttribute('data-prefix','fas');
-                        iconClose.setAttribute('data-icon','times');
-                        iconClose.setAttribute('role','img');
-                        iconClose.setAttribute('xmlns','http://www.w3.org/2000/svg');
-                        iconClose.setAttribute('viewBox','0 0 352 512');
-                        iconClose.className = `svg-inline--fa fa-times fa-w-11 ${FiltroStyle.icon_close_filtro}`;
-                        iconClose.setAttribute('id',`close-${estadoFiltro.marca}`);
-                        iconClose.addEventListener('click',()=>limpiarFiltro('marca'));
-
-                        pathIconClose.setAttribute('fill','currentColor');
-                        pathIconClose.setAttribute('d','M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z');
-
-                        iconClose.appendChild(pathIconClose);
-                        
     
-                        //voy ubicando los elementos dentro de cada padre
-                        divItemMarca.appendChild(spanItemMarca);
-                        newItemMarca.appendChild(divItemMarca);
-                        newItemMarca.appendChild(iconClose);
-                        
-                        //Obtengo el primer item de la lista y lo elimino, para tener siempre la misma cantidad de marcas en la lista.
-                        let firstItemMarca = document.querySelector(`#listaMarca`).children[0];
-                        let listaMarcas = document.querySelector(`#listaMarca`);
-                        listaMarcas.removeChild(firstItemMarca);
-                        //ahora agrego el item creado a la lista
-                        listaMarcas.appendChild(newItemMarca);
+                            iconClose.setAttribute('aria-hidden',true);
+                            iconClose.setAttribute('focusable',false);
+                            iconClose.setAttribute('data-prefix','fas');
+                            iconClose.setAttribute('data-icon','times');
+                            iconClose.setAttribute('role','img');
+                            iconClose.setAttribute('xmlns','http://www.w3.org/2000/svg');
+                            iconClose.setAttribute('viewBox','0 0 352 512');
+                            iconClose.className = `svg-inline--fa fa-times fa-w-11 ${FiltroStyle.icon_close_filtro}`;
+                            iconClose.setAttribute('id',`close-marca-${estadoFiltro.marca}`);
+                            iconClose.addEventListener('click',()=>limpiarFiltro('marca'));
+    
+                            pathIconClose.setAttribute('fill','currentColor');
+                            pathIconClose.setAttribute('d','M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z');
+    
+                            iconClose.appendChild(pathIconClose);
+                            
+        
+                            //voy ubicando los elementos dentro de cada padre
+                            divItemMarca.appendChild(spanItemMarca);
+                            newItemMarca.appendChild(divItemMarca);
+                            newItemMarca.appendChild(iconClose);
+                            
+                            //Obtengo el primer item de la lista y lo elimino, para tener siempre la misma cantidad de marcas en la lista.
+                            if(document.querySelector(`#listaMarca`)){
+                                let firstItemMarca = document.querySelector(`#listaMarca`).children[0];
+                                let listaMarcas = document.querySelector(`#listaMarca`);
+                                listaMarcas.removeChild(firstItemMarca);
+                                //ahora agrego el item creado a la lista
+                                listaMarcas.appendChild(newItemMarca);
+                            };
+                        };
                     }
                 }
             }
@@ -183,14 +194,15 @@ const Filtro = (props) => {
             let urlFiltro = armarUrlFiltro();//armo la url que mando a la api para traer los resultados de lo filtrado.
             props.subproductosFiltrarProductos(urlFiltro);
         };
+        
     }
 
     const limpiarFiltro = tipo=>{
         switch (tipo) {
-            case 'mascota':
+            case 'categoria':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    mascota:''
+                    categoria:''
                 });
                 break;
             case 'subcategoria':
@@ -206,7 +218,15 @@ const Filtro = (props) => {
                 });
                 break;
             default:
-                break;
+                props.subproductosTraerTodos();
+                setEstadoFiltro({
+                    filtrando:false,
+                    categoria:'',
+                    subcategoria:'',
+                    marca:'',
+                    buscador:''
+                });
+            break;
         }
     }
 
@@ -219,21 +239,22 @@ const Filtro = (props) => {
         //si buscador viene true, es porque viene desde el buscador del menu o modal de buscador(mobile).
         if(estadoFiltro.buscador!=='') return url += `?buscar=${estadoFiltro.buscador}`;
 
-        let mascota = estadoFiltro.mascota,
+        let categoria = estadoFiltro.categoria,
             subcategoria = estadoFiltro.subcategoria,
             marca = estadoFiltro.marca;
-        if(mascota && mascota !== ''){
-            url += `?mascota=${estadoFiltro.mascota}`;
+        
+        if(categoria && categoria !== ''){
+            url += `?categoria=${estadoFiltro.categoria}`;
         }
         if(estadoFiltro.subcategoria && estadoFiltro.subcategoria !== ''){
-            if(mascota!== ''){
+            if(categoria!== ''){
                 url += `&subcategoria=${estadoFiltro.subcategoria}`; 
             }else{
                 url += `?subcategoria=${estadoFiltro.subcategoria}`;
             }
         }
         if(marca && marca !== ''){
-            if(mascota !== '' && subcategoria !== ''){
+            if(categoria !== '' && subcategoria !== ''){
                 url += `?marca=${estadoFiltro.marca}`;
             }else{
                 url += `&marca=${estadoFiltro.marca}`;
@@ -248,7 +269,6 @@ const Filtro = (props) => {
         document.getElementById('iconFiltroContainer').classList.toggle(FiltroStyle.rotar);
     }
 
-    console.log(props);
     return (
         <div className={FiltroStyle.filtros__contanier}>
             <button className={FiltroStyle.btn_close_filtro} onClick={showFiltros}>
@@ -257,7 +277,7 @@ const Filtro = (props) => {
             <div>
                 {(props.categoriasReducer.categorias.length==0 || props.subcategoriaReducer.subcategorias.length==0 || props.marcasReducer.marcas.length==0)?<Loader/>:
                     <>  
-                        {(estadoFiltro.filtrando)?<button className="boton bg-yellow mb-3">
+                        {(estadoFiltro.filtrando)?<button className="boton bg-yellow mb-3" onClick={limpiarFiltro}>
                             <FontAwesomeIcon icon={faBroom}/> Limpiar Filtros
                         </button>:null}
                         <FontAwesomeIcon icon={faTimes} className={FiltroStyle.cerrar_filtro_mobile} onClick={closeFiltrosMobile}/>
@@ -266,24 +286,25 @@ const Filtro = (props) => {
                             {
                                 props.categoriasReducer.categorias.map(cat=>(
                                     <li key={cat.idCategoria}>
-                                        <div className={FiltroStyle.item_filtro} name={cat.categoria} onClick={()=>activarFiltro('mascota',`${cat.categoria}`)}>
+                                        <div className={FiltroStyle.item_filtro} name={`categoria-${cat.idCategoria}`} onClick={()=>activarFiltro('categoria',`${cat.idCategoria}`)}>
                                             <span className="text-muted">{cat.categoria}</span>
                                         </div>
-                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('mascota')} id={`close-${cat.categoria}`}/>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('categoria')} id={`close-categoria-${cat.idCategoria}`}/>
                                     </li>
                                 ))
                             }
                         </ul>
+
 
                         <h4 className={FiltroStyle.titulo_filtros}>Alimentos</h4>
                         <ul className={FiltroStyle.lista}>
                             {
                                 props.subcategoriaReducer.subcategorias.map(sc=>(
                                     <li key={sc.idSubCategoria}>
-                                        <div className={FiltroStyle.item_filtro} name={sc.subcategoria} onClick={()=>activarFiltro('subcategoria',`${sc.subcategoria}`)}>
+                                        <div className={FiltroStyle.item_filtro} name={`subcategoria-${sc.idSubCategoria}`} onClick={()=>activarFiltro('subcategoria',`${sc.idSubCategoria}`)}>
                                             <span className="text-muted">{sc.subcategoria}</span>
                                         </div>
-                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id={`close-${sc.subcategoria}`}/>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('subcategoria')} id={`close-${`subcategoria-${sc.idSubCategoria}`}`}/>
                                     </li>
                                 ))
                             }
@@ -295,10 +316,10 @@ const Filtro = (props) => {
                                 props.marcasReducer.marcas.map((marca,key)=>(
                                     (key>3)?false:
                                     <li key={marca.idMarca}>
-                                        <div className={FiltroStyle.item_filtro} name={marca.marca} onClick={()=>activarFiltro('marca',`${marca.marca}`)}>
+                                        <div className={FiltroStyle.item_filtro} name={`marca-${marca.idMarca}`} onClick={()=>activarFiltro('marca',`${marca.idMarca}`)}>
                                             <span className="text-muted">{marca.marca}</span>
                                         </div>
-                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id={`close-${marca.marca}`}/>
+                                        <FontAwesomeIcon icon={faTimes} className={FiltroStyle.icon_close_filtro + ' ' + `d-none`} onClick={()=>limpiarFiltro('marca')} id={`close-marca-${marca.idMarca}`}/>
                                     </li>
                                 ))
                             }
@@ -328,6 +349,7 @@ const mapStateToProps = ({marcasReducer,subproductosReducer,categoriasReducer,su
 const mapDispatchToProps = {
     marcasTraerTodas,
     subproductosFiltrarProductos,
+    subproductosTraerTodos,
     categoriasTraerTodas,
     subcategoriaTraerTodas
 }
