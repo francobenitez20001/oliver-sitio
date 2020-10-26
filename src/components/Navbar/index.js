@@ -8,7 +8,7 @@ import Carrito from '../Carrito';
 import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {PUBLIC_URL} from '../../../config/index';
+import {URL_CLOUD_STORAGE} from '../../../config/index';
 const Navbar = () => {
 
     const [busqueda, setBusqueda] = useState('');
@@ -75,7 +75,7 @@ const Navbar = () => {
                         <div className={NavbarStyle.container__logo}>
                             <Link href="/">
                                 <a>
-                                    <img src={`${PUBLIC_URL}/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop"/>
+                                    <img src={`${URL_CLOUD_STORAGE}/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop"/>
                                 </a>
                             </Link>
                         </div>
@@ -98,7 +98,7 @@ const Navbar = () => {
                 </div>
                 <div className={NavbarStyle.menu__collapsed}>
                     <section className={NavbarStyle.header__collapsed_nav}>
-                        <img src='./Perro.png' className={NavbarStyle.logo} alt="Oliver pet shop"/>
+                        <img src={`${URL_CLOUD_STORAGE}/Perro.png`} className={NavbarStyle.logo} alt="Oliver pet shop"/>
                         <i onClick={toggleMenu} className={NavbarStyle.close_btn_menu + ' ' + `fas fa-times`}></i>
                     </section>
                     <div className={NavbarStyle.main__collapsed}>

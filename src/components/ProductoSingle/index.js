@@ -29,11 +29,12 @@ const ProductoSingle = (props) => {
     }
 
     const changePeso = (index,peso,precio)=>{
-        setProducto({
-            ...producto,
-            precio,
-            peso
-        });
+        //!!!!revisar//////
+        // setProducto({
+        //     ...producto,
+        //     precio,
+        //     peso
+        // });
         let cajaPeso = document.getElementsByClassName(ProductoSingleStyle.caja_cantidadKg);
         for (let index = 0; index < cajaPeso.length; index++) {
             (cajaPeso[index].classList.contains(ProductoSingleStyle.active))?cajaPeso[index].classList.remove(ProductoSingleStyle.active):null;
@@ -92,14 +93,14 @@ const ProductoSingle = (props) => {
                             <div className="input-group-prepend" onClick={()=>changeCantidad('-')}>
                                 <span className="input-group-text">-</span>
                             </div>
-                            <input type="text" id="cantidad_prd" disabled={true} className="form-control text-center" value={peso}/>
+                            <input type="text" id="cantidad_prd" disabled={true} className="form-control text-center" value="1"/>
                             <div className="input-group-append" onClick={()=>changeCantidad('+')}>
                                 <span className="input-group-text">+</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                {(props.loading)?<div className="text-center"><Loader/></div>:<button className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
+                {(props.loading)?<div className="text-center"><Loader/></div>:<button disabled={true} className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
             </div>
             {(!modalIsOpen)?null:
                 <Modal closeModal={closeModalCarrito}>

@@ -59,25 +59,8 @@ const Filtro = (props) => {
         switchItemActive();
     }, [estadoFiltro]);
 
-    // const formatearString = string=>{
-    //     let newString = string.replace("-"," ").toLowerCase();
-    //     return newString;
-    // }
-
     const activarFiltroPorUrl = ()=>{
-        switch (props.query.type){
-            case 'categoria':
-                return activarFiltro('categoria','perro');
-            case 'subcategoria':
-                return activarFiltro('subcategoria',props.query.index[1]);
-            case 'marca':
-                return activarFiltro('marca',props.query.index[1]);
-            // case '/productos/search/:query':
-            //     const {match:{params:{query}}} = props.location;
-            //     return activarFiltro('buscador',query);
-            default:
-                break;
-        }
+        return activarFiltro(props.query.type,props.query.index[1]);
     }
 
     const activarFiltro = (tipoFiltro,nameItem)=>{

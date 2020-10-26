@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     error:null
 };
 
-export default (state = INITIAL_STATE,action)=>{
+const subcategoriasReducer = (state = INITIAL_STATE,action)=>{
     switch (action.type) {
         case TRAER_TODAS:
             return {...state,subcategorias:action.payload,loading:false}
@@ -18,3 +18,5 @@ export default (state = INITIAL_STATE,action)=>{
             return state;
     }
 }
+
+export default subcategoriasReducer;

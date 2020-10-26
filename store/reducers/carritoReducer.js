@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     error:null
 };
 
-export default (state = INITIAL_STATE,action)=>{
+const carritoReducer = (state = INITIAL_STATE,action)=>{
     switch (action.type) {
         case TRAER_PRODUCTOS:
             return {...state,productos:action.payload,loading:false,error:null}
@@ -24,3 +24,5 @@ export default (state = INITIAL_STATE,action)=>{
             return state;
     }
 }
+
+export default carritoReducer;

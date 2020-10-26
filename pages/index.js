@@ -10,7 +10,7 @@ import BannerMarcas from '../src/components/BannerMarcas';
 import FormContacto from '../src/components/FormContacto';
 import Footer from '../src/components/Footer';
 import Buscador from '../src/components/Buscador';
-//import { scrollToTop } from '../../helpers/helpers';
+import {URL_CLOUD_STORAGE} from '../config/index';
 
 const Home = () => {
 
@@ -20,7 +20,7 @@ const Home = () => {
     return (
         <>
             <Header title="Oliver PetShop"/>
-            <SliderPublicidad img='./PublicidadProducto.jpg' img_dos='./envios.jpg' img_tres='./negocio.jpg'/>
+            <SliderPublicidad img={`${URL_CLOUD_STORAGE}/PublicidadProducto.jpg`} img_dos={`${URL_CLOUD_STORAGE}/envios.jpg`} img_tres={`${URL_CLOUD_STORAGE}/negocio.jpg`}/>
             <section className={styles.info_deCompra}>
                 <div className="container">
                     <div className="row">

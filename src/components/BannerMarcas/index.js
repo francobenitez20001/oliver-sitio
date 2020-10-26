@@ -4,7 +4,6 @@ import Loader from '../Loader/index';
 import CardMarca from '../CardMarca';
 import * as marcasActions from '../../../store/actions/marcasActions';
 import { connect } from "react-redux";
-import Link from 'next/link';
 import slug from '../../../helpers/index';
 const BannerMarcas = (props) => {
     useEffect(() => {
