@@ -6,15 +6,17 @@ import ProductosStyle from './Productos.module.css';
 import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FiltroStyle from '../Filtro/Filtro.module.css';
 
 const Productos = (props) => {
+
+    const [filtro, setFiltro] = useState('');
+
     useEffect(() => {
-        /*if(props.match.path === '/productos/search/:query'){
-            document.getElementById('valor-busqueda').innerHTML = props.match.params.query;
-            document.getElementById('label__filtro-busqueda').classList.remove('d-none');
-        };*/
-        getProductos();
+        if(props.location !== '/productos'){
+            mostrarSolapaFiltro(props.query.index[0]);
+        }else{
+            getProductos();
+        }
     }, []);
 
     const showFiltrosMobile = ()=>{
@@ -23,34 +25,40 @@ const Productos = (props) => {
 
     const getProductos = ()=>{
         props.traerTodos();
-    } 
+    }
+    
+    const mostrarSolapaFiltro = filtro=>{
+        setFiltro(filtro);
+    }
 
     const handleChangeOrdenProductos = event=>{
         if(event.target.value === 'asc'){
-            props.productos.sort((a,b)=>{
-                if(a.precio > b.precio) return 1;
-                if(a.precio < b.precio) return -1;
+            props.subproductos.sort((a,b)=>{
+                if(a.precioUnidad > b.precioUnidad) return 1;
+                if(a.precioUnidad < b.precioUnidad) return -1;
                 return 0;
             })
         }else{
-            props.productos.sort((a,b)=>{
-                if(a.precio < b.precio) return 1;
-                if(a.precio > b.precio) return -1;
+            props.subproductos.sort((a,b)=>{
+                if(a.precioUnidad < b.precioUnidad) return 1;
+                if(a.precioUnidad > b.precioUnidad) return -1;
                 return 0;
             })
         };
-        return props.ordenarProductos(props.productos);
+        return props.ordenarProductos(props.subproductos);
     }
     return (
         <>
             {(props.loading)?<div className="col-12 text-center"><Loader/></div>:
             <>
-                <span id="label__filtro-busqueda" className="d-none">
-                    <FontAwesomeIcon icon={faSearch}/>
-                    <span className={ProductosStyle.item_filtro_busqueda}>
-                        <span className="text-muted" id="valor-busqueda">Dog chow</span>
+                {(filtro!=='')?
+                    <span id="label__filtro-busqueda" className={ProductosStyle.label__filtro_busqueda}>
+                        <FontAwesomeIcon icon={faSearch}/>
+                        <span className={ProductosStyle.item_filtro_busqueda}>
+                            <span className="text-mutedd" id="valor-busqueda">{filtro}</span>
+                        </span>
                     </span>
-                </span>
+                :null}
                 <div className="row justify-content-between my-2 align-items-center" style={{padding:'0px 15px'}}>
                     <span className="text-muted"><b className="txt-yellow">{props.subproductos.length}</b> productos encontrados</span>
                     <div className={ProductosStyle.ordenarProductos + ' ' + `d-flex align-items-center`}>

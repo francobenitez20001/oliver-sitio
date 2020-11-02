@@ -6,7 +6,7 @@ export const traerTodas = ()=>async (dispatch)=>{
         type:LOADING
     });
     try {
-        fetch(`${API}marca`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}marca`).then(res=>res.json()).then(data=>{
             const marcas = data.data;
             dispatch({
                 type:TRAER_TODAS,

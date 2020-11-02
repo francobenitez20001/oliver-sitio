@@ -18,23 +18,23 @@
     display: none !important;
 }
 
-#label__filtro-busqueda{
+.label__filtro_busqueda{
     background-color:#FFB347;
     padding: 5px 10px;
     border-radius: 5px;
-    color: white;
+    color: white !important;
 }
 
-#label__filtro-busqueda .item_filtro_busqueda{
+.label__filtro_busqueda .item_filtro_busqueda{
     margin-left: 10px;
 }
 
-#label__filtro-busqueda .text-muted{
-    color: white !important;
+.label__filtro_busqueda .text-mutedd{
     font-family: 'Quicksand', sans-serif;
     font-size: 13px;
     font-weight: 600;
 }
+
 
 @media(max-width:768px){
     .boton_filtrar_mobile{

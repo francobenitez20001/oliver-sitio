@@ -40,17 +40,21 @@ const Filtro = (props) => {
     },[]);
         
     const getData = async()=>{
-        if(props.marcasReducer.marcas.length===0){
-            await props.marcasTraerTodas();
-        }
-        if(props.categoriasReducer.categorias.length===0){
-            await props.categoriasTraerTodas();
-        }
-        if(props.subcategoriaReducer.subcategorias.length===0){
-            await props.subcategoriaTraerTodas();
-        }
-        if(props.location !== '/productos'){
-            activarFiltroPorUrl();
+        if(props.marcasReducer.marcas.length===0 && props.categoriasReducer.categorias.length===0 && props.subcategoriaReducer.subcategorias.length===0){
+            try {
+                await props.marcasTraerTodas();
+                await props.categoriasTraerTodas();
+                await props.subcategoriaTraerTodas();
+                if(props.location !== '/productos'){
+                    activarFiltroPorUrl();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }else{
+            if(props.location !== '/productos'){
+                activarFiltroPorUrl();
+            } 
         }
     }
 
@@ -115,9 +119,9 @@ const Filtro = (props) => {
             //recorro el state para obtener las claves y agregar active el elemento correspondiente
             for (const key in estadoFiltro) {
                 if(estadoFiltro[key] && estadoFiltro[key]!=='' && estadoFiltro[key]!==true){
-                    //console.log(key);
                     //console.log(estadoFiltro[key]);
                     if(document.getElementsByName(`${key}-${estadoFiltro[key]}`)[0]){//pregunto si existe el elemento con el name del filtro para agregarle el active, si no existe lo creo. (si no existe es porque viene desde modal de marcas)
+                        console.log('!!!');
                         document.getElementsByName(`${key}-${estadoFiltro[key]}`)[0].classList.add(FiltroStyle.active);
                         document.getElementById(`close-${key}-${estadoFiltro[key]}`).classList.remove('d-none');
                     }else{
@@ -143,7 +147,7 @@ const Filtro = (props) => {
                                 </svg>
                             `;
                             iconClose.addEventListener('click',()=>limpiarFiltro('marca'));
-                            
+
                             //voy ubicando los elementos dentro de cada padre
                             divItemMarca.appendChild(spanItemMarca);
                             newItemMarca.appendChild(divItemMarca);
@@ -157,7 +161,7 @@ const Filtro = (props) => {
                                 //ahora agrego el item creado a la lista
                                 listaMarcas.appendChild(newItemMarca);
                             };
-                        };
+                        }
                     }
                 }
             }
@@ -173,22 +177,49 @@ const Filtro = (props) => {
     const limpiarFiltro = tipo=>{
         switch (tipo) {
             case 'categoria':
-                setEstadoFiltro({
-                    ...estadoFiltro,
-                    categoria:''
-                });
+                if(estadoFiltro.subcategoria==='' && estadoFiltro.marca===''){
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        categoria:'',
+                        filtrando:false
+                    });
+                    props.subproductosTraerTodos();
+                }else{
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        categoria:''
+                    });
+                }
                 break;
             case 'subcategoria':
-                setEstadoFiltro({
-                    ...estadoFiltro,
-                    subcategoria:''
-                });
+                if(estadoFiltro.categoria==='' && estadoFiltro.marca===''){
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        subcategoria:'',
+                        filtrando:false
+                    });
+                    props.subproductosTraerTodos();
+                }else{
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        subcategoria:''
+                    });
+                }
                 break;
             case 'marca':
-                setEstadoFiltro({
-                    ...estadoFiltro,
-                    marca:''
-                });
+                if(estadoFiltro.categoria==='' && estadoFiltro.subcategoria==''){
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        marca:'',
+                        filtrando:false
+                    });
+                    props.subproductosTraerTodos(); 
+                }else{
+                    setEstadoFiltro({
+                        ...estadoFiltro,
+                        marca:''
+                    });
+                }
                 break;
             default:
                 props.subproductosTraerTodos();

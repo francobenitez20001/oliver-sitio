@@ -5,7 +5,7 @@ export const traerTodos = ()=>async (dispatch)=>{
         type:LOADING
     });
     try {
-        fetch(`${API}/subproducto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/subproducto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_TODOS,
                 payload:data.data
@@ -24,7 +24,7 @@ export const traerPorId = id=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        fetch(`${API}/subproducto/${id}`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/subproducto/${id}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_TODOS,
                 payload:data.data[0]
@@ -43,7 +43,7 @@ export const traerPromociones = ()=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        fetch(`${API}/subproducto?desde=1&limite=8`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/subproducto?desde=1&limite=8`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_PROMOCIONES,
                 payload:data.data
@@ -81,7 +81,7 @@ export const filtrarProductos = url=>async dispatch=>{
         type:LOADING
     });
     try {
-        fetch(`${API}subproducto?desde=1&limite=5`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}subproducto?desde=1&limite=5`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,
                 payload:data.data

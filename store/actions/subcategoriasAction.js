@@ -6,7 +6,7 @@ export const traerTodas = ()=>async (dispatch)=>{
         type:LOADING
     });
     try {
-        fetch(`${API}subcategoria`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}subcategoria`).then(res=>res.json()).then(data=>{
             const subcategorias = data.data;
             dispatch({
                 type:TRAER_TODAS,

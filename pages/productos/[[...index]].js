@@ -21,7 +21,8 @@ const ProductosPage = (props) => {
                     <Filtro location={asPath}
                             query={query}/>
                     <div className="col-12 py-3">
-                        <Productos match={props.match}/>
+                        <Productos location={asPath}
+                                    query={query}/>
                     </div>
                 </div>
                 <Buscador/>
