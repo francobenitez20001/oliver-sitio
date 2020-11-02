@@ -1,13 +1,13 @@
 import React,{useEffect} from 'react';
-//import { connect } from 'react-redux';
-//import * as carritoActions from '../../actions/carritoActions'
+import { connect } from 'react-redux';
+import * as carritoActions from '../../../store/actions/carritoActions';
 import CarritoModule from './Carrito.module.css';
 import ProductoCarrito from './ProductoCarrito';
 
 const Carrito = (props) => {
-    /*useEffect(() => {
+    useEffect(() => {
         props.traerProductos();
-    }, []);*/
+    }, []);
     let totalCarrito = 0;
 
     const showProductos=()=>{
@@ -16,11 +16,12 @@ const Carrito = (props) => {
         totalCarrito = calcularTotal(props.productos);
         return props.productos.map((prd,key)=>(
             <ProductoCarrito key={key}
-                idProducto={prd.idProducto}
+                idSubProducto={prd.idSubProducto}
                 producto={prd.producto}
                 peso={prd.peso}
-                total={prd.precio}
+                total={prd.precioUnidad}
                 foto={prd.foto}
+                cantidad={prd.cantidad}
                 eliminarProducto={props.eliminarProducto}/>
         ))
     }
@@ -28,11 +29,11 @@ const Carrito = (props) => {
     const calcularTotal = prds=>{
         let total = 0;
         prds.forEach(prd => {
-            total += parseInt(prd.precio);
+            total += parseInt(prd.precioUnidad * prd.cantidad);
         });
         return total;
     }
-    console.log(props);
+    //console.log(props);
     return (
         <section className={CarritoModule.carrito__container + ' ' + `carrito`}>
             <h6 className="text-center">Mi Carrito</h6>
@@ -50,8 +51,7 @@ const Carrito = (props) => {
     );
 }
 
-export default Carrito;
-/*const mapStateToProps = reducers=>{
+const mapStateToProps = reducers=>{
     return reducers.carritoReducer;
 }
-export default connect(mapStateToProps,carritoActions)(Carrito);*/
+export default connect(mapStateToProps,carritoActions)(Carrito);

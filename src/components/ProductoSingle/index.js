@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import SliderFotosProducto from './sliderFotos';
 import { connect } from 'react-redux';
 import * as carritoActions from '../../../store/actions/carritoActions';
@@ -8,10 +8,21 @@ import Carrito from '../Carrito/index';
 import ProductoSingleStyle from  './ProductoSingle.module.css';
 
 const ProductoSingle = (props) => {
+
+    const {descripcion,descripcion_basica,foto,peso,precioUnidad,producto,stock,subProducto,tamaño} = props.subProducto;
+    //console.log(props);
+    useEffect(() => {
+        const {foto,peso,precioUnidad,producto,tamaño,idSubProducto} = props.subProducto;
+        guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto);
+    }, [props.subProducto])
+
     const imagenes = [
         props.subProducto.foto
     ];
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [productoData, setProductoData] = useState({});
+    
+
     const changeCantidad = action=>{
         let inputCantidad = document.getElementById('cantidad_prd');
         let cantidad = parseInt(inputCantidad.value);
@@ -22,10 +33,10 @@ const ProductoSingle = (props) => {
             cantidad++;
         }
         inputCantidad.value = cantidad;
-        return setProducto({
-            ...producto,
+        return setProductoData({
+            ...productoData,
             cantidad
-        });
+        })
     }
 
     const changePeso = (index,peso,precio)=>{
@@ -43,7 +54,7 @@ const ProductoSingle = (props) => {
     }
 
     const agregarCarrito = async()=>{
-        props.agregarProducto(producto);
+        props.agregarProducto(productoData);
         setTimeout(() => {
             setModalIsOpen(true);
         }, 1700);
@@ -53,8 +64,18 @@ const ProductoSingle = (props) => {
         setModalIsOpen(false)
     );
     
-    const {descripcion,descripcion_basica,foto,peso,precioUnidad,producto,stock,subProducto,tamaño} = props.subProducto;
-    console.log(props);
+    const guardarProductoEnState = (foto,peso,precioUnidad,producto,tamaño,idSubProducto)=>{
+        setProductoData({
+            producto,
+            foto,
+            peso,
+            cantidad:1,
+            precioUnidad,
+            tamaño,
+            idSubProducto
+        })
+    }
+
     return (
         <div className="row">
             <div className="col-12 col-sm-6">
@@ -66,7 +87,7 @@ const ProductoSingle = (props) => {
                 <div className={ProductoSingleStyle.precios + ' ' + `d-flex my-3`}>
                     <div className={ProductoSingleStyle.indicador__precio}>
                         <p>Precio</p>
-                        <span className={ProductoSingleStyle.valor__precio}>${precioUnidad}</span>
+                        <span className={ProductoSingleStyle.valor__precio}>${productoData.precioUnidad}</span>
                     </div>
 
                     <div className={ProductoSingleStyle.indicador__cantidad}>
@@ -93,14 +114,14 @@ const ProductoSingle = (props) => {
                             <div className="input-group-prepend" onClick={()=>changeCantidad('-')}>
                                 <span className="input-group-text">-</span>
                             </div>
-                            <input type="text" id="cantidad_prd" disabled={true} className="form-control text-center" value="1"/>
+                            <input type="text" id="cantidad_prd" className="form-control text-center" value={productoData.cantidad}/>
                             <div className="input-group-append" onClick={()=>changeCantidad('+')}>
                                 <span className="input-group-text">+</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                {(props.loading)?<div className="text-center"><Loader/></div>:<button disabled={true} className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
+                {(props.loading)?<div className="text-center"><Loader/></div>:<button className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
             </div>
             {(!modalIsOpen)?null:
                 <Modal closeModal={closeModalCarrito}>
