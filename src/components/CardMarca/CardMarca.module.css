@@ -2,6 +2,9 @@
     -webkit-box-shadow: 0 2px 5px rgb(163, 161, 161);
     height: 160px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card__marca .img{
