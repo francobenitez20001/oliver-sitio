@@ -33,7 +33,7 @@ const ModalMarca = (props) => {
                     <h4 className="text-center">Nuestras marcas</h4>
                     <div className={`row` + ' ' + MarcaStyle.modalMarca} style={{padding:'0px 10px'}}>
                         {props.marcas.map(marca=>(
-                            <div key={marca.idMarca} className="col-12 col-md-6 text-center px-4 mb-4" onClick={()=>activarFiltro(marca.marca)}>
+                            <div key={marca.idMarca} className="col-12 col-md-6 text-center px-4 mb-4" onClick={()=>activarFiltro(marca.idMarca)}>
                                 <div className={MarcaStyle.col_modal_marca + ' ' + `row alig-items-center`}>
                                     <div className="col-6">
                                         <img src={`https://api.oliverpetshop.com.ar/img/`+marca.imagen} alt="marca" className={MarcaStyle.imgMarca +' ' + `img-fluid`}/>

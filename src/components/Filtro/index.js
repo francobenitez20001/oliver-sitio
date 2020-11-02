@@ -63,12 +63,12 @@ const Filtro = (props) => {
         return activarFiltro(props.query.type,props.query.index[1]);
     }
 
-    const activarFiltro = (tipoFiltro,nameItem)=>{
+    const activarFiltro = (tipoFiltro,key)=>{
         switch (tipoFiltro) {
             case 'categoria':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    categoria:nameItem,
+                    categoria:key,
                     buscador:'',
                     filtrando:true
                 });
@@ -76,7 +76,7 @@ const Filtro = (props) => {
             case 'subcategoria':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    subcategoria:nameItem,
+                    subcategoria:key,
                     buscador:'',
                     filtrando:true
                 })
@@ -84,7 +84,7 @@ const Filtro = (props) => {
             case 'marca':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    marca:nameItem,
+                    marca:key,
                     buscador:'',
                     filtrando:true
                 })
@@ -92,7 +92,7 @@ const Filtro = (props) => {
             case 'buscador':
                 setEstadoFiltro({
                     ...estadoFiltro,
-                    buscador:nameItem,
+                    buscador:key,
                     filtrando:true
                 });
                 break;
@@ -127,33 +127,23 @@ const Filtro = (props) => {
                             let divItemMarca = document.createElement('div');
                             let spanItemMarca = document.createElement('span');
                             let iconClose = document.createElement('svg');
-                            let pathIconClose = document.createElement('path');
-        
+
+                            let marcaName = props.marcasReducer.marcas.filter(res=>res.idMarca == estadoFiltro.marca)[0].marca;
+
                             //asigno las clases, atributos y eventos necesarios.
                             divItemMarca.className =`${FiltroStyle.item_filtro} ${FiltroStyle.active}`;
                             divItemMarca.setAttribute('name',`marca-${estadoFiltro.marca}`);
                             divItemMarca.addEventListener('click',()=>activarFiltro('marca',estadoFiltro.marca));
                             spanItemMarca.className = 'text-muted';
-                            spanItemMarca.innerHTML = estadoFiltro.marca;
+                            spanItemMarca.innerHTML = marcaName;
     
-    
-                            iconClose.setAttribute('aria-hidden',true);
-                            iconClose.setAttribute('focusable',false);
-                            iconClose.setAttribute('data-prefix','fas');
-                            iconClose.setAttribute('data-icon','times');
-                            iconClose.setAttribute('role','img');
-                            iconClose.setAttribute('xmlns','http://www.w3.org/2000/svg');
-                            iconClose.setAttribute('viewBox','0 0 352 512');
-                            iconClose.className = `svg-inline--fa fa-times fa-w-11 ${FiltroStyle.icon_close_filtro}`;
-                            iconClose.setAttribute('id',`close-marca-${estadoFiltro.marca}`);
+                            iconClose.innerHTML = `
+                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 352 512" class="svg-inline--fa fa-times fa-w-11 Filtro_icon_close_filtro__1xlv5" id="close-marca-${estadoFiltro.marca}">
+                                    <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
+                                </svg>
+                            `;
                             iconClose.addEventListener('click',()=>limpiarFiltro('marca'));
-    
-                            pathIconClose.setAttribute('fill','currentColor');
-                            pathIconClose.setAttribute('d','M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z');
-    
-                            iconClose.appendChild(pathIconClose);
                             
-        
                             //voy ubicando los elementos dentro de cada padre
                             divItemMarca.appendChild(spanItemMarca);
                             newItemMarca.appendChild(divItemMarca);
