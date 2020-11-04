@@ -24,8 +24,12 @@ const Productos = (props) => {
         document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.add(FiltroStyle.show_filtros);
     }
 
-    const getProductos = ()=>{
-        props.traerTodos();
+    const getProductos = async ()=>{
+        try {
+            await props.traerTodos();
+        } catch (error) {
+            console.log(error);
+        }
     }
     
     const mostrarSolapaFiltro = filtro=>{

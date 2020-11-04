@@ -29,6 +29,12 @@ const BannerCategorias = (props) => {
                 .wrapper__categorias{
                     background-color: #FFB347;
                     padding:35px 0px;
+                }
+                @media(max-width:780px){
+                    h3{
+                        font-size:24px;
+                        text-align:center
+                    }
                 }    
             `}</style>
         </section>

@@ -1,5 +1,5 @@
 import React from 'react';
-import slug from '../../../helpers/index';
+import {slug} from '../../../helpers/index';
 import {URL_CLOUD_STORAGE} from '../../../config/index';
 import Link from 'next/link';
 
@@ -20,6 +20,7 @@ const CardCategoria = ({categoria}) => {
                 @media(max-width:768px){
                     .card__categoria{
                         margin: 0px 0px 15px 0px;
+                        padding: 18px 15px;
                     }
                 }
             `}</style>
