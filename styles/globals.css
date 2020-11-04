@@ -94,6 +94,10 @@ footer{
     font-size: 14px;
 }
 
+button{
+    outline: none !important;
+}
+
 
 a:hover{text-decoration: none!important;}
 

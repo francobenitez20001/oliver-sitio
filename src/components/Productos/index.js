@@ -6,6 +6,7 @@ import ProductosStyle from './Productos.module.css';
 import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import FiltroStyle from '../Filtro/Filtro.module.css';
 
 const Productos = (props) => {
 
@@ -46,6 +47,11 @@ const Productos = (props) => {
             })
         };
         return props.ordenarProductos(props.subproductos);
+    }
+    
+    //ocultar la chapita que indica el nombre del filtro activo cuando se restablecen los filtros.
+    if(props.location=='/productos' && filtro!=''){
+        setFiltro('');
     }
     return (
         <>

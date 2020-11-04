@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import FiltroStyle from './Filtro.module.css';
 import Modal from '../Modal';
 import ModalMarca from '../ModalMarca';
+import Router from 'next/router';
 import { faTimes,faBroom,faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from 'react-redux';
@@ -40,21 +41,21 @@ const Filtro = (props) => {
     },[]);
         
     const getData = async()=>{
-        if(props.marcasReducer.marcas.length===0 && props.categoriasReducer.categorias.length===0 && props.subcategoriaReducer.subcategorias.length===0){
-            try {
+        try {
+            if(props.marcasReducer.marcas.length===0){
                 await props.marcasTraerTodas();
-                await props.categoriasTraerTodas();
-                await props.subcategoriaTraerTodas();
-                if(props.location !== '/productos'){
-                    activarFiltroPorUrl();
-                }
-            } catch (error) {
-                console.log(error);
             }
-        }else{
+            if(props.categoriasReducer.categorias.length===0){
+                await props.categoriasTraerTodas();
+            }
+            if(props.subcategoriaReducer.subcategorias.length===0){
+                await props.subcategoriaTraerTodas();
+            }
             if(props.location !== '/productos'){
                 activarFiltroPorUrl();
-            } 
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -184,6 +185,9 @@ const Filtro = (props) => {
                         filtrando:false
                     });
                     props.subproductosTraerTodos();
+                    if(props.location!='productos'){
+                        Router.push('/productos');
+                    }
                 }else{
                     setEstadoFiltro({
                         ...estadoFiltro,
@@ -199,6 +203,9 @@ const Filtro = (props) => {
                         filtrando:false
                     });
                     props.subproductosTraerTodos();
+                    if(props.location!='productos'){
+                        Router.push('/productos');
+                    }
                 }else{
                     setEstadoFiltro({
                         ...estadoFiltro,
@@ -212,8 +219,7 @@ const Filtro = (props) => {
                         ...estadoFiltro,
                         marca:'',
                         filtrando:false
-                    });
-                    props.subproductosTraerTodos(); 
+                    }); 
                 }else{
                     setEstadoFiltro({
                         ...estadoFiltro,
@@ -222,7 +228,6 @@ const Filtro = (props) => {
                 }
                 break;
             default:
-                props.subproductosTraerTodos();
                 setEstadoFiltro({
                     filtrando:false,
                     categoria:'',
@@ -230,6 +235,10 @@ const Filtro = (props) => {
                     marca:'',
                     buscador:''
                 });
+                props.subproductosTraerTodos();
+                if(props.location!='productos'){
+                    Router.push('/productos');
+                }
             break;
         }
     }
@@ -272,7 +281,6 @@ const Filtro = (props) => {
         element.classList.toggle(FiltroStyle.show);
         document.getElementById('iconFiltroContainer').classList.toggle(FiltroStyle.rotar);
     }
-
     return (
         <div className={FiltroStyle.filtros__contanier}>
             <button className={FiltroStyle.btn_close_filtro} onClick={showFiltros}>
