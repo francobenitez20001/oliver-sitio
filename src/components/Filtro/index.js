@@ -219,7 +219,11 @@ const Filtro = (props) => {
                         ...estadoFiltro,
                         marca:'',
                         filtrando:false
-                    }); 
+                    });
+                    props.subproductosTraerTodos();
+                    if(props.location!='productos'){
+                        Router.push('/productos');
+                    } 
                 }else{
                     setEstadoFiltro({
                         ...estadoFiltro,
