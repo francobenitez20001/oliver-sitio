@@ -102,10 +102,40 @@ button{
 a:hover{text-decoration: none!important;}
 
 
+@media(min-width:1200px){
+    .nav-tabs .nav-link{
+        margin: 0px 40px!important;
+        padding: 10px 35px!important;
+        font-size: 20px!important;
+        cursor: pointer!important;
+        transition: all .6s ease!important;
+        color: black !important;
+    }    
+}
+
 @media(max-width:768px){
     footer .container{
         flex-direction: column-reverse!important;
         text-align: center;
+    }
+    .nav-tabs .nav-link{
+        margin: 0px!important;
+        padding: 5px!important;
+        font-size: 15px!important;
+        cursor: pointer!important;
+        transition: all .6s ease!important;
+        color: black !important;
+    }
+}
+
+@media(max-width:376px){
+    .nav-tabs .nav-link{
+        margin: 0px!important;
+        padding: 2px 2px!important;
+        font-size: 13px!important;
+        cursor: pointer!important;
+        transition: all .6s ease!important;
+        color: black !important;
     }
 }
 

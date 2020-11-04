@@ -1,15 +1,6 @@
 .detalles__producto{
-    background-color: #f1eded;
     font-family: 'Quicksand', sans-serif;
-}
-
-.detalles__producto .nav__item{
-    margin: 0px 40px!important;
-    padding: 10px 35px!important;
-    font-size: 20px!important;
-    cursor: pointer!important;
-    transition: all .6s ease!important;
-    color: black;
+    background-color: #f1eded;
 }
 
 .detalles__producto .nav__item.active{
@@ -21,7 +12,7 @@
 
 
 .sub__container{
-    padding: 40px 7%;
+    padding: 20px 0px;
     background-color: white;
 }
 
@@ -46,12 +37,25 @@
     .detalles__producto ul li{
         margin: 0px;
         font-size: 17px;
-        padding: 10px 25px;
+        font-size: 17px;
+        padding: 0px 25px;
     }
     .sub__container{
         padding: 0px;
     }
-    .info__detalle__producto p{
+    .sub__container .p{
         font-size: 16px;
+    }
+}
+
+@media(max-width:768px){
+    .sub__container .p{
+        font-size: 16px;
+    }
+}
+
+@media(max-width:376px){
+    .sub__container .p{
+        font-size: 14px;
     }
 }

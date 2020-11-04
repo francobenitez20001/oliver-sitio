@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <>
             <div className={styles.container__subfooter + ' ' + `py-2`}>
-                <div className="container d-flex">
+                <div className={styles.containerImages + ` container`}>
                     <div className={styles.redes__footer}>
                         <FontAwesomeIcon icon={faFacebook} className={styles.iconos__footer}/>
                         <FontAwesomeIcon icon={faInstagram} className={styles.iconos__footer}/>
@@ -16,9 +16,9 @@ const Footer = () => {
                         <img src={`${URL_CLOUD_STORAGE}/afip.png`} className="img-fluid" alt="afip" width="45px"/>
                     </div>
                     <div className={styles.legales__footer}>
-                        <ul>
-                            <li><a href="/">Terminos y condiciones</a></li>
-                            <li><a href="/">Políticas de privacidad</a></li>
+                        <ul className={styles.ul}>
+                            <li className={styles.li}><a href="/">Terminos y condiciones</a></li>
+                            <li className={styles.li}><a href="/">Políticas de privacidad</a></li>
                         </ul>
                     </div>
                 </div>

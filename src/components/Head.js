@@ -5,6 +5,7 @@ const Header = ({title}) => {
     return (
         <Head>
             <title>{title}</title>
+            <meta name="theme-color" content="#df8f0e"/>
             <link rel="icon" href={`${URL_CLOUD_STORAGE}/Perro.png`} />
         </Head>
     );

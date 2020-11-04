@@ -22,7 +22,7 @@ const Producto = (props) => {
     }
     const router = useRouter();
     const render = ()=>{
-        if(props.loading) return <Loader/>
+        if(props.loading) return <div className="col-12 text-center mt-4"><Loader/></div>
         if(props.error) return <Error/>
         const {descripcion,descripcion_basica} = props.subproductos;
         return <>

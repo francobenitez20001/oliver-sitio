@@ -22,28 +22,28 @@ const InfoProducto = (props) => {
     return (
         <>
             <section className={InfoStyle.detalles__producto}>
-                <div className="container">
+                <div className="container" >
                     <Nav tabs>
                         <NavItem>
-                            <NavLink
-                                className={classnames({ active: activeTab === '1' }) + ' ' + InfoStyle.nav__item}
-                                onClick={() => { toggle('1'); }}
-                            >
-                                Descripción
-                            </NavLink>
+                        <NavLink
+                            className={classnames({ active: activeTab === '1' })}
+                            onClick={() => { toggle('1'); }}
+                        >
+                            Descripción
+                        </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink
-                                className={classnames({ active: activeTab === '2' })+ ' ' + InfoStyle.nav__item}
-                                onClick={() => { toggle('2'); }}
-                            >
-                                Información nutricional
-                            </NavLink>
+                        <NavLink
+                            className={classnames({ active: activeTab === '2' })}
+                            onClick={() => { toggle('2'); }}
+                        >
+                            Información nutricional
+                        </NavLink>
                         </NavItem>
                     </Nav>
                 </div>
                 <div style={{backgroundColor:'white'}}>
-                    <div className="container">
+                    <div className="container pt-3">
                         <TabContent activeTab={activeTab} className={InfoStyle.sub__container}>
                             <TabPane tabId="1">
                             <Row>
