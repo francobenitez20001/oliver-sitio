@@ -63,7 +63,7 @@ const Productos = (props) => {
     }
     return (
         <>
-            {(props.loading)?<div className="col-12 text-center"><Loader/></div>:
+            {(props.loading || !props.subproductos)?<div className="col-12 text-center"><Loader/></div>:
             <>
                 {(filtro!=='')?
                     <span id="label__filtro-busqueda" className={ProductosStyle.label__filtro_busqueda}>
