@@ -81,7 +81,8 @@ export const filtrarProductos = url=>async dispatch=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}subproducto?desde=1&limite=5`).then(res=>res.json()).then(data=>{
+        let urlFiltro = (url.includes('buscar?busqueda'))?`subproductos/${url}`:'subproducto?desde=1&limite=5';
+        return fetch(`${API}${urlFiltro}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,
                 payload:data.data

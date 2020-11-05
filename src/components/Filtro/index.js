@@ -65,7 +65,11 @@ const Filtro = (props) => {
     }, [estadoFiltro]);
 
     const activarFiltroPorUrl = ()=>{
-        return activarFiltro(props.query.type,props.query.index[1]);
+        if(props.query.search){
+            return activarFiltro(Object.keys(props.query)[0],props.query.search);
+        }else{
+            return activarFiltro(props.query.type,props.query.index[1]);
+        }
     }
 
     const activarFiltro = (tipoFiltro,key)=>{
@@ -94,7 +98,7 @@ const Filtro = (props) => {
                     filtrando:true
                 })
                 break;
-            case 'buscador':
+            case 'search':
                 setEstadoFiltro({
                     ...estadoFiltro,
                     buscador:key,
@@ -252,10 +256,10 @@ const Filtro = (props) => {
     }
 
     const armarUrlFiltro = ()=>{
-        let url = 'filtrar';
+        let url = '';
         //si buscador viene true, es porque viene desde el buscador del menu o modal de buscador(mobile).
-        if(estadoFiltro.buscador!=='') return url += `?buscar=${estadoFiltro.buscador}`;
-
+        if(estadoFiltro.buscador!=='') return url += `buscar?busqueda=${estadoFiltro.buscador}`;
+        url += 'filtrar';
         let categoria = estadoFiltro.categoria,
             subcategoria = estadoFiltro.subcategoria,
             marca = estadoFiltro.marca;

@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import NavbarStyle from './Navbar.module.css';
 import Link from 'next/link';
+import Router from 'next/router';
 import Modal from '../Modal/index';
 import Login from '../Login';
 import Register from '../Login/Register';
@@ -58,7 +59,7 @@ const Navbar = () => {
     const handleSubmitBuscador = event=>{
         event.preventDefault();
         if(busqueda.trim() === '')return false;
-        return window.location.assign(`/productos/search/${busqueda}`);
+        return Router.push(`/productos?search=${busqueda}`);
     }
 
     const renderContenidoModal = ()=>{

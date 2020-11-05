@@ -8,10 +8,15 @@ import {useRouter} from 'next/router';
 
 const ProductosPage = (props) => {
     const router = useRouter();
+    console.log(router);
     const {asPath,query} = router;
     let tituloSite = 'Oliver - Productos';
     if(asPath!=='/productos'){
-        tituloSite = query.index[0].replace("-"," ").replace(/\b\w/g, l => l.toUpperCase()) + ' en OliverPetShop';
+        if(query.search){
+            tituloSite = query.search+' en OliverPetShop';
+        }else if(query.index[0]){
+            tituloSite = query.index[0].replace("-"," ").replace(/\b\w/g, l => l.toUpperCase()) + ' en OliverPetShop';
+        }
     }
     return ( 
         <>

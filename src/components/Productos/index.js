@@ -14,7 +14,11 @@ const Productos = (props) => {
 
     useEffect(() => {
         if(props.location !== '/productos'){
-            mostrarSolapaFiltro(props.query.index[0]);
+            if(props.query.search){
+                mostrarSolapaFiltro(props.query.search);
+            }else{
+                mostrarSolapaFiltro(props.query.index[0]);
+            }
         }else{
             getProductos();
         }

@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import Router from 'next/router'
 import Modal from '../Modal/index';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +23,7 @@ const Buscador = () => {
 
     const handleSubmit = event=>{
         event.preventDefault();
-        (buscador.trim()!== '')?window.location.assign(`/productos/search/${buscador}`):false; 
+        (buscador.trim()!== '')?Router.push(`/productos?search=${buscador}`):false; 
     }
 
     return (
