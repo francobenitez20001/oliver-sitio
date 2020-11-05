@@ -32,6 +32,10 @@
     white-space: pre-line;
 }
 
+.sub__container .p h3{
+    color: #FFB347;
+}
+
 @media(max-width:768px){
 
     .detalles__producto ul li{

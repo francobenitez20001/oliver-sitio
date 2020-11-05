@@ -17,4 +17,5 @@ function isMobile() {
     );
 }
 
+
 export {slug,isMobile}
