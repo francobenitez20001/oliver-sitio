@@ -27,7 +27,7 @@ export const traerPorId = id=>async(dispatch)=>{
         return fetch(`${API}/subproducto/${id}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_UNO,
-                payload:data.data[0]
+                payload:data
             });
         })
     } catch (error) {

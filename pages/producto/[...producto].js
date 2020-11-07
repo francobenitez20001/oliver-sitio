@@ -25,12 +25,13 @@ const Producto = (props) => {
         if(props.loading) return <div className="col-12 text-center mt-4"><Loader/></div>
         if(props.error) return <Error/>
         if(!props.subproducto) return null;
-        const {descripcion,descripcion_basica} = props.subproducto;
+        const {descripcion,descripcion_basica} = props.subproducto.data[0];
         return <>
-            <Head title={props.subproductos.subProducto}/>
+            <Head title={props.subproducto.data[0].subProducto}/>
             <section className="pb-5" style={{backgroundColor:'white'}}>
                 <div className="wrapper__producto container mb-5">
-                    <ProductoSingle subProducto={props.subproducto}/>
+                    <ProductoSingle subProducto={props.subproducto.data[0]}
+                                    moreProducts={props.subproducto.moreProducts}/>
                 </div>
                 <InfoProducto descripcion={descripcion} descripcion_basica={descripcion_basica}/>
             </section>
