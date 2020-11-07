@@ -260,22 +260,19 @@ const Filtro = (props) => {
         //si buscador viene true, es porque viene desde el buscador del menu o modal de buscador(mobile).
         if(estadoFiltro.buscador!=='') return url += `buscar?busqueda=${estadoFiltro.buscador}`;
         url += 'filtrar';
-        let categoria = estadoFiltro.categoria,
-            subcategoria = estadoFiltro.subcategoria,
-            marca = estadoFiltro.marca;
         
-        if(categoria && categoria !== ''){
+        if(estadoFiltro.categoria && estadoFiltro.categoria !== ''){
             url += `?categoria=${estadoFiltro.categoria}`;
         }
         if(estadoFiltro.subcategoria && estadoFiltro.subcategoria !== ''){
-            if(categoria!== ''){
+            if(estadoFiltro.categoria!== ''){
                 url += `&subcategoria=${estadoFiltro.subcategoria}`; 
             }else{
                 url += `?subcategoria=${estadoFiltro.subcategoria}`;
             }
         }
-        if(marca && marca !== ''){
-            if(categoria !== '' && subcategoria !== ''){
+        if(estadoFiltro.marca && estadoFiltro.marca !== ''){
+            if(estadoFiltro.categoria == '' && estadoFiltro.subcategoria == ''){
                 url += `?marca=${estadoFiltro.marca}`;
             }else{
                 url += `&marca=${estadoFiltro.marca}`;

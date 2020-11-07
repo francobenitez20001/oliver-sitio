@@ -1,4 +1,5 @@
 import React from 'react';
+import {URL_CLOUD_STORAGE} from '../../../config/index'
 const SliderFotosProducto = (props) => {
 
     const setImagenActive = (img,key)=>{
@@ -13,12 +14,12 @@ const SliderFotosProducto = (props) => {
         <div className="row slider__fotos">
             <div className="col-12 col-md-4 text-center col__imagenes-chicas pt-5">
                 {props.imagenes.map((img,key)=>(
-                    (key==0)?<img key={key} src={`https://api.oliverpetshop.com.ar/img/${img}`} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small active"/>:
-                    <img key={key} src={img} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small"/>
+                    (key==0)?<img key={key} src={`${URL_CLOUD_STORAGE}/${img}`} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small active"/>:
+                    <img key={key} src={`${URL_CLOUD_STORAGE}/${img}`} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small"/>
                 ))}
             </div>
             <div className="col-12 col-md-8 col__imagen-grande">
-                <img src={`https://api.oliverpetshop.com.ar/img/${props.imagenes[0]}`} alt="prd" className="img-fluid img__box-grande"/>
+                <img src={`${URL_CLOUD_STORAGE}/${props.imagenes[0]}`} alt="prd" className="img-fluid img__box-grande"/>
             </div>
             <style jsx>{`
                 .slider__fotos .col__imagenes-chicas{

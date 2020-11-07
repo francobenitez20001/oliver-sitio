@@ -85,11 +85,13 @@ const Productos = (props) => {
                     <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
                 <div className="row">
-                    {props.subproductos.map(prd=>(
-                        <div key={prd.idSubProducto} className="col-6 col-md-3">
-                            <CardProducto imagen={prd.foto} prd={prd}/>
-                        </div>
-                    ))}
+                    {!props.subproductos ? null :
+                        props.subproductos.map(prd=>(
+                            <div key={prd.idSubProducto} className="col-6 col-md-3">
+                                <CardProducto imagen={prd.foto} prd={prd}/>
+                            </div>
+                        ))
+                    }
                 </div>
             </>
             }

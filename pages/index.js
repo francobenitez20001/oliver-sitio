@@ -20,7 +20,7 @@ const Home = () => {
     return (
         <>
             <Header title="Oliver PetShop"/>
-            <SliderPublicidad img={`${URL_CLOUD_STORAGE}/PublicidadProducto.jpg`} img_dos={`${URL_CLOUD_STORAGE}/envios.jpg`} img_tres={`${URL_CLOUD_STORAGE}/negocio.jpg`}/>
+            <SliderPublicidad img={`${URL_CLOUD_STORAGE}/static/PublicidadProducto.jpg`} img_dos={`${URL_CLOUD_STORAGE}/static/envios.jpg`} img_tres={`${URL_CLOUD_STORAGE}/static/negocio.jpg`}/>
             <section className={styles.info_deCompra + ' d-none'}>
                 <div className="container">
                     <div className="row">

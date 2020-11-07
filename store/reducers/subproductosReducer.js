@@ -1,7 +1,8 @@
-import {TRAER_TODOS,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/subproductosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/subproductosTypes';
 
 const INITIAL_STATE = {
     subproductos:[],
+    subproducto:null,
     promociones:[],
     loading:false,
     error:null
@@ -11,6 +12,8 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
     switch (action.type) {
         case TRAER_TODOS:
             return {...state,subproductos:action.payload,loading:false}
+        case TRAER_UNO:
+            return {...state,subproducto:action.payload,loading:false}
         case TRAER_PROMOCIONES:
             return {...state,promociones:action.payload,loading:false}
         case ORDENAR_PRODUCTOS:

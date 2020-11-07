@@ -11,9 +11,9 @@ const Footer = () => {
                     <div className={styles.redes__footer}>
                         <FontAwesomeIcon icon={faFacebook} className={styles.iconos__footer}/>
                         <FontAwesomeIcon icon={faInstagram} className={styles.iconos__footer}/>
-                        <img src={`${URL_CLOUD_STORAGE}/mercadopago.png`} className="img-fluid" alt="mercado pago" width="35px"/>
-                        <img src={`${URL_CLOUD_STORAGE}/comprasegura.jpeg`} className="img-fluid" alt="compra segura" width="65px"/>
-                        <img src={`${URL_CLOUD_STORAGE}/afip.png`} className="img-fluid" alt="afip" width="45px"/>
+                        <img src={`${URL_CLOUD_STORAGE}/static/mercadopago.png`} className="img-fluid" alt="mercado pago" width="35px"/>
+                        <img src={`${URL_CLOUD_STORAGE}/static/comprasegura.jpeg`} className="img-fluid" alt="compra segura" width="65px"/>
+                        <img src={`${URL_CLOUD_STORAGE}/static/afip.png`} className="img-fluid" alt="afip" width="45px"/>
                     </div>
                     <div className={styles.legales__footer}>
                         <ul className={styles.ul}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductoCarritoModule from './ProductoCarrito.module.css';
-import {API} from '../../../config/index';
+import {URL_CLOUD_STORAGE} from '../../../config/index';
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ProductoCarrito = (props) => {
@@ -9,7 +9,7 @@ const ProductoCarrito = (props) => {
         <div className={ProductoCarritoModule.card__productoCarrito+' '+`col-12`}>
             <FontAwesomeIcon icon={faTrash} className={ProductoCarritoModule.delete_producto_carrito} onClick={()=>props.eliminarProducto(idSubProducto)}></FontAwesomeIcon>
             <div className={ProductoCarritoModule.img__producto__wrapper}>
-                <img src={`${API}img/${foto}`} alt="prd" className="img-fluid"/>
+                <img src={`${URL_CLOUD_STORAGE}/${foto}`} alt="prd" className="img-fluid"/>
             </div>
             <div className={ProductoCarritoModule.info__productoCarrito}>
                 <span className={ProductoCarritoModule.carrito__nombre__producto+' '+`d-block`}>{producto}</span>

@@ -2,7 +2,7 @@ import React from 'react';
 import CardProductoModule from  './CardProducto.module.css';
 import Link from 'next/link';
 import {slug,isMobile} from '../../../helpers/index';
-import {PUBLIC_URL} from '../../../config/index'
+import {PUBLIC_URL,URL_CLOUD_STORAGE} from '../../../config/index'
 
 const CardProducto = ({imagen,prd}) => {
     const procesarNombre = nombre=>{
@@ -24,10 +24,10 @@ const CardProducto = ({imagen,prd}) => {
             <a>
                 <div className={CardProductoModule.container__producto + ' ' + `my-3`}>
                     <section className={CardProductoModule.header__card}>
-                        <img src={`https://api.oliverpetshop.com.ar/img/`+imagen} alt="prd" className={CardProductoModule.img}/>
+                        <img src={`${URL_CLOUD_STORAGE}/`+imagen} alt="prd" className={CardProductoModule.img}/>
                     </section>
                     <section className={CardProductoModule.body__card}>
-                        <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>Marca</span>
+                        <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>{prd.marca}</span>
                         <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
                             {procesarNombre(prd.subProducto)}
                         </h6>
