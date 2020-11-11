@@ -1,5 +1,4 @@
 import React from 'react';
-import {URL_CLOUD_STORAGE} from '../../../config/index'
 const SliderFotosProducto = (props) => {
 
     const setImagenActive = (img,key,peso,precioUnidad,tamaño,idSubProducto,subProducto)=>{
@@ -7,7 +6,7 @@ const SliderFotosProducto = (props) => {
             document.getElementsByClassName('img_small')[index].classList.remove('active');
         };
         document.getElementsByClassName('img_small')[key].classList.add('active');
-        document.querySelector('.img__box-grande').src = `${URL_CLOUD_STORAGE}/${img}`;
+        document.querySelector('.img__box-grande').src = img;
         props.changePeso(key,`${peso}`,precioUnidad,`${tamaño}`,idSubProducto,`${subProducto}`)
     }
 
@@ -15,12 +14,12 @@ const SliderFotosProducto = (props) => {
         <div className="row slider__fotos">
             <div className="col-12 col-md-4 text-center col__imagenes-chicas pt-5">
                 {props.imagenes.map((img,key)=>(
-                    (key==0)?<img key={key} src={`${URL_CLOUD_STORAGE}/${img}`} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small active"/>:
-                    <img key={key} src={`${URL_CLOUD_STORAGE}/${img}`} onClick={()=>setImagenActive(img,key,`${props.moreProducts[key-1].peso}`,props.moreProducts[key-1].precioUnidad,`${props.moreProducts[key-1].tamaño}`,props.moreProducts[key-1].idSubProducto,`${props.moreProducts[key-1].subProducto}`)} alt="prd" className="img_small"/>
+                    (key==0)?<img key={key} src={img} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small active"/>:
+                    <img key={key} src={img} onClick={()=>setImagenActive(img,key,`${props.moreProducts[key-1].peso}`,props.moreProducts[key-1].precioUnidad,`${props.moreProducts[key-1].tamaño}`,props.moreProducts[key-1].idSubProducto,`${props.moreProducts[key-1].subProducto}`)} alt="prd" className="img_small"/>
                 ))}
             </div>
             <div className="col-12 col-md-8 col__imagen-grande">
-                <img src={`${URL_CLOUD_STORAGE}/${props.imagenes[0]}`} alt="prd" className="img-fluid img__box-grande"/>
+                <img src={props.imagenes[0]} alt="prd" className="img-fluid img__box-grande"/>
             </div>
             <style jsx>{`
                 .slider__fotos .col__imagenes-chicas{

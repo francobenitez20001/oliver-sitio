@@ -6,7 +6,7 @@ import Link from 'next/link';
 const CardCategoria = ({categoria}) => {
     return (
         <div className="card__categoria text-center bg-white">
-            <img src={`${URL_CLOUD_STORAGE}/static/icono-alimento.png`} alt="" className="mb-2 img-fluid"/>
+            <img src={categoria.foto} alt="" className="mb-2 img-fluid"/>
             <h6 className="">{categoria.categoria}</h6>
             <Link href={`productos/${slug(`${categoria.categoria}`)}/${categoria.idCategoria}?type=categoria`}>
                 <button className="boton bg-outline-yellow">Ver todos</button>
