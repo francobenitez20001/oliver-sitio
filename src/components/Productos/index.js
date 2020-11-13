@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardProducto from '../CardProducto';
 import {connect} from 'react-redux';
-import * as subproductosActions from '../../../store/actions/subproductosActions';
+import * as productosActions from '../../../store/actions/productosActions';
 import ProductosStyle from './Productos.module.css';
 import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -42,19 +42,19 @@ const Productos = (props) => {
 
     const handleChangeOrdenProductos = event=>{
         if(event.target.value === 'asc'){
-            props.subproductos.sort((a,b)=>{
+            props.productos.sort((a,b)=>{
                 if(a.precioUnidad > b.precioUnidad) return 1;
                 if(a.precioUnidad < b.precioUnidad) return -1;
                 return 0;
             })
         }else{
-            props.subproductos.sort((a,b)=>{
+            props.productos.sort((a,b)=>{
                 if(a.precioUnidad < b.precioUnidad) return 1;
                 if(a.precioUnidad > b.precioUnidad) return -1;
                 return 0;
             })
         };
-        return props.ordenarProductos(props.subproductos);
+        return props.ordenarProductos(props.productos);
     }
     
     //ocultar la chapita que indica el nombre del filtro activo cuando se restablecen los filtros.
@@ -63,7 +63,7 @@ const Productos = (props) => {
     }
     return (
         <>
-            {(props.loading || !props.subproductos)?<div className="col-12 text-center"><Loader/></div>:
+            {(props.loading || !props.productos)?<div className="col-12 text-center"><Loader/></div>:
             <>
                 {(filtro!=='')?
                     <span id="label__filtro-busqueda" className={ProductosStyle.label__filtro_busqueda}>
@@ -74,7 +74,7 @@ const Productos = (props) => {
                     </span>
                 :null}
                 <div className="row justify-content-between my-2 align-items-center" style={{padding:'0px 15px'}}>
-                    <span className="text-muted"><b className="txt-yellow">{props.subproductos.length}</b> productos encontrados</span>
+                    <span className="text-muted"><b className="txt-yellow">{props.productos.length}</b> productos encontrados</span>
                     <div className={ProductosStyle.ordenarProductos + ' ' + `d-flex align-items-center`}>
                         <span className="txt-yellow text-bold mr-2">Ordenar por: </span>
                         <select className={ProductosStyle.select_ordenar} onChange={handleChangeOrdenProductos}>
@@ -85,9 +85,9 @@ const Productos = (props) => {
                     <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
                 <div className="row">
-                    {!props.subproductos ? null :
-                        props.subproductos.map(prd=>(
-                            <div key={prd.idSubProducto} className="col-6 col-md-3">
+                    {!props.productos ? null :
+                        props.productos.map(prd=>(
+                            <div key={prd.idProducto} className="col-6 col-md-3">
                                 <CardProducto imagen={prd.foto} prd={prd}/>
                             </div>
                         ))
@@ -100,7 +100,7 @@ const Productos = (props) => {
 }
 
 const mapStateToProps = reducers=>{
-    return reducers.subproductosReducer;
+    return reducers.productosReducer;
 }
 
-export default connect(mapStateToProps,subproductosActions)(Productos);
+export default connect(mapStateToProps,productosActions)(Productos);

@@ -9,13 +9,12 @@ const SliderFotosProducto = (props) => {
         document.querySelector('.img__box-grande').src = img;
         props.changePeso(key,`${peso}`,precioUnidad,`${tamaño}`,idSubProducto,`${subProducto}`)
     }
-
     return (
         <div className="row slider__fotos">
             <div className="col-12 col-md-4 text-center col__imagenes-chicas pt-5">
                 {props.imagenes.map((img,key)=>(
                     (key==0)?<img key={key} src={img} onClick={()=>setImagenActive(img,key)} alt="prd" className="img_small active"/>:
-                    <img key={key} src={img} onClick={()=>setImagenActive(img,key,`${props.moreProducts[key-1].peso}`,props.moreProducts[key-1].precioUnidad,`${props.moreProducts[key-1].tamaño}`,props.moreProducts[key-1].idSubProducto,`${props.moreProducts[key-1].subProducto}`)} alt="prd" className="img_small"/>
+                    <img key={key} src={img} onClick={()=>setImagenActive(img,key,`${props.subProductos[key].peso}`,props.subProductos[key].precioUnidad,`${props.subProductos[key].tamaño}`,props.subProductos[key].idSubProducto,`${props.subProductos[key].subProducto}`)} alt="prd" className="img_small"/>
                 ))}
             </div>
             <div className="col-12 col-md-8 col__imagen-grande">

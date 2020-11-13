@@ -28,7 +28,7 @@ const CardProducto = ({imagen,prd}) => {
     }
     return (
         (!isProductoDetalle)?
-        <Link href={`${PUBLIC_URL}/producto/${slug(prd.subProducto)}/${prd.idSubProducto}`}>
+        <Link href={`${PUBLIC_URL}/producto/${slug(prd.producto)}/${prd.idProducto}`}>
             <a>
                 <div className={CardProductoModule.container__producto + ' ' + `my-3`}>
                     <section className={CardProductoModule.header__card}>
@@ -37,9 +37,9 @@ const CardProducto = ({imagen,prd}) => {
                     <section className={CardProductoModule.body__card}>
                         <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>{prd.marca}</span>
                         <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
-                            {procesarNombre(prd.subProducto)}
+                            {procesarNombre(prd.producto)}
                         </h6>
-                        <span className={CardProductoModule.cantidad}>{prd.peso} KG</span>
+                        {(prd.peso != null)?<span className={CardProductoModule.cantidad}>{prd.peso} KG</span>:null}
                         <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
                     </section>
                     
@@ -48,7 +48,7 @@ const CardProducto = ({imagen,prd}) => {
             </a>
         </Link>
         :
-        <a href={`${PUBLIC_URL}/producto/${slug(prd.subProducto)}/${prd.idSubProducto}`}>
+        <a href={`${PUBLIC_URL}/producto/${slug(prd.producto)}/${prd.idProducto}`}>
             <div className={CardProductoModule.container__producto + ' ' + `my-3`}>
                 <section className={CardProductoModule.header__card}>
                     <img src={imagen} alt="prd" className={CardProductoModule.img}/>
@@ -56,7 +56,7 @@ const CardProducto = ({imagen,prd}) => {
                 <section className={CardProductoModule.body__card}>
                     <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>{prd.marca}</span>
                     <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
-                        {procesarNombre(prd.subProducto)}
+                        {procesarNombre(prd.producto)}
                     </h6>
                     <span className={CardProductoModule.cantidad}>{prd.peso} KG</span>
                     <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>

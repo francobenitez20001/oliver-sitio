@@ -6,14 +6,14 @@ import Router from 'next/router';
 import { faTimes,faBroom,faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from 'react-redux';
-import * as subproductosActions from '../../../store/actions/subproductosActions';
+import * as productosActions from '../../../store/actions/productosActions';
 import * as marcasActions from '../../../store/actions/marcasActions';
 import * as categoriasActions from '../../../store/actions/categoriasAction';
 import * as subcategoriasActions from '../../../store/actions/subcategoriasAction';
 import Loader from '../Loader';
 
 const {traerTodas:marcasTraerTodas} = marcasActions;
-const {filtrarProductos:subproductosFiltrarProductos,traerTodos:subproductosTraerTodos} = subproductosActions;
+const {filtrarProductos:productosFiltrarProductos,traerTodos:productosTraerTodos} = productosActions;
 const {traerTodas:categoriasTraerTodas} = categoriasActions;
 const {traerTodas:subcategoriaTraerTodas} = subcategoriasActions;
 
@@ -174,7 +174,7 @@ const Filtro = (props) => {
         //la primera vez que se carga el componente, filtrando es false, por eso pregunto para que no se ejecuta la funcion de ir a filtrar apenas se monte el componente. Sino que se ejecute cuando de verdad se quiera filtrar.
         if(estadoFiltro.filtrando){
             let urlFiltro = armarUrlFiltro();//armo la url que mando a la api para traer los resultados de lo filtrado.
-            props.subproductosFiltrarProductos(urlFiltro);
+            props.productosFiltrarProductos(urlFiltro);
         };
         
     }
@@ -188,7 +188,7 @@ const Filtro = (props) => {
                         categoria:'',
                         filtrando:false
                     });
-                    props.subproductosTraerTodos();
+                    props.productosTraerTodos();
                     if(props.location!='productos'){
                         Router.push('/productos');
                     }
@@ -206,7 +206,7 @@ const Filtro = (props) => {
                         subcategoria:'',
                         filtrando:false
                     });
-                    props.subproductosTraerTodos();
+                    props.productosTraerTodos();
                     if(props.location!='productos'){
                         Router.push('/productos');
                     }
@@ -224,7 +224,7 @@ const Filtro = (props) => {
                         marca:'',
                         filtrando:false
                     });
-                    props.subproductosTraerTodos();
+                    props.productosTraerTodos();
                     if(props.location!='productos'){
                         Router.push('/productos');
                     } 
@@ -243,7 +243,7 @@ const Filtro = (props) => {
                     marca:'',
                     buscador:''
                 });
-                props.subproductosTraerTodos();
+                props.productosTraerTodos();
                 if(props.location!='productos'){
                     Router.push('/productos');
                 }
@@ -354,10 +354,10 @@ const Filtro = (props) => {
     );
 }
 
-const mapStateToProps = ({marcasReducer,subproductosReducer,categoriasReducer,subcategoriaReducer})=>{
+const mapStateToProps = ({marcasReducer,productosReducer,categoriasReducer,subcategoriaReducer})=>{
     return {
         marcasReducer,
-        subproductosReducer,
+        productosReducer,
         categoriasReducer,
         subcategoriaReducer
     };
@@ -365,8 +365,8 @@ const mapStateToProps = ({marcasReducer,subproductosReducer,categoriasReducer,su
 
 const mapDispatchToProps = {
     marcasTraerTodas,
-    subproductosFiltrarProductos,
-    subproductosTraerTodos,
+    productosFiltrarProductos,
+    productosTraerTodos,
     categoriasTraerTodas,
     subcategoriaTraerTodas
 }

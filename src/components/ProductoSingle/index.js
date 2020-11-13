@@ -9,20 +9,17 @@ import ProductoSingleStyle from  './ProductoSingle.module.css';
 
 const ProductoSingle = (props) => {
 
-    const {peso,precioUnidad,idSubProducto,subProducto,tamaño} = props.subProducto;
-    //console.log(props);
+    const {peso,precioUnidad,idSubProducto,subProducto,tamaño} = props.subProductos[0];
     useEffect(() => {
-        const {foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto} = props.subProducto;
+        const {foto,peso,precioUnidad,tamaño,idSubProducto,subProducto} = props.subProductos[0];
+        const {marca,producto} = props.producto;
         guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto);
-    }, [props.subProducto])
+    }, [props.producto])
 
-    
-    const imagenes = [
-        props.subProducto.foto
-    ];
+    const imagenes = [];
     //al vector de imagenes, le sumo las imagenes de los productos relacionados al mismo padre
-    props.moreProducts.map(datamp=>{
-        imagenes.push(datamp.foto);
+    props.subProductos.map(datasp=>{
+        imagenes.push(datasp.foto);
     })
 
 
@@ -55,11 +52,10 @@ const ProductoSingle = (props) => {
         if(!peso || !precio || !tamaño || !idSubProducto || !subProducto){
             return setProductoData({
                 ...productoData,
-                peso:props.subProducto.peso,
-                precio:props.subProducto.precioUnidad,
-                tamaño:props.subProducto.tamaño,
-                idSubProducto:props.subProducto.idSubProducto,
-                subProducto:props.subProducto.subProducto
+                peso:props.subProductos[0].peso,
+                precio:props.subProductos[0].precioUnidad,
+                idSubProducto:props.subProductos[0].idSubProducto,
+                subProducto:props.subProductos[0].subProducto
             });
         };
         setProductoData({
@@ -100,11 +96,11 @@ const ProductoSingle = (props) => {
     return (
         <div className="row">
             <div className="col-12 col-sm-6">
-                <SliderFotosProducto imagenes={imagenes} changePeso={changePeso} moreProducts={props.moreProducts}/>
+                <SliderFotosProducto imagenes={imagenes} changePeso={changePeso} subProductos={props.subProductos}/>
             </div>
             <div className={`col-12 col-sm-6 pt-5`+' '+ ProductoSingleStyle.descripcionProducto}>
                 <h3 className={ProductoSingleStyle.marca}>{productoData.marca}</h3>
-                <h1>{productoData.subProducto}</h1>
+                <h1>{productoData.producto}</h1>
                 <div className={ProductoSingleStyle.precios + ' ' + `d-flex my-3`}>
                     <div className={ProductoSingleStyle.indicador__precio}>
                         <p>Precio</p>
@@ -114,13 +110,15 @@ const ProductoSingle = (props) => {
                     <div className={ProductoSingleStyle.indicador__cantidad}>
                         <p className={ProductoSingleStyle.titulo__indicadorCantidad+' '+`text-center`}>Seleccioná tamaño</p>
                         <div className="row justify-content-center">
-                            <div className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(0,`${peso}`,precioUnidad,`${tamaño}`,idSubProducto,`${subProducto}`)}>
-                                <p className={ProductoSingleStyle.kilos}>{productoData.peso} Kgs</p>
-                                <span className={ProductoSingleStyle.precioDelKg}>${productoData.precioUnidad}</span>
-                            </div>
-                            {props.moreProducts.map((mp,key)=>(
+                            {props.subProductos.map((mp,key)=>(
+                                (key==0)?
+                                    <div key={key} className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(key,`${peso}`,precioUnidad,`${tamaño}`,idSubProducto,`${subProducto}`)}>
+                                        <p className={ProductoSingleStyle.kilos}>{mp.peso} Kgs</p>
+                                        <span className={ProductoSingleStyle.precioDelKg}>${productoData.precioUnidad}</span>
+                                    </div>
+                                :
                                 <div key={key} className={ProductoSingleStyle.caja_cantidadKg} 
-                                    onClick={()=>changePeso((key+1),`${mp.peso}`,mp.precioUnidad,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`)}>
+                                    onClick={()=>changePeso(key,`${mp.peso}`,mp.precioUnidad,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`)}>
                                     <p className={ProductoSingleStyle.kilos}>{mp.peso} Kgs</p>
                                     <span className={ProductoSingleStyle.precioDelKg}>${mp.precioUnidad}</span>
                                 </div>

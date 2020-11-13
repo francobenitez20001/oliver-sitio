@@ -36,7 +36,7 @@ const ModalMarca = (props) => {
                             <div key={marca.idMarca} className="col-12 col-md-6 text-center px-4 mb-4" onClick={()=>activarFiltro(marca.idMarca)}>
                                 <div className={MarcaStyle.col_modal_marca + ' ' + `row alig-items-center`}>
                                     <div className="col-6">
-                                        <img src={`https://api.oliverpetshop.com.ar/img/`+marca.imagen} alt="marca" className={MarcaStyle.imgMarca +' ' + `img-fluid`}/>
+                                        <img src={marca.imagen} alt="marca" className={MarcaStyle.imgMarca +' ' + `img-fluid`}/>
                                     </div>
                                     <div className="col-6 d-flex align-items-center justify-content-center">
                                         {(marca.marca.length>12)?

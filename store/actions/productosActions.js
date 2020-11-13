@@ -1,11 +1,11 @@
 import {API} from '../../config/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/subproductosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/productosTypes';
 export const traerTodos = ()=>async (dispatch)=>{
     dispatch({
         type:LOADING
     });
     try {
-        return fetch(`${API}/subproducto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/producto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_TODOS,
                 payload:data.data
@@ -24,7 +24,7 @@ export const traerPorId = id=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}/subproducto/${id}`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}producto/${id}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_UNO,
                 payload:data
@@ -43,7 +43,7 @@ export const traerPromociones = ()=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}/subproducto?desde=1&limite=8`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/producto?desde=1&limite=8`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_PROMOCIONES,
                 payload:data.data
@@ -81,7 +81,7 @@ export const filtrarProductos = url=>async dispatch=>{
         type:LOADING
     });
     try {
-        let urlFiltro = (url.includes('buscar?busqueda'))?`subproductos/${url}`:`subproductos/${url}`;
+        let urlFiltro = (url.includes('buscar?busqueda'))?`productos/${url}`:`productos/filtro/${url}`;
         return fetch(`${API}${urlFiltro}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,

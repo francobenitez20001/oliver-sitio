@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import CardProducto from '../CardProducto/index';
 import {connect} from 'react-redux';
-import * as subproductosActions from '../../../store/actions/subproductosActions';
+import * as productosActions from '../../../store/actions/productosActions';
 import Loader from '../Loader/index';
 
 const Promociones = (props) => {
@@ -20,7 +20,7 @@ const Promociones = (props) => {
             <div className="row">
                 {(props.loading)?<Loader/>:
                     props.promociones.map(prd=>(
-                        <div key={prd.idSubProducto} className="col-6 col-md-4 col-xl-3">
+                        <div key={prd.idProducto} className="col-6 col-md-4 col-xl-3">
                             <CardProducto imagen={prd.foto} prd={prd}/>
                         </div>
                     ))
@@ -31,7 +31,7 @@ const Promociones = (props) => {
 }
 
 const mapStateToProps = reducers=>{
-    return reducers.subproductosReducer;
+    return reducers.productosReducer;
 }
 
-export default connect(mapStateToProps,subproductosActions)(Promociones);
+export default connect(mapStateToProps,productosActions)(Promociones);

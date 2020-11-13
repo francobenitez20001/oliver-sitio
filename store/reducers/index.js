@@ -1,13 +1,13 @@
 import {combineReducers} from 'redux';
 import marcasReducer from "./marcasReducer";
-import subproductosReducer from "./subproductosReducer";
+import productosReducer from "./productosReducer";
 import carritoReducer from './carritoReducer';
 import categoriasReducer from './categoriasReducer';
 import subcategoriaReducer from './subcategoriasReducer';
 
 export default combineReducers({
     marcasReducer,
-    subproductosReducer,
+    productosReducer,
     carritoReducer,
     categoriasReducer,
     subcategoriaReducer
