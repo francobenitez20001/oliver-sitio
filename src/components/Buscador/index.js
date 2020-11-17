@@ -1,12 +1,12 @@
 import React,{useState} from 'react';
-import Router from 'next/router'
+import Router,{useRouter} from 'next/router'
 import Modal from '../Modal/index';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Buscador = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [buscador, setBuscador] = useState('');
-
+    const location = useRouter();
     const showModalBuscador = ()=>{
         document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
         setModalIsOpen(true)
@@ -23,7 +23,11 @@ const Buscador = () => {
 
     const handleSubmit = event=>{
         event.preventDefault();
-        (buscador.trim()!== '')?Router.push(`/productos?search=${buscador}`):false; 
+        if(buscador.trim()== '')return false; 
+        if(location.pathname == '/'){
+            return Router.push(`/productos?search=${buscador}`);
+        }
+        return window.location.assign(`/productos?search=${buscador}`);
     }
 
     return (

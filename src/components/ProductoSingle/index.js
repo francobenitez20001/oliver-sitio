@@ -6,14 +6,17 @@ import Loader from '../Loader/index';
 import Modal from '../Modal/index';
 import Carrito from '../Carrito/index';
 import ProductoSingleStyle from  './ProductoSingle.module.css';
+import {URL_CLOUD_STORAGE} from '../../../config/index';
 
 const ProductoSingle = (props) => {
-
-    const {peso,precioUnidad,idSubProducto,subProducto,tamaño} = props.subProductos[0];
     useEffect(() => {
-        const {foto,peso,precioUnidad,tamaño,idSubProducto,subProducto} = props.subProductos[0];
         const {marca,producto} = props.producto;
-        guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto);
+        if(props.subProductos.length>0){
+            const {foto,peso,precioUnidad,tamaño,idSubProducto,subProducto} = props.subProductos[0];
+            guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto);
+        }else{
+            guardarProductoEnState(`${URL_CLOUD_STORAGE}/sin-imagen.png`,null,null,producto,null,null,marca,null);
+        }
     }, [props.producto])
 
     const imagenes = [];
@@ -21,6 +24,7 @@ const ProductoSingle = (props) => {
     props.subProductos.map(datasp=>{
         imagenes.push(datasp.foto);
     })
+
 
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -112,7 +116,7 @@ const ProductoSingle = (props) => {
                         <div className="row justify-content-center">
                             {props.subProductos.map((mp,key)=>(
                                 (key==0)?
-                                    <div key={key} className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(key,`${peso}`,precioUnidad,`${tamaño}`,idSubProducto,`${subProducto}`)}>
+                                    <div key={key} className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(key,`${mp.peso}`,mp.precioUnidad,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`)}>
                                         <p className={ProductoSingleStyle.kilos}>{mp.peso} Kgs</p>
                                         <span className={ProductoSingleStyle.precioDelKg}>${productoData.precioUnidad}</span>
                                     </div>

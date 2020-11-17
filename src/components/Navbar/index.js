@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import NavbarStyle from './Navbar.module.css';
 import Link from 'next/link';
-import Router from 'next/router';
+import Router,{useRouter} from 'next/router';
 import Modal from '../Modal/index';
 import Login from '../Login';
 import Register from '../Login/Register';
@@ -17,7 +17,7 @@ const Navbar = () => {
     const [carrito, setCarrito] = useState(false);
     const [register, setRegister] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
+    const location = useRouter();
     //actions login-register
     const showModalLogin =()=>{
         (register)?setRegister(false):null;
@@ -59,7 +59,10 @@ const Navbar = () => {
     const handleSubmitBuscador = event=>{
         event.preventDefault();
         if(busqueda.trim() === '')return false;
-        return Router.push(`/productos?search=${busqueda}`);
+        if(location.pathname == '/'){
+            return Router.push(`/productos?search=${busqueda}`);
+        }
+        return window.location.assign(`/productos?search=${busqueda}`);
     }
 
     const renderContenidoModal = ()=>{
