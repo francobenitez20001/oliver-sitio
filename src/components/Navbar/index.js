@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import NavbarStyle from './Navbar.module.css';
 import Link from 'next/link';
 import Router,{useRouter} from 'next/router';
@@ -6,11 +6,18 @@ import Modal from '../Modal/index';
 import Login from '../Login';
 import Register from '../Login/Register';
 import Carrito from '../Carrito';
-import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {URL_CLOUD_STORAGE} from '../../../config/index';
-const Navbar = () => {
+import {connect} from 'react-redux';
+import * as usuarioActions from '../../../store/actions/usuarioActions';
+
+
+const Navbar = (props) => {
+    useEffect(() => {
+        props.verificarSesion();
+    }, []);
 
     const [busqueda, setBusqueda] = useState('');
     const [login, setLogin] = useState(false);
@@ -70,7 +77,12 @@ const Navbar = () => {
         if(register) return <Register showLogin={showModalLogin}/>;
         if(carrito) return <Carrito/>
     }
-
+    const cerrarSesion = async()=>{
+        await props.logout();
+        setTimeout(() => {
+            return showModalLogin();
+        }, 800);
+    }
     return (
         <>
             <div className={NavbarStyle.navbar + ' ' + `sticky-top`}>
@@ -91,9 +103,15 @@ const Navbar = () => {
                             <input type="text" required className={NavbarStyle.form_search_menu + ' ' + `form-control`} onChange={handleChangeMenu} placeholder="¿Qué andas buscando?"/>
                         </form>
                         <div className={NavbarStyle.container__login_menu + ' ' + `col-sm-7 col-xl-4 col-md-4 d-flex align-items-center justify-content-end`}>
-                            <span onClick={showModalLogin} className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account}>
-                                <span className={NavbarStyle.txt__item_menu}>Ingresá ahora / Registrate</span>
-                            </span>
+                            {(props.logueado)?
+                                <span onClick={cerrarSesion} className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account}>
+                                    <span className={NavbarStyle.txt__item_menu}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar Sesión</span>
+                                </span>
+                            :
+                                <span onClick={showModalLogin} className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account}>
+                                    <span className={NavbarStyle.txt__item_menu}>Ingresá ahora / Registrate</span>
+                                </span>
+                            }
                             <span className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_carrito} onClick={showModalCarrito}>
                                 <FontAwesomeIcon icon={faShoppingCart} className={NavbarStyle.txt__item_menu}/>
                             </span>
@@ -115,10 +133,6 @@ const Navbar = () => {
                                     </li>
                                 </a>
                             </Link>
-                            <li className={NavbarStyle.item__menu__collapsed} onClick={showModalLogin}>
-                                <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
-                                <span className={NavbarStyle.label__item__menu}>Ingresá ahora / Registrate</span>
-                            </li>
                             <Link href="/" onClick={toggleMenu}>
                                 <a>
                                     <li className={NavbarStyle.item__menu__collapsed}>
@@ -127,6 +141,17 @@ const Navbar = () => {
                                     </li>
                                 </a>
                             </Link>
+                            {(props.logueado)?
+                                <li className={NavbarStyle.item__menu__collapsed} onClick={cerrarSesion}>
+                                    <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                    <span className={NavbarStyle.label__item__menu}>Cerrar sesión</span>
+                                </li>
+                            :
+                            <li className={NavbarStyle.item__menu__collapsed} onClick={showModalLogin}>
+                                <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                <span className={NavbarStyle.label__item__menu}>Ingresá ahora / Registrate</span>
+                            </li>
+                            }
                             <li className={NavbarStyle.item__menu__collapsed + ' ' + NavbarStyle.__withButton}>
                                 <a href="/" className="boton bg-yellow">Ofertas</a>
                             </li>
@@ -149,5 +174,8 @@ const Navbar = () => {
         </>
     );
 }
- 
-export default Navbar;
+const mapStateToProps = reducers=>{
+    return reducers.usuarioReducer;
+}
+
+export default connect(mapStateToProps,usuarioActions)(Navbar);

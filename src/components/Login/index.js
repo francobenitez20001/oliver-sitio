@@ -1,12 +1,15 @@
 import React,{useState} from 'react';
 import Error from "../Error";
 import LoginStyle from  './Login.module.css';
+import Loader from '../Loader';
+import { connect } from 'react-redux';
+import * as usuarioActions from '../../../store/actions/usuarioActions';
+
 const Login = (props) => {
     const [formLoginValues, setFormLoginValues] = useState({
         email:'',
         password:''
     });
-    const [error, setError] = useState(false);
 
     const handleChangeLogin = event=>{
         setFormLoginValues({
@@ -17,36 +20,46 @@ const Login = (props) => {
 
     const handleSubmitLogin = event=>{
         event.preventDefault();
-        if(formLoginValues.email.trim()==='' || formLoginValues.password.trim()===''){
-            setError('Es necesario completar todos los campos');
-            return false;
-        }
-        setError(false);
-        return true;
+        //let btnSubmit = document.querySelector('#form-login .boton');
+        //btnSubmit.setAttribute('disabled',true);
+        return props.login(formLoginValues);
     }
 
     const habilitarRegister = ()=>{
         props.showRegister();
     }
-
+    //console.log(props);
     return (
         <div className={LoginStyle.login__container}>
             <h6 className={LoginStyle.title__login + ' ' + `text-center`}>Ingresá a tu cuenta</h6>
-            {(error)?<Error message={error}/>:null}
-            <form className={LoginStyle.form + ' ' + `form-group`} name="form-login" id="form-login" onSubmit={handleSubmitLogin}>
-                <label className={LoginStyle.label} htmlFor="email">Email</label>
-                <input type="email" className={LoginStyle.input + ' ' + `form-control`} id="email" name="email" value={formLoginValues.email} onChange={handleChangeLogin}/>
-                <label className={LoginStyle.label} htmlFor="password">Contraseña</label>
-                <input type="password" className={LoginStyle.input + ' ' + `form-control`} id="password" name="password" value={formLoginValues.password} onChange={handleChangeLogin}/>
-                <br/>
-                <input type="submit" className="boton bg-yellow mb-1" value="Ingresar"/>
-                <a href="/" className={LoginStyle.forgot__pass + ' ' + `text-center d-block`}>Olvidé mi constraseña</a>
-            </form>
-            <section className={LoginStyle.registerInLogin + ' ' + `text-center`}>
-                <span className="text-muted">¿No tenes cuenta?<span className={LoginStyle.registerLink} onClick={habilitarRegister}> Registrate</span></span>
-            </section>
+            {(props.error)?<Error message={props.error}/>:null}
+            {(props.loading)?<div className="text-center"><Loader/></div>:null}
+            {(props.logueado)?
+            <div>
+                <div className="text-center alert alert-success">Bienvenido/a {props.usuario.nombre}</div>
+                <a href="/" className="boton bg-yellow mb-1">Continuar</a>
+            </div>
+            :
+                <>
+                    <form className={LoginStyle.form + ' ' + `form-group`} name="form-login" id="form-login" onSubmit={handleSubmitLogin}>
+                        <label className={LoginStyle.label} htmlFor="email">Email</label>
+                        <input type="email" className={LoginStyle.input + ' ' + `form-control`} id="email" name="email" value={formLoginValues.email} onChange={handleChangeLogin}/>
+                        <label className={LoginStyle.label} htmlFor="password">Contraseña</label>
+                        <input type="password" className={LoginStyle.input + ' ' + `form-control`} id="password" name="password" value={formLoginValues.password} onChange={handleChangeLogin}/>
+                        <br/>
+                        <input type="submit" className="boton bg-yellow mb-1" value="Ingresar"/>
+                        <a href="/" className={LoginStyle.forgot__pass + ' ' + `text-center d-block`}>Olvidé mi constraseña</a>
+                    </form>
+                    <section className={LoginStyle.registerInLogin + ' ' + `text-center`}>
+                        <span className="text-muted">¿No tenes cuenta?<span className={LoginStyle.registerLink} onClick={habilitarRegister}> Registrate</span></span>
+                    </section>
+                </>
+            }
         </div>
     );
 }
- 
-export default Login;
+const mapStateToProps = reducers=>{
+    return reducers.usuarioReducer;
+}
+
+export default connect(mapStateToProps,usuarioActions)(Login);
