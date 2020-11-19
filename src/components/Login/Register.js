@@ -4,6 +4,8 @@ import Error from "../Error";
 import LoginStyle from './Login.module.css';
 import { connect } from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
+import { GoogleLogin } from 'react-google-login';
+import {GOOGLE_CLIENT_ID} from '../../../config/index'
 import Loader from '../Loader';
 
 const Register = (props) => {
@@ -63,6 +65,11 @@ const Register = (props) => {
         setTimeout(() => {
             window.location.assign('/');
         }, 1500);
+    }
+    const responseGoogle = data=>{
+        if(data.tokenId){
+            return props.singInWithGoogle(data.tokenId);
+        }
     }
     return (
         <div className={LoginStyle.login__container}>
@@ -126,6 +133,15 @@ const Register = (props) => {
                 </form>
                 <section className={LoginStyle.registerInLogin + ' ' + `text-center`}>
                     <span className="text-muted">¿Ya tenes cuenta?<span className={LoginStyle.registerLink} onClick={habilitarLogin}> Ingresá</span></span>
+                    <br/>
+                    <GoogleLogin
+                        className="mt-2"
+                        clientId={GOOGLE_CLIENT_ID}
+                        buttonText="Registrate con Google"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
                 </section>
             </>
             }

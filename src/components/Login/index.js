@@ -4,6 +4,8 @@ import LoginStyle from  './Login.module.css';
 import Loader from '../Loader';
 import { connect } from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
+import { GoogleLogin } from 'react-google-login';
+import {GOOGLE_CLIENT_ID} from '../../../config/index'
 
 const Login = (props) => {
     const [formLoginValues, setFormLoginValues] = useState({
@@ -27,6 +29,12 @@ const Login = (props) => {
 
     const habilitarRegister = ()=>{
         props.showRegister();
+    }
+
+    const responseGoogle = data=>{
+        if(data.tokenId){
+            return props.singInWithGoogle(data.tokenId);
+        }
     }
     //console.log(props);
     return (
@@ -52,6 +60,15 @@ const Login = (props) => {
                     </form>
                     <section className={LoginStyle.registerInLogin + ' ' + `text-center`}>
                         <span className="text-muted">¿No tenes cuenta?<span className={LoginStyle.registerLink} onClick={habilitarRegister}> Registrate</span></span>
+                        <br/>
+                        <GoogleLogin
+                            className="mt-2"
+                            clientId={GOOGLE_CLIENT_ID}
+                            buttonText="Iniciar sesión con Google"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
                     </section>
                 </>
             }

@@ -121,3 +121,40 @@ export const register=(data)=>(dispatch)=>{
         })
     }
 }
+
+export const singInWithGoogle = tokenId => async(dispatch)=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        return fetch(`${API}google/tokensignin`,{
+            method:'POST',
+            headers,
+            body:JSON.stringify({token:tokenId})
+        }).then(res=>res.json()).then(response=>{
+            if(!response.ok){
+                return dispatch({
+                    type:ERROR,
+                    payload:response.info
+                })
+            };
+            let objUsuario = {
+                nombre:response.usuario.nombre,
+                email:response.usuario.email,
+                foto:response.usuario.foto
+            }
+            localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
+            dispatch({
+                type:LOGIN,
+                payload:localStorage.getItem('oliverpetshop_usuario')
+            });
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error
+        })
+    }
+}
