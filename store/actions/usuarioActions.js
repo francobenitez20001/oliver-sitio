@@ -83,3 +83,41 @@ export const verificarSesion=()=>async(dispatch)=>{
         })
     }
 }
+
+export const register=(data)=>(dispatch)=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        return fetch(`${API}register`,{
+            method:'POST',
+            body:JSON.stringify(data),
+            headers
+        }).then(res=>res.json()).then(response=>{
+            if(response.ok){
+                let objUsuario = {
+                    nombre:response.usuario.nombre,
+                    email:response.usuario.email,
+                    foto:response.usuario.foto
+                }
+                localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
+                dispatch({
+                    type:LOGIN,
+                    payload:localStorage.getItem('oliverpetshop_usuario')
+                });
+            }else{
+                dispatch({
+                    type:ERROR,
+                    payload:response.info
+                })
+            }
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error
+        })
+    }
+}
