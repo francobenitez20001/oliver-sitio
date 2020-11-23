@@ -7,10 +7,16 @@ import Loader from '../Loader';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiltroStyle from '../Filtro/Filtro.module.css';
+import { isMobile } from '../../../helpers';
 
 const Productos = (props) => {
 
     const [filtro, setFiltro] = useState('');
+    const [rangoProducto, setRangoProducto] = useState({
+        desde:1,
+        limiteDesktop:20,
+        limiteMobile:10
+    });
 
     useEffect(() => {
         if(props.location !== '/productos'){
@@ -24,13 +30,19 @@ const Productos = (props) => {
         }
     }, []);
 
+    useEffect(() => {
+        if(rangoProducto.desde>1){
+            props.traerMas(rangoProducto,props.productos);
+        }
+    }, [rangoProducto])
+
     const showFiltrosMobile = ()=>{
         document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.add(FiltroStyle.show_filtros);
     }
 
     const getProductos = async ()=>{
         try {
-            await props.traerTodos();
+            await props.traerTodos(rangoProducto);
         } catch (error) {
             console.log(error);
         }
@@ -61,6 +73,21 @@ const Productos = (props) => {
     if(props.location=='/productos' && filtro!=''){
         setFiltro('');
     }
+
+    const cargarMas = ()=>{
+        if(isMobile()){
+            setRangoProducto({
+                ...rangoProducto,
+                desde: rangoProducto.desde + rangoProducto.limiteMobile - 1,
+            })
+        }else{
+            setRangoProducto({
+                ...rangoProducto,
+                desde: rangoProducto.desde + rangoProducto.limiteDesktop - 1
+            })
+        }
+    }
+
     return (
         <>
             {(props.loading || !props.productos)?<div className="col-12 text-center"><Loader/></div>:
@@ -84,7 +111,7 @@ const Productos = (props) => {
                     </div>
                     <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
-                <div className="row">
+                <div className="row feedProductos">
                     {!props.productos ? null :
                         props.productos.map(prd=>(
                             <div key={prd.idProducto} className="col-6 col-md-3">
@@ -93,8 +120,43 @@ const Productos = (props) => {
                         ))
                     }
                 </div>
+                <button className="boton bg-yellow btn-vermas" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
             </>
             }
+            <style jsx>{`
+                .feedProductos{
+                    height:75vh;
+                    overflow-y:scroll;
+                }    
+                .btn-vermas{
+                    position:relative;
+                    top:12px
+                }
+                .feedProductos::-webkit-scrollbar {
+                    width: 8px;     /* Tamaño del scroll en vertical */
+                    height:5px
+                }
+
+                .feedProductos::-webkit-scrollbar-thumb {
+                    background: #FFB347;
+                    border-radius: 4px;
+                }
+                .feedProductos::-webkit-scrollbar-thumb:hover {
+                    background: #b3b3b3;
+                    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+                }
+                @media(max-width:768px){
+                    .feedProductos{
+                        height:65vh;
+                        overflow-y:scroll;
+                    } 
+                    .feedProductos::-webkit-scrollbar {
+                        width: 8px;     /* Tamaño del scroll en vertical */
+                        height:10px
+                    }
+                }
+            `}
+            </style>
         </>
     );
 }

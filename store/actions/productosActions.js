@@ -1,14 +1,44 @@
 import {API} from '../../config/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO} from '../types/productosTypes';
-export const traerTodos = ()=>async (dispatch)=>{
+import {isMobile} from '../../helpers/index';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS} from '../types/productosTypes';
+
+export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)=>{
     dispatch({
         type:LOADING
     });
     try {
-        return fetch(`${API}/producto?desde=1&limite=30`).then(res=>res.json()).then(data=>{
+        let url = `${API}producto?desde=${desde}&limite=${limiteDesktop}`;
+        if(isMobile()){
+            url = `${API}producto?desde=${desde}&limite=${limiteMobile}`;
+        }
+        return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_TODOS,
                 payload:data.data
+            });
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error
+        })
+    }
+}
+
+export const traerMas = (rangoProducto,prevProductos)=>async (dispatch)=>{
+    dispatch({
+        type:LOADING_MAS
+    });
+    try {
+        let url = `${API}producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteDesktop}`;
+        if(isMobile()){
+            url = `${API}producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteMobile}`;
+        }
+        return fetch(url).then(res=>res.json()).then(data=>{
+            let updateproductos = [...prevProductos,...data.data];
+            dispatch({
+                type:TRAER_MAS,
+                payload:updateproductos
             });
         })
     } catch (error) {
@@ -43,7 +73,11 @@ export const traerPromociones = ()=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}/producto?desde=1&limite=8`).then(res=>res.json()).then(data=>{
+        let url = `${API}/producto?desde=1&limite=8`;
+        if(isMobile()){
+            url = `${API}/producto?desde=1&limite=4`;
+        }
+        return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_PROMOCIONES,
                 payload:data.data
@@ -75,8 +109,8 @@ export const ordenarProductos = productosOrdenados=>async dispatch=>{
 }
 
 export const filtrarProductos = url=>async dispatch=>{
-    console.log('filtrando');
-    console.log(url);
+    //console.log('filtrando');
+    //console.log(url);
     dispatch({
         type:LOADING
     });

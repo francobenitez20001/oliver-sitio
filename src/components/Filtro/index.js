@@ -243,7 +243,7 @@ const Filtro = (props) => {
                     marca:'',
                     buscador:''
                 });
-                props.productosTraerTodos();
+                props.productosTraerTodos({desde:1,limiteDesktop:20,limiteMobile:10});
                 if(props.location!='productos'){
                     Router.push('/productos');
                 }
