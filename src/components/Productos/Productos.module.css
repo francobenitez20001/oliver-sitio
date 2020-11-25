@@ -19,9 +19,11 @@
 }
 
 .label__filtro_busqueda{
-    background-color:#FFB347;
-    padding: 5px 10px;
+    background-color: #FFB347;
+    padding: 3px 8px;
     border-radius: 5px;
+    position: absolute;
+    top: 3px;
     color: white !important;
 }
 

@@ -188,7 +188,7 @@ const Filtro = (props) => {
                         categoria:'',
                         filtrando:false
                     });
-                    props.productosTraerTodos();
+                    props.productosTraerTodos({desde:1,limiteDesktop:20,limiteMobile:10});
                     if(props.location!='productos'){
                         Router.push('/productos');
                     }
@@ -206,7 +206,7 @@ const Filtro = (props) => {
                         subcategoria:'',
                         filtrando:false
                     });
-                    props.productosTraerTodos();
+                    props.productosTraerTodos({desde:1,limiteDesktop:20,limiteMobile:10});
                     if(props.location!='productos'){
                         Router.push('/productos');
                     }
@@ -224,7 +224,7 @@ const Filtro = (props) => {
                         marca:'',
                         filtrando:false
                     });
-                    props.productosTraerTodos();
+                    props.productosTraerTodos({desde:1,limiteDesktop:20,limiteMobile:10});
                     if(props.location!='productos'){
                         Router.push('/productos');
                     } 

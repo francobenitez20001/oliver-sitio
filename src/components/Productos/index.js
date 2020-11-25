@@ -88,6 +88,22 @@ const Productos = (props) => {
         }
     }
 
+    const handleScrollFeedProductos = event=>{
+        let feedProductos = document.querySelector('.feedProductos');
+        let botonCargarMas = document.querySelector('.btn-vermas');
+        let alturaTotalFeed = feedProductos.scrollHeight;
+        let alturaActual = feedProductos.scrollTop;
+        let porcentajeSuficiente = (alturaTotalFeed * 80) / 100;
+        if(alturaTotalFeed == 2060){
+            porcentajeSuficiente = (alturaTotalFeed * 65) / 100;
+        };
+        if(alturaActual>=porcentajeSuficiente){
+            return botonCargarMas.classList.remove('d-none');
+        }else{
+            return botonCargarMas.classList.add('d-none');
+        }
+    }
+
     return (
         <>
             {(props.loading || !props.productos)?<div className="col-12 text-center"><Loader/></div>:
@@ -111,7 +127,7 @@ const Productos = (props) => {
                     </div>
                     <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
-                <div className="row feedProductos">
+                <div className="row feedProductos" onScroll={handleScrollFeedProductos}>
                     {!props.productos ? null :
                         props.productos.map(prd=>(
                             <div key={prd.idProducto} className="col-6 col-md-3">
@@ -120,7 +136,9 @@ const Productos = (props) => {
                         ))
                     }
                 </div>
-                <button className="boton bg-yellow btn-vermas" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
+                {(props.productos && props.productos.length>=20)?
+                <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>:null
+                }
             </>
             }
             <style jsx>{`
