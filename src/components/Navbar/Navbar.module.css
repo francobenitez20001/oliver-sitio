@@ -8,6 +8,7 @@
     padding: .5rem 1rem;
 }
 
+
 .container__logo .logo{
   height: 50px;
   width: 50px;
@@ -23,6 +24,12 @@
     font-weight: 400;
     font-size:16px;
     cursor: pointer;
+}
+
+.imgProfile{
+    width: 28px;
+    border-radius: 14px;
+    border: solid #835008;
 }
 
 .container__login_menu .btn_carrito{
@@ -178,3 +185,6 @@
     }
 }
 
+.navbar .sinBorder{
+    border: none!important;
+}

@@ -27,7 +27,7 @@ const Producto = (props) => {
         if(!props.producto) return null;
         const {descripcion,descripcion_basica} = props.producto.data[0];
         return <>
-            <Head title={props.producto.data[0].producto}/>
+            <Head title={props.producto.data[0].producto} metadesc={props.producto.data[0].descripcion_basica}/>
             <section className="pb-5" style={{backgroundColor:'white'}}>
                 <div className="wrapper__producto container mb-5">
                     <ProductoSingle producto={props.producto.data[0]}

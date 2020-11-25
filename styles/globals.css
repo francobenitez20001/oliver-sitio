@@ -150,3 +150,12 @@ a:hover{text-decoration: none!important;}
     background-color: #fff;
     border-color: #FFB347 #FFB347 #fff !important;
 }
+
+.show>.btn-secondary.dropdown-toggle:focus,.btn-secondary.dropdown-toggle:focus{
+    box-shadow: none!important;
+}
+.show>.btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: transparent!important;
+    border-color: #4e555b;
+}

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {URL_CLOUD_STORAGE} from '../../../config/index';
 import {connect} from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
 const Navbar = (props) => {
@@ -24,6 +25,7 @@ const Navbar = (props) => {
     const [carrito, setCarrito] = useState(false);
     const [register, setRegister] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [dropdownOpen, setOpen] = useState(false);
     const location = useRouter();
     //actions login-register
     const showModalLogin =()=>{
@@ -83,6 +85,7 @@ const Navbar = (props) => {
             return showModalLogin();
         }, 800);
     }
+    const toggle = () => setOpen(!dropdownOpen);
     return (
         <>
             <div className={NavbarStyle.navbar + ' ' + `sticky-top`}>
@@ -104,9 +107,16 @@ const Navbar = (props) => {
                         </form>
                         <div className={NavbarStyle.container__login_menu + ' ' + `col-sm-7 col-xl-4 col-md-4 d-flex align-items-center justify-content-end`}>
                             {(props.logueado)?
-                                <span onClick={cerrarSesion} className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account}>
-                                    <span className={NavbarStyle.txt__item_menu}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar Sesión</span>
-                                </span>
+                                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                                    <DropdownToggle caret size="sm" className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account + ' ' + NavbarStyle.sinBorder}>
+                                        <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile}/>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem>Mi perfil</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem onClick={cerrarSesion}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar sesión</DropdownItem>
+                                    </DropdownMenu>
+                                </ButtonDropdown>
                             :
                                 <span onClick={showModalLogin} className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account}>
                                     <span className={NavbarStyle.txt__item_menu}>Ingresá ahora / Registrate</span>

@@ -65,11 +65,11 @@ export const logout = ()=>async(dispatch)=>{
 
 export const verificarSesion=()=>async(dispatch)=>{
     try {
-        let dataUsuario = localStorage.getItem('oliverpetshop_usuario');
+        let dataUsuario = JSON.parse(localStorage.getItem('oliverpetshop_usuario'));
         if(dataUsuario){
             return dispatch({
                 type:VERIFICAR_SESION,
-                payload:true
+                payload:dataUsuario
             })
         }
         return dispatch({
