@@ -9,7 +9,7 @@ import Carrito from '../Carrito';
 import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {URL_CLOUD_STORAGE} from '../../../config/index';
+import {PUBLIC_URL, URL_CLOUD_STORAGE} from '../../../config/index';
 import {connect} from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
@@ -112,7 +112,13 @@ const Navbar = (props) => {
                                         <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile}/>
                                     </DropdownToggle>
                                     <DropdownMenu>
-                                        <DropdownItem>Mi perfil</DropdownItem>
+                                        <Link href={`${PUBLIC_URL}/perfil`}>
+                                            <a>
+                                                <DropdownItem>
+                                                    Mi perfil
+                                                </DropdownItem>
+                                            </a>
+                                        </Link>
                                         <DropdownItem divider />
                                         <DropdownItem onClick={cerrarSesion}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar sesión</DropdownItem>
                                     </DropdownMenu>
@@ -132,6 +138,24 @@ const Navbar = (props) => {
                     <section className={NavbarStyle.header__collapsed_nav}>
                         <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo} alt="Oliver pet shop"/>
                         <i onClick={toggleMenu} className={NavbarStyle.close_btn_menu + ' ' + `fas fa-times`}></i>
+                        {(props.logueado)?
+                                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                                    <DropdownToggle caret size="sm" className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account + ' ' + NavbarStyle.sinBorder}>
+                                        <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile}/>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <Link href={`${PUBLIC_URL}/perfil`} onClick={toggleMenu}>
+                                            <a>
+                                                <DropdownItem>
+                                                    Mi perfil
+                                                </DropdownItem>
+                                            </a>
+                                        </Link>
+                                        <DropdownItem divider />
+                                        <DropdownItem onClick={cerrarSesion}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar sesión</DropdownItem>
+                                    </DropdownMenu>
+                                </ButtonDropdown>
+                        :null}
                     </section>
                     <div className={NavbarStyle.main__collapsed}>
                         <ul className={NavbarStyle.list__menu__collapsed}>
@@ -151,11 +175,7 @@ const Navbar = (props) => {
                                     </li>
                                 </a>
                             </Link>
-                            {(props.logueado)?
-                                <li className={NavbarStyle.item__menu__collapsed} onClick={cerrarSesion}>
-                                    <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
-                                    <span className={NavbarStyle.label__item__menu}>Cerrar sesión</span>
-                                </li>
+                            {(props.logueado)?null
                             :
                             <li className={NavbarStyle.item__menu__collapsed} onClick={showModalLogin}>
                                 <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
