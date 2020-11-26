@@ -8,6 +8,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiltroStyle from '../Filtro/Filtro.module.css';
 import { isMobile } from '../../../helpers';
+import NavbarStyle from '../Navbar/Navbar.module.css';
 
 const Productos = (props) => {
 
@@ -37,6 +38,9 @@ const Productos = (props) => {
     }, [rangoProducto])
 
     const showFiltrosMobile = ()=>{
+        if(document.getElementsByClassName(NavbarStyle.menu__collapsed)[0].classList.contains(NavbarStyle.showCollapsed)){
+            document.getElementsByClassName(NavbarStyle.menu__collapsed)[0].classList.remove(NavbarStyle.showCollapsed);
+        }
         document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.add(FiltroStyle.show_filtros);
     }
 
@@ -94,14 +98,32 @@ const Productos = (props) => {
         let alturaTotalFeed = feedProductos.scrollHeight;
         let alturaActual = feedProductos.scrollTop;
         let porcentajeSuficiente = (alturaTotalFeed * 80) / 100;
-        if(alturaTotalFeed == 2060){
-            porcentajeSuficiente = (alturaTotalFeed * 65) / 100;
-        };
-        if(alturaActual>=porcentajeSuficiente){
-            return botonCargarMas.classList.remove('d-none');
+        if(isMobile()){
+            porcentajeSuficiente = (alturaTotalFeed * 70) / 100;
         }else{
-            return botonCargarMas.classList.add('d-none');
+            if(alturaTotalFeed == 2060){
+                porcentajeSuficiente = (alturaTotalFeed * 65) / 100;
+            };
         }
+        if(botonCargarMas){
+            if(alturaActual>=porcentajeSuficiente){
+                return botonCargarMas.classList.remove('d-none');
+            }else{
+                return botonCargarMas.classList.add('d-none');
+            }
+        }
+    }
+
+    const renderBotonCargarMas = ()=>{
+        let minimoPosteos = 20;
+        if(isMobile()){
+            minimoPosteos = 10;
+        }
+
+        if(props.productos && props.productos.length>=minimoPosteos){
+            return <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
+        }
+                
     }
 
     return (
@@ -136,9 +158,7 @@ const Productos = (props) => {
                         ))
                     }
                 </div>
-                {(props.productos && props.productos.length>=20)?
-                <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>:null
-                }
+                {renderBotonCargarMas()}
             </>
             }
             <style jsx>{`

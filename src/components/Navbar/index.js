@@ -13,6 +13,7 @@ import {PUBLIC_URL, URL_CLOUD_STORAGE} from '../../../config/index';
 import {connect} from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import FiltroStyle from '../Filtro/Filtro.module.css';
 
 
 const Navbar = (props) => {
@@ -53,11 +54,15 @@ const Navbar = (props) => {
     const showModalCarrito = ()=>{
         (login)?setLogin(false):null;
         (register)?setRegister(false):null;
+        //si el menu esta abierto, lo cierro.
         setCarrito(true);
         setModalIsOpen(true);
     }
 
     const toggleMenu = ()=>{
+        if(document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0] && document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.contains(FiltroStyle.show_filtros)){
+            document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.remove(FiltroStyle.show_filtros);
+        }
         document.getElementsByClassName(NavbarStyle.menu__collapsed)[0].classList.toggle(NavbarStyle.showCollapsed);
     }
 
@@ -101,7 +106,9 @@ const Navbar = (props) => {
                         <span className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_carrito + ' ' + NavbarStyle.carrito_mobile} onClick={showModalCarrito}>
                             <FontAwesomeIcon icon={faShoppingCart} className={NavbarStyle.txt__item_menu}/>
                         </span>
-                        <FontAwesomeIcon  onClick={toggleMenu} icon={faAlignLeft} className={NavbarStyle.icon_menu}/>
+                        {(props.logueado)?
+                             <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile + ' ' + NavbarStyle.img_menu} onClick={toggleMenu}/>
+                        :<FontAwesomeIcon  onClick={toggleMenu} icon={faAlignLeft} className={NavbarStyle.icon_menu}/>}
                         <form className={NavbarStyle.buscador + ' ' + `col-sm-4 col-xl-7 col-md-7 d-flex align-items-center input-group`} autoComplete="off" onSubmit={handleSubmitBuscador}>
                             <input type="text" required className={NavbarStyle.form_search_menu + ' ' + `form-control`} onChange={handleChangeMenu} placeholder="¿Qué andas buscando?"/>
                         </form>
@@ -138,24 +145,6 @@ const Navbar = (props) => {
                     <section className={NavbarStyle.header__collapsed_nav}>
                         <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo} alt="Oliver pet shop"/>
                         <i onClick={toggleMenu} className={NavbarStyle.close_btn_menu + ' ' + `fas fa-times`}></i>
-                        {(props.logueado)?
-                                <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
-                                    <DropdownToggle caret size="sm" className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account + ' ' + NavbarStyle.sinBorder}>
-                                        <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile}/>
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <Link href={`${PUBLIC_URL}/perfil`} onClick={toggleMenu}>
-                                            <a>
-                                                <DropdownItem>
-                                                    Mi perfil
-                                                </DropdownItem>
-                                            </a>
-                                        </Link>
-                                        <DropdownItem divider />
-                                        <DropdownItem onClick={cerrarSesion}><FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.txt__item_menu}/> Cerrar sesión</DropdownItem>
-                                    </DropdownMenu>
-                                </ButtonDropdown>
-                        :null}
                     </section>
                     <div className={NavbarStyle.main__collapsed}>
                         <ul className={NavbarStyle.list__menu__collapsed}>
@@ -175,7 +164,21 @@ const Navbar = (props) => {
                                     </li>
                                 </a>
                             </Link>
-                            {(props.logueado)?null
+                            {(props.logueado)?
+                            <>
+                                <Link href={`${PUBLIC_URL}/perfil`} onClick={toggleMenu}>
+                                    <a>
+                                        <li className={NavbarStyle.item__menu__collapsed}>
+                                            <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                            <span className={NavbarStyle.label__item__menu}>Mi perfil</span>
+                                        </li>
+                                    </a>
+                                </Link>
+                                <li className={NavbarStyle.item__menu__collapsed} onClick={cerrarSesion}>
+                                    <FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                    <span className={NavbarStyle.label__item__menu}>Cerrar Sesión</span>
+                                </li>
+                            </>
                             :
                             <li className={NavbarStyle.item__menu__collapsed} onClick={showModalLogin}>
                                 <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>

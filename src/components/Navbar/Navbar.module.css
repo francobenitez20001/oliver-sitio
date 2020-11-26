@@ -53,6 +53,12 @@
 .icon_menu{
     display: none !important;
 }
+.img_menu{
+    display: none !important;
+    position: absolute;
+    right: 40px;
+    top: 28%;
+}
 
 .menu__collapsed{display: none;}
 .form_search_menu::-webkit-input-placeholder { color:#F7BC33!important;font-weight: 400;font-size:14px }
@@ -106,6 +112,13 @@
         font-size: 20px;    
     }
 
+    .img_menu{
+        display: block !important;
+        position: absolute;
+        right: 40px;
+        top: 28%;
+    }
+
     .menu__collapsed{
         left: -60% !important;
         transition: all .6s ease;
@@ -145,10 +158,10 @@
     .menu__collapsed .main__collapsed .icon__itemMenu__collapsed{
         font-size: 20px;
         color:#FFB347;
-        margin: 10px;
+        margin: 0px 10px;
     }
     .menu__collapsed .main__collapsed .item__menu__collapsed{
-        padding: 10px 0px;
+        padding: 20px 0px;
         border-bottom-style: solid;
         border-bottom-color: #FFB347;
         border-bottom-width: 1px;

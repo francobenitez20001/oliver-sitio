@@ -2,12 +2,16 @@ import React from 'react';
 import Navbar from './Navbar';
 import NProgress from 'nprogress';
 import Router from 'next/router';
+import Head from 'next/head';
 Router.events.on('routeChangeStart', () => NProgress.start() );
 Router.events.on('routeChangeComplete', () => NProgress.done() );
 Router.events.on('routeChangeError', () => NProgress.done() ); 
 const Layout = (props) => {
     return (
         <>
+            <Head>
+                <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDh6iZtfmNFUiGqEn6-7qENrzRKSIqh6qw"></script>
+            </Head>
             <Navbar/>
             {props.children}
             <style jsx global>{`

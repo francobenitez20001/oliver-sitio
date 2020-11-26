@@ -42,4 +42,7 @@
     .boton_filtrar_mobile{
         display: block !important;
     }
+    .label__filtro_busqueda{
+        right: 20px;
+    }
 }
