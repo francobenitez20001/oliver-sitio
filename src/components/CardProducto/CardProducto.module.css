@@ -33,9 +33,10 @@
     font-family: 'Quicksand', sans-serif;
     border-radius: 5px;
     color: black;
-    position: absolute;
+    /* position: absolute;
     right: 35px;
-    bottom: 30px;
+    bottom: 30px; */
+    float:right
 }
 
 .container__producto .label__descuento{
@@ -51,10 +52,6 @@
     font-size: 15px;
 }
 
-.container__producto .body__card .precio{
-    position: absolute;
-    bottom: 15px;
-}
 
 .container__producto .btn_comprar{
     position: absolute;

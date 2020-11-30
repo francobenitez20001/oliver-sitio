@@ -69,12 +69,12 @@ export const verificarSesion=()=>async(dispatch)=>{
         if(dataUsuario){
             return dispatch({
                 type:VERIFICAR_SESION,
-                payload:dataUsuario
+                payload:{data:dataUsuario,logueado:true}
             })
         }
         return dispatch({
             type:VERIFICAR_SESION,
-            payload:false
+            payload:{data:null,logueado:false}
         })
     } catch (error) {
         dispatch({

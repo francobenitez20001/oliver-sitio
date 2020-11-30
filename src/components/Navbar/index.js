@@ -106,14 +106,14 @@ const Navbar = (props) => {
                         <span className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_carrito + ' ' + NavbarStyle.carrito_mobile} onClick={showModalCarrito}>
                             <FontAwesomeIcon icon={faShoppingCart} className={NavbarStyle.txt__item_menu}/>
                         </span>
-                        {(props.logueado)?
+                        {(props.logueado && props.usuario)?
                              <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile + ' ' + NavbarStyle.img_menu} onClick={toggleMenu}/>
                         :<FontAwesomeIcon  onClick={toggleMenu} icon={faAlignLeft} className={NavbarStyle.icon_menu}/>}
                         <form className={NavbarStyle.buscador + ' ' + `col-sm-4 col-xl-7 col-md-7 d-flex align-items-center input-group`} autoComplete="off" onSubmit={handleSubmitBuscador}>
                             <input type="text" required className={NavbarStyle.form_search_menu + ' ' + `form-control`} onChange={handleChangeMenu} placeholder="¿Qué andas buscando?"/>
                         </form>
                         <div className={NavbarStyle.container__login_menu + ' ' + `col-sm-7 col-xl-4 col-md-4 d-flex align-items-center justify-content-end`}>
-                            {(props.logueado)?
+                            {(props.logueado && props.usuario)?
                                 <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
                                     <DropdownToggle caret size="sm" className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_account + ' ' + NavbarStyle.sinBorder}>
                                         <img src={(props.usuario.foto != 'null')?props.usuario.foto:`https://storage.googleapis.com/web-oliver/user-default.png`} className={NavbarStyle.imgProfile}/>
@@ -164,7 +164,7 @@ const Navbar = (props) => {
                                     </li>
                                 </a>
                             </Link>
-                            {(props.logueado)?
+                            {(props.logueado && props.usuario)?
                             <>
                                 <Link href={`${PUBLIC_URL}/perfil`} onClick={toggleMenu}>
                                     <a>

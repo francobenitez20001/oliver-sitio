@@ -35,7 +35,7 @@ const CardProducto = ({imagen,prd}) => {
                         <img src={imagen} alt="prd" className={CardProductoModule.img}/>
                     </section>
                     <section className={CardProductoModule.body__card}>
-                        <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>{prd.marca}</span>
+                        <span className="d-block text-muted">{prd.marca}</span>
                         <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
                             {procesarNombre(prd.producto)}
                         </h6>

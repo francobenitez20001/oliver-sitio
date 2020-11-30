@@ -102,8 +102,30 @@ button{
 
 a:hover{text-decoration: none!important;}
 
+.container-form .tab-productos{
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: 50vh!important;
+}
+
+.container-form .tab-productos::-webkit-scrollbar {
+    width: 5px;     /* Tamaño del scroll en vertical */
+}
+
+.container-form .tab-productos::-webkit-scrollbar-thumb {
+    background: #FFB347;
+    border-radius: 4px;
+}
+.container-form .tab-productos::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
 
 @media(min-width:1200px){
+    .tab-content img{
+        height: 100px;
+    }
     .nav-tabs .nav-link{
         margin: 0px 40px!important;
         padding: 10px 35px!important;
@@ -120,12 +142,14 @@ a:hover{text-decoration: none!important;}
         text-align: center;
     }
     .nav-tabs .nav-link{
-        margin: 0px!important;
-        padding: 5px!important;
-        font-size: 15px!important;
         cursor: pointer!important;
         transition: all .6s ease!important;
         color: black !important;
+    }
+    .infoProducto_detalles__producto__2JajI .nav-tabs .nav-link{
+        margin: 0px!important;
+        padding: 5px!important;
+        font-size: 15px!important;
     }
     button{
         padding: 2px !important;
@@ -134,7 +158,7 @@ a:hover{text-decoration: none!important;}
 }
 
 @media(max-width:376px){
-    .nav-tabs .nav-link{
+    .infoProducto_detalles__producto__2JajI .nav-tabs .nav-link{
         margin: 0px!important;
         padding: 2px 2px!important;
         font-size: 13px!important;

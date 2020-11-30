@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 const usuarioReducer = (state=INITIAL_STATE,action)=>{
     switch (action.type) {
         case VERIFICAR_SESION:
-            return {...state,logueado:true,usuario:action.payload,loading:false}
+            return {...state,logueado:action.payload.logueado,usuario:action.payload.data,loading:false}
         case LOGIN:
             return {...state,logueado:true,loading:false,error:null,usuario:JSON.parse(action.payload)}
         case LOGOUT:
