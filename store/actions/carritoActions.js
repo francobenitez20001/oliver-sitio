@@ -7,9 +7,17 @@ export const traerProductos = ()=>async (dispatch)=>{
     });
     try {
         const productos = JSON.parse(localStorage.getItem('carrito'));
+        let subtotal = 0;
+        productos.forEach(prd => {
+            subtotal += parseInt(prd.precioUnidad * prd.cantidad);
+        });
+        let payloadData = {
+            productos,
+            subtotal
+        }
         dispatch({
             type:TRAER_PRODUCTOS,
-            payload:productos
+            payload:payloadData
         });
     } catch (error) {
         dispatch({
@@ -49,10 +57,22 @@ export const agregarProducto = producto=>async (dispatch,getState)=>{
         }
         //actualizo localstorage
         localStorage.setItem('carrito',JSON.stringify(listProductosUpgrade));
+
+        //calculo el subtotal
+        const prds = JSON.parse(localStorage.getItem('carrito'));
+        let subtotal = 0;
+        prds.forEach(prd => {
+            subtotal += parseInt(prd.precioUnidad * prd.cantidad);
+        });
+
+        let payloadData = {
+            listProductosUpgrade,
+            subtotal
+        }
         setTimeout(() => {
             dispatch({
                 type:AGREGAR_PRODUCTO,
-                payload:listProductosUpgrade
+                payload:payloadData
             })
         }, 1500);
     } catch (error) {
@@ -71,11 +91,23 @@ export const eliminarProducto = idSubProducto=>async (dispatch,getState)=>{
         const {productos} = getState().carritoReducer;
         //filtro los productos que no tengan el idProducto que se recibió. entonces elimino ese producto y actualizo el reducer.
         const newProductos = productos.filter(newArray=>newArray.idSubProducto !== idSubProducto);
-        console.log(newProductos);
+        //console.log(newProductos);
         localStorage.setItem('carrito',JSON.stringify(newProductos));
+
+        //calculo el subtotal
+        const prds = JSON.parse(localStorage.getItem('carrito'));
+        let subtotal = 0;
+        prds.forEach(prd => {
+            subtotal += parseInt(prd.precioUnidad * prd.cantidad);
+        });
+        
+        let payloadData = {
+            newProductos,
+            subtotal
+        }
         dispatch({
             type:ELIMINAR_PRODUCTO,
-            payload:newProductos
+            payload:payloadData
         });
     } catch (error) {
         dispatch({

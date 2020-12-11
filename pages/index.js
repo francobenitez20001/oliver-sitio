@@ -21,7 +21,7 @@ const Home = () => {
         <>
             <Header title="Oliver PetShop"/>
             <SliderPublicidad img={`${URL_CLOUD_STORAGE}/static/PublicidadProducto.jpg`} img_dos={`${URL_CLOUD_STORAGE}/static/envios.jpg`} img_tres={`${URL_CLOUD_STORAGE}/static/negocio.jpg`}/>
-            <section className={styles.info_deCompra + ' d-none'}>
+            <section className={styles.info_deCompra + ''}>
                 <div className="container">
                     <div className="row">
                         <div className="col-4 text-center">

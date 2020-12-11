@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import React,{useEffect} from 'react';
 import { connect } from 'react-redux';
 import * as carritoActions from '../../../store/actions/carritoActions';
@@ -5,6 +6,7 @@ import CarritoModule from './Carrito.module.css';
 import ProductoCarrito from './ProductoCarrito';
 
 const Carrito = (props) => {
+
     useEffect(() => {
         props.traerProductos();
     }, []);
@@ -33,6 +35,13 @@ const Carrito = (props) => {
         });
         return total;
     }
+
+    const finalizarCompra = ()=>{
+        if(document.getElementsByTagName('body')[0].style.overflowY!=='scroll'){
+            document.getElementsByTagName('body')[0].style.overflowY = 'auto';
+        }
+        Router.push('/checkout');
+    }
     //console.log(props);
     return (
         <section className={CarritoModule.carrito__container + ' ' + `carrito`}>
@@ -45,7 +54,7 @@ const Carrito = (props) => {
                     <p>Subtotal</p>
                     <span className={CarritoModule.subtotal__carrito}>${totalCarrito}</span>
                 </section>
-                <button className="boton bg-yellow" type="button">Finalizar compra</button>
+                <button className="boton bg-yellow" onClick={finalizarCompra} type="button">Finalizar compra</button>
             </div>
         </section>
     );

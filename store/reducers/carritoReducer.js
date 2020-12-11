@@ -11,11 +11,11 @@ const INITIAL_STATE = {
 const carritoReducer = (state = INITIAL_STATE,action)=>{
     switch (action.type) {
         case TRAER_PRODUCTOS:
-            return {...state,productos:action.payload,loading:false,error:null}
+            return {...state,productos:action.payload.productos,loading:false,error:null,subtotal:action.payload.subtotal}
         case AGREGAR_PRODUCTO:
-            return {...state,productos:action.payload,loading:false,error:null}
+            return {...state,productos:action.payload.listProductosUpgrade,loading:false,error:null,subtotal:action.payload.subtotal}
         case ELIMINAR_PRODUCTO:
-            return {...state,productos:action.payload,loading:false,error:null}
+            return {...state,productos:action.payload.newProductos,loading:false,error:null,subtotal:action.payload.subtotal}
         case LOADING:
             return {...state,loading:true}
         case ERROR:
