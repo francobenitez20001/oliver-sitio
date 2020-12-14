@@ -1,7 +1,15 @@
 import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React,{ useState } from 'react';
+import FormEditUbicacion from '../FormEditUbicacion';
+import Modal from '../Modal/index';
 const CardUbicacion = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const switchModalEditUbicacion = ()=>{
+        setModalIsOpen(!modalIsOpen);
+    } 
+
     return (
         <div className="containerUbicacion">
             <span id="icon-ubicacion">
@@ -11,7 +19,7 @@ const CardUbicacion = () => {
                 <span className="d-block">Avenida Jardin 142</span>
                 <span className="text-muted direccionDetallada">Entre: Aromo Y Cedro - - C.P. 6703 - Exaltación de la Cruz, Buenos Aires Franco Benitez - 01153887713</span>
             </div>
-            <span style={{color:'#3483fa',cursor:'pointer'}}>Editar</span>
+            <span style={{color:'#3483fa',cursor:'pointer'}} onClick={switchModalEditUbicacion}>Editar</span>
 
             <style jsx>{`
                 .containerUbicacion{
@@ -39,6 +47,9 @@ const CardUbicacion = () => {
                     }
                 }
             `}</style>
+            {(modalIsOpen)?<Modal closeModal={switchModalEditUbicacion}>
+                <FormEditUbicacion/>
+            </Modal>:null}
         </div>
     );
 }
