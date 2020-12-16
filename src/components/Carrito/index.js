@@ -37,10 +37,7 @@ const Carrito = (props) => {
     }
 
     const finalizarCompra = ()=>{
-        if(document.getElementsByTagName('body')[0].style.overflowY!=='scroll'){
-            document.getElementsByTagName('body')[0].style.overflowY = 'auto';
-        }
-        Router.push('/checkout');
+        window.location.assign('/checkout');
     }
     //console.log(props);
     return (

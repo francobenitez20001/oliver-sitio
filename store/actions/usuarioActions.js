@@ -23,7 +23,9 @@ export const login = (data)=>async(dispatch)=>{
                 let objUsuario = {
                     nombre:response.usuario.nombre,
                     email:response.usuario.email,
-                    foto:response.usuario.foto
+                    foto:response.usuario.foto,
+                    token:response.token,
+                    address:response.usuario.ubicacion
                 }
                 localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
                 dispatch({
@@ -100,7 +102,9 @@ export const register=(data)=>(dispatch)=>{
                 let objUsuario = {
                     nombre:response.usuario.nombre,
                     email:response.usuario.email,
-                    foto:response.usuario.foto
+                    foto:response.usuario.foto,
+                    token:response.token,
+                    address:response.usuario.address
                 }
                 localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
                 dispatch({
@@ -143,7 +147,9 @@ export const singInWithGoogle = tokenId => async(dispatch)=>{
             let objUsuario = {
                 nombre:response.usuario.nombre,
                 email:response.usuario.email,
-                foto:response.usuario.foto
+                foto:response.usuario.foto,
+                token:response.token,
+                address:response.usuario.address
             }
             localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
             dispatch({

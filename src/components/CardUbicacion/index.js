@@ -3,23 +3,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React,{ useState } from 'react';
 import FormEditUbicacion from '../FormEditUbicacion';
 import Modal from '../Modal/index';
-const CardUbicacion = () => {
+
+const CardUbicacion = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const switchModalEditUbicacion = ()=>{
         setModalIsOpen(!modalIsOpen);
     } 
-
+    const{dataUser:usuario} = props;
+    let direccionAcortada;
+    if(usuario.address){
+        direccionAcortada = usuario.address.split(',')[0];
+    }
     return (
         <div className="containerUbicacion">
             <span id="icon-ubicacion">
                 <FontAwesomeIcon icon={faMapMarker}/>
             </span>
             <div className="descripcion_ubicacion py-0 px-2">
-                <span className="d-block">Avenida Jardin 142</span>
-                <span className="text-muted direccionDetallada">Entre: Aromo Y Cedro - - C.P. 6703 - Exaltación de la Cruz, Buenos Aires Franco Benitez - 01153887713</span>
+                {(usuario.address)?
+                <>
+                    <span className="d-block">{direccionAcortada}</span>
+                    <span className="text-muted direccionDetallada">{usuario.address} {usuario.nombre} - {usuario.email}</span>
+                </>:<span>Sin ubicaciones guardadas</span>
+                }
             </div>
-            <span style={{color:'#3483fa',cursor:'pointer'}} onClick={switchModalEditUbicacion}>Editar</span>
+            {(usuario.address)?
+                <span style={{color:'#3483fa',cursor:'pointer',marginLeft:'auto'}} onClick={switchModalEditUbicacion}>Editar</span>
+            :
+                <span style={{color:'#3483fa',cursor:'pointer',marginLeft:'auto'}} onClick={switchModalEditUbicacion}>Agregar</span>
+            }
 
             <style jsx>{`
                 .containerUbicacion{
@@ -48,10 +61,14 @@ const CardUbicacion = () => {
                 }
             `}</style>
             {(modalIsOpen)?<Modal closeModal={switchModalEditUbicacion}>
-                <FormEditUbicacion/>
+                {(usuario.address)?
+                    <FormEditUbicacion update={true}/>
+                :
+                    <FormEditUbicacion update={false}/>
+                }
             </Modal>:null}
         </div>
     );
 }
- 
+
 export default CardUbicacion;

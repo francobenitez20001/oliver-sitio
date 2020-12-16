@@ -29,8 +29,11 @@ const FormEditUbicacion = (props) => {
 
     return (
         <form className="form-group" onSubmit={handleSubmit}>
-            <h4 className="my-3">Cambiar ubicación</h4>
-            <span className="text-muted">Ubicación registrada: <b>Avenida Jardin 142, Exaltación de la Cruz, Buenos Aires</b></span>
+            <h4 className="my-3">{(props.update)?'Cambiar ubicación':'Agregar Ubicación'}</h4>
+            {(props.update)?
+                <span className="text-muted">Ubicación registrada: <b>Avenida Jardin 142, Exaltación de la Cruz, Buenos Aires</b></span>
+            :null
+            }
             <hr/>
             <PlacesAutocomplete value={formValues.address} onChange={handleChange} onSelect={handleSelect}>
                 {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (

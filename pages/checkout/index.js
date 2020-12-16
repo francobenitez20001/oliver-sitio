@@ -4,19 +4,29 @@ import OpcionesEnvio from '../../src/components/OpcionesEnvio';
 import ZonaEnvio from '../../src/components/ZonaEnvio';
 import Head from '../../src/components/Head';
 import DetalleProductos from '../../src/components/DetalleProductos';
+import Error from '../../src/components/Error';
 import { connect } from 'react-redux';
 import * as carritoActions from '../../store/actions/carritoActions';
+import * as usuarioActions from '../../store/actions/usuarioActions';
+import {API} from '../../config/index';
+import Loader from '../../src/components/Loader/index';
+
+const {traerProductos:carritoTraerProductos} = carritoActions;
+const {verificarSesion} = usuarioActions;
 
 const Checkout = (props) => {
-    //console.log(props);
     const [tipoEnvio, setTipoEnvio] = useState({
         normal:true,
         express:false,
         local:false
     });
 
+    const [zonaEnvio, setZonaEnvio] = useState('');
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
-        props.traerProductos();
+        props.carritoTraerProductos();
     }, []);
 
     const cambiarTipoDeEnvio = tipoDeEnvio=>{
@@ -41,25 +51,56 @@ const Checkout = (props) => {
         })
     }
 
+    const insertarZonaDeEnvio = zona=>{
+        setZonaEnvio(zona);
+    }
+
+    const handleClick = ()=>{
+        if(!props.usuarioReducer.usuario.address || props.usuarioReducer.usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
+        if(zonaEnvio==='') return setError('Es obligatorio completar la zona de envío.');
+        setLoading(true);
+        let tipoDeEnvioActivo;
+        if(tipoEnvio.local){tipoDeEnvioActivo='Local'};
+        if(tipoEnvio.normal){tipoDeEnvioActivo='Domicilio'}
+        if(tipoEnvio.express){tipoDeEnvioActivo='Express'}
+        let dataEnvio = {
+            tipo:tipoDeEnvioActivo,
+            zona:zonaEnvio,
+            address:props.usuarioReducer.usuario.address
+        }
+        // fetch(`${API}mercadopago`,{
+        //     method:'POST'
+        // }).then(res=>res.json()).then(datamp=>{
+        //     const {response} = datamp.info;
+        //     setLoading(false);
+        //     window.location.assign(response.init_point);
+        // })
+        console.log(dataEnvio);
+    }
+
+
     return (
+        (!props.usuarioReducer.logueado)?null:
         <>
+            {(loading)?<div className="container-loader"><Loader/></div>:null}   
             <Head title="Oliver Pet Shop"/>
             <div className="container mb-4">
                 <div className="row">
                     <div className="col-12 col-md-8 pt-4">
                         <h2>Últimos pasos para terminar tu compra</h2>
-                        <CardUbicacion/>
-                        <ZonaEnvio/>
+                        {(error)?<Error message={error}/>:null}
+                        <CardUbicacion dataUser={props.usuarioReducer.usuario}/>
+                        <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
                         <h2 className="mt-5">Opciones de envío</h2>
                         <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
-                        <button type="button" className="btn btn-primary" id="btn-continuar">Continuar</button>
+                        <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
                         <div className="divTotalMobile">
-                            <span id="total">${props.subtotal}</span>
-                            <button type="button" className="btn btn-primary">Continuar</button>
+                            <span id="total">${props.carritoReducer.subtotal}</span>
+                            <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
                         </div>
                     </div>
                     <div className="col-12 col-md-4 detalleProductos">
-                        <DetalleProductos data={props}/>
+                        <DetalleProductos data={props.carritoReducer}/>
                     </div>
                 </div>
                 <style jsx>{`
@@ -94,7 +135,16 @@ const Checkout = (props) => {
     );
 }
  
-const mapStateToProps = reducers=>{
-    return reducers.carritoReducer;
+const mapStateToProps = ({carritoReducer,usuarioReducer})=>{
+    return {
+        carritoReducer,
+        usuarioReducer
+    };
 }
-export default connect(mapStateToProps,carritoActions)(Checkout);
+
+const mapDispatchToProps = {
+    carritoTraerProductos,
+    verificarSesion
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Checkout);

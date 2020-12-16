@@ -29,7 +29,7 @@
 .imgProfile{
     width: 28px;
     border-radius: 14px;
-    border: solid #835008;
+    height: 28px;
 }
 
 .container__login_menu .btn_carrito{
