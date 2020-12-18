@@ -1,12 +1,16 @@
 import AvatarUsuario from './avatar';
 import EstadisticasUsuario from './estadisticas';
+import {connect} from 'react-redux';
+import * as usuarioActions from '../../../store/actions/usuarioActions';
 
 const BannerUsuario = (props) => {
+    const {usuario} = props.usuarioReducer;
     return (
+        (usuario)?
         <section className="banner_usuario">
             <div className="row">
                 <div className="col-12 col-md-6">
-                    <AvatarUsuario abrirModalFoto={props.abrirModalFoto}/>
+                    <AvatarUsuario usuario={usuario} abrirModalFoto={props.abrirModalFoto}/>
                 </div>
                 <div className="col-12 col-md-6">
                     <EstadisticasUsuario/>
@@ -26,7 +30,12 @@ const BannerUsuario = (props) => {
                 }   
             `}</style>
         </section>
+        :null
     );
 }
+
+const mapStateToProps = ({usuarioReducer})=>{
+    return {usuarioReducer}
+}
  
-export default BannerUsuario;
+export default connect(mapStateToProps,usuarioActions)(BannerUsuario);

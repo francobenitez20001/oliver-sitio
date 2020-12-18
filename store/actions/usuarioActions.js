@@ -1,3 +1,4 @@
+import { response } from '../../../api/server/routes/usuario';
 import {API} from '../../config/index';
 import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR} from '../types/usuarioTypes';
 
@@ -25,7 +26,8 @@ export const login = (data)=>async(dispatch)=>{
                     email:response.usuario.email,
                     foto:response.usuario.foto,
                     token:response.token,
-                    address:response.usuario.ubicacion
+                    address:response.usuario.ubicacion,
+                    idUsuario:response.usuario.idUsuario
                 }
                 localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
                 dispatch({
@@ -104,7 +106,8 @@ export const register=(data)=>(dispatch)=>{
                     email:response.usuario.email,
                     foto:response.usuario.foto,
                     token:response.token,
-                    address:response.usuario.address
+                    address:response.usuario.address,
+                    idUsuario:response.usuario.idUsuario
                 }
                 localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
                 dispatch({
@@ -149,7 +152,8 @@ export const singInWithGoogle = tokenId => async(dispatch)=>{
                 email:response.usuario.email,
                 foto:response.usuario.foto,
                 token:response.token,
-                address:response.usuario.address
+                address:response.usuario.address,
+                idUsuario:response.usuario.idUsuario
             }
             localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
             dispatch({
@@ -157,6 +161,23 @@ export const singInWithGoogle = tokenId => async(dispatch)=>{
                 payload:localStorage.getItem('oliverpetshop_usuario')
             });
         })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error
+        })
+    }
+}
+
+export const actualizarFoto = (data,id) =>async(dispatch)=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
+        headers.append("token", token);
+        
     } catch (error) {
         dispatch({
             type:ERROR,

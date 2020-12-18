@@ -18,7 +18,7 @@ const usuarioReducer = (state=INITIAL_STATE,action)=>{
         case LOADING:
             return {...state,loading:true}
         case ERROR:
-            return {...state,logueado:false,loading:false,error:action.payload}
+            return {...state,loading:false,error:action.payload}
         default:
             return state;
     }

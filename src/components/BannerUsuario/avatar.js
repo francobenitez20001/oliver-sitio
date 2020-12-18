@@ -1,16 +1,18 @@
-const AvatarUsuario = (props) => {
+const AvatarUsuario = ({usuario,abrirModalFoto}) => {
     return (
         <div className="row">
             <div className="col-12 col-md-6 text-center">
-                <img src={`https://storage.googleapis.com/web-oliver/user-default.png`} alt={`user`}  className="img-fluid"/>
+                <img src={usuario.foto} alt={usuario.nombre}/>
             </div>
             <div className="col-12 col-md-6 text-center">
-                <h3>Franco Benitez</h3>
-                <button type="button" onClick={props.abrirModalFoto} className="boton bg-yellow">Cambiar Foto</button>
+                <h3>{usuario.nombre}</h3>
+                <button type="button" onClick={abrirModalFoto} className="boton bg-yellow">Cambiar Foto</button>
             </div>
             <style jsx>{`
                 img{
-                    border-radius:50%;
+                    border-radius:30px;
+                    width:60px;
+                    height:60px
                 }
             `}</style>
         </div>
