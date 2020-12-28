@@ -1,6 +1,5 @@
-import { response } from '../../../api/server/routes/usuario';
 import {API} from '../../config/index';
-import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR} from '../types/usuarioTypes';
+import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER} from '../types/usuarioTypes';
 
 export const login = (data)=>async(dispatch)=>{
     dispatch({
@@ -27,7 +26,10 @@ export const login = (data)=>async(dispatch)=>{
                     foto:response.usuario.foto,
                     token:response.token,
                     address:response.usuario.ubicacion,
-                    idUsuario:response.usuario.idUsuario
+                    idUsuario:response.usuario.idUsuario,
+                    lat:response.usuario.lat,
+                    lon:response.usuario.lon,
+                    telefono:response.usuario.telefono
                 }
                 localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
                 dispatch({
@@ -153,7 +155,10 @@ export const singInWithGoogle = tokenId => async(dispatch)=>{
                 foto:response.usuario.foto,
                 token:response.token,
                 address:response.usuario.address,
-                idUsuario:response.usuario.idUsuario
+                idUsuario:response.usuario.idUsuario,
+                lat:response.usuario.lat,
+                lon:response.usuario.lon,
+                telefono:response.usuario.telefono
             }
             localStorage.setItem('oliverpetshop_usuario',JSON.stringify(objUsuario));
             dispatch({
@@ -177,11 +182,59 @@ export const actualizarFoto = (data,id) =>async(dispatch)=>{
         let headers = new Headers();
         let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
         headers.append("token", token);
-        
+        const request = await fetch(`${API}actualizarFotoUsuarioDesdeWeb/${id}`,{
+            method:'PUT',
+            headers,
+            body:data
+        });
+        const dataRequest = await request.json();
+        if(dataRequest.ok){
+            localStorage.setItem('oliverpetshop_usuario',JSON.stringify(dataRequest.user));
+            dispatch({
+                type:UPDATE_USER,
+                payload:dataRequest.user
+            })
+        }
     } catch (error) {
         dispatch({
             type:ERROR,
             payload:error
+        })
+    }
+}
+
+export const actualizarUsuario = (data,id)=>async dispatch=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
+        if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
+        headers.append('token',token);
+        headers.append("Content-Type", "application/json");
+        const request = await fetch(`${API}actualizarUsuarioDesdeWeb/${id}`,{
+            method:'PUT',
+            headers,
+            body:JSON.stringify(data)
+        });
+        if(request.status!=200) return dispatch({type:ERROR,payload:'Ocurrio un error, ¡intentelo más tarde!'})
+        const dataRequest = await request.json();
+        if(dataRequest.ok){
+            localStorage.setItem('oliverpetshop_usuario',JSON.stringify(dataRequest.user));
+            return dispatch({
+                type:UPDATE_USER,
+                payload:dataRequest.user
+            })
+        }
+        return dispatch({
+            type:ERROR,
+            payload:dataRequest.info
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error.message
         })
     }
 }

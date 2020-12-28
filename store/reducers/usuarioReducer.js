@@ -1,4 +1,4 @@
-import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR} from '../types/usuarioTypes';
+import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER} from '../types/usuarioTypes';
 
 const INITIAL_STATE = {
     usuario:null,
@@ -19,6 +19,8 @@ const usuarioReducer = (state=INITIAL_STATE,action)=>{
             return {...state,loading:true}
         case ERROR:
             return {...state,loading:false,error:action.payload}
+        case UPDATE_USER:
+            return {...state,loading:false,error:null,usuario:action.payload}
         default:
             return state;
     }

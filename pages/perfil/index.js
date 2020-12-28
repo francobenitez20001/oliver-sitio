@@ -22,9 +22,9 @@ const Perfil = () => {
         {
             nombre:'General'
         },
-        {
-            nombre:'Mis compras'
-        }
+        // {
+        //     nombre:'Mis compras'
+        // }
     ];
 
     const abrirModal = ()=>{
