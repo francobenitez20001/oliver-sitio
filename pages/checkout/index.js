@@ -68,13 +68,13 @@ const Checkout = (props) => {
             zona:zonaEnvio,
             address:props.usuarioReducer.usuario.address
         }
-        // fetch(`${API}mercadopago`,{
-        //     method:'POST'
-        // }).then(res=>res.json()).then(datamp=>{
-        //     const {response} = datamp.info;
-        //     setLoading(false);
-        //     window.location.assign(response.init_point);
-        // })
+        fetch(`${API}mercadopago`,{
+            method:'POST'
+        }).then(res=>res.json()).then(datamp=>{
+            const {response} = datamp.info;
+            setLoading(false);
+            window.location.assign(response.init_point);
+        })
         console.log(dataEnvio);
     }
 
