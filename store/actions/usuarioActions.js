@@ -238,3 +238,74 @@ export const actualizarUsuario = (data,id)=>async dispatch=>{
         })
     }
 }
+
+export const sendEmailForResetPassword = idUsuario=> async dispatch=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
+        if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
+        headers.append('token',token);
+        headers.append("Content-Type", "application/json");
+        const request = await fetch(`${API}resetPassword`,{
+            method:'POST',
+            headers,
+            body:JSON.stringify({idUsuario})
+        });
+        if(request.status!=200) return dispatch({type:ERROR,payload:'Ocurrio un error, ¡intentelo más tarde!'})
+        const dataRequest = await request.json();
+        if(dataRequest.ok){
+            return console.log(dataRequest);
+        }
+        return dispatch({
+            type:ERROR,
+            payload:dataRequest.info
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:dataRequest.info
+        })
+    }
+}
+
+export const updatePassword = (data,token) => async dispatch=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        if(data.confirmNewPassword === '' || data.newPassword ===''){
+            return dispatch({
+                type:ERROR,
+                payload:'Los dos campos son obligarios.'
+            });
+        }
+        if(data.confirmNewPassword != data.newPassword){
+            return dispatch({
+                type:ERROR,
+                payload:'Las contraseñas no coinciden.'
+            });
+        }
+        let headers = new Headers();
+        headers.append('refresh-token',token);
+        headers.append("Content-Type", "application/json");
+        const request = await fetch(`${API}new-password`,{
+            method:'PUT',
+            headers,
+            body:JSON.stringify(data)
+        });
+        if(request.status!=200) return dispatch({
+            type:ERROR,
+            payload:'Ups, algo ha salido mal...'
+        });
+        const dataRequest = await request.json();
+        console.log(dataRequest);
+    } catch (error) {
+        return dispatch({
+            type:ERROR,
+            payload:error
+        });
+    }
+}
