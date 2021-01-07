@@ -1,11 +1,15 @@
 import Head from '../../src/components/Head'
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Error from '../../src/components/Error';
 import {connect} from 'react-redux';
 import * as usuarioActions from '../../store/actions/usuarioActions';
 import Loader from '../../src/components/Loader/index';
 
 const newPassword = (props) => {
+    useEffect(() => {
+        props.verificarSesion(props.token);
+    }, []);
+
     const [formValues, setFormValues] = useState({
         newPassword:'',
         confirmNewPassword:''
@@ -22,32 +26,35 @@ const newPassword = (props) => {
         event.preventDefault();
         props.updatePassword(formValues,props.token);
     }
-    const {loading,error} = props.usuarioReducer;
-    console.log(props);
+    const {loading,error,logueado,actionSuccess} = props.usuarioReducer;
     return (
         <>
             <Head title='Oliver Petshop - Nueva contraseña'/>
             <section className="mt-2 container">
-                {/* <Error message="Ups.. algo ha ido mal."/> */}
-                {(error)?<Error message={error}/>:null}
-                <form className="form-group mt-3" onSubmit={handleSubmit}>
-                    <div className="col-12 mb-3">
-                        <label htmlFor="pw">Nueva Contraseña</label>
-                        <input onChange={handleChange} value={formValues.newPassword} type="password" className="form-control" placeholder="Ingrese su nueva contraseña" name="newPassword" id="newPassword" required/>
-                    </div>
-                    <div className="col-12 mb-3">
-                        <label htmlFor="pw-repeat">Repita la nueva contraseña</label>
-                        <input onChange={handleChange} value={formValues.confirmNewPassword} type="password" className="form-control" placeholder="Repita su nueva contraseña" name="confirmNewPassword" id="confirmNewPassword" required/>
-                    </div>
-                    <div className="col-12 text-center">
-                        {(loading)?<Loader/>:<input type="submit" className="boton bg-yellow" value="Enviar"/>}
-                    </div>
-                    <style jsx>{`
-                        form{
-                            font-family: 'Quicksand', sans-serif!important;
-                        }
-                    `}</style>
-                </form>
+                {(logueado)?
+                <>
+                    {(error)?<Error message={error}/>:null}
+                    {(actionSuccess)?<div className="alert alert-info text-center">{actionSuccess}</div>:null}
+                    <form className="form-group mt-3" onSubmit={handleSubmit}>
+                        <div className="col-12 mb-3">
+                            <label htmlFor="pw">Nueva Contraseña</label>
+                            <input onChange={handleChange} value={formValues.newPassword} type="password" className="form-control" placeholder="Ingrese su nueva contraseña" name="newPassword" id="newPassword" required/>
+                        </div>
+                        <div className="col-12 mb-3">
+                            <label htmlFor="pw-repeat">Repita la nueva contraseña</label>
+                            <input onChange={handleChange} value={formValues.confirmNewPassword} type="password" className="form-control" placeholder="Repita su nueva contraseña" name="confirmNewPassword" id="confirmNewPassword" required/>
+                        </div>
+                        <div className="col-12 text-center">
+                            {(loading)?<Loader/>:<input type="submit" className="boton bg-yellow" value="Enviar"/>}
+                        </div>
+                        <style jsx>{`
+                            form{
+                                font-family: 'Quicksand', sans-serif!important;
+                            }
+                        `}</style>
+                    </form>
+                </>
+                :<Error message="Ups.. algo ha ido mal."/>}
             </section>
         </>
     );

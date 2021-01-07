@@ -1,5 +1,5 @@
-import {API} from '../../config/index';
-import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER} from '../types/usuarioTypes';
+import {API,PUBLIC_URL} from '../../config/index';
+import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD} from '../types/usuarioTypes';
 
 export const login = (data)=>async(dispatch)=>{
     dispatch({
@@ -69,10 +69,24 @@ export const logout = ()=>async(dispatch)=>{
     }
 }
 
-export const verificarSesion=()=>async(dispatch)=>{
+export const verificarSesion=(token=null)=>async(dispatch)=>{
     try {
         let dataUsuario = JSON.parse(localStorage.getItem('oliverpetshop_usuario'));
         if(dataUsuario){
+            // request para verificar que el token corresponda a una sesion activa
+            let headers = new Headers();
+            let tokenSend = (token)?token:dataUsuario.token;
+            headers.append('token',tokenSend);
+            const request = await fetch(`${API}verify-sesion`,{
+                method:'GET',
+                headers
+            });
+            if(request.status!=200){
+                return dispatch({
+                    type:VERIFICAR_SESION,
+                    payload:{data:null,logueado:false}
+                })
+            }
             return dispatch({
                 type:VERIFICAR_SESION,
                 payload:{data:dataUsuario,logueado:true}
@@ -300,8 +314,12 @@ export const updatePassword = (data,token) => async dispatch=>{
             type:ERROR,
             payload:'Ups, algo ha salido mal...'
         });
-        const dataRequest = await request.json();
-        console.log(dataRequest);
+        dispatch({
+            type:UPDATE_PASSWORD
+        });
+        return setTimeout(() => {
+            window.location.assign(`${PUBLIC_URL}`);
+        }, 5000);
     } catch (error) {
         return dispatch({
             type:ERROR,
