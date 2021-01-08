@@ -51,7 +51,7 @@ const Carrito = (props) => {
                     <p>Subtotal</p>
                     <span className={CarritoModule.subtotal__carrito}>${totalCarrito}</span>
                 </section>
-                <button className="boton bg-yellow" onClick={finalizarCompra} type="button">Finalizar compra</button>
+                {(props.productos.length==0)?null:<button className="boton bg-yellow" onClick={finalizarCompra} type="button">Finalizar compra</button>}
             </div>
         </section>
     );

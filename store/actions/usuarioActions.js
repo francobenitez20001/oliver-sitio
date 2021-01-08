@@ -253,6 +253,42 @@ export const actualizarUsuario = (data,id)=>async dispatch=>{
     }
 }
 
+export const actualizarAddress = (data,id)=>async dispatch=>{
+    dispatch({
+        type:LOADING
+    });
+    try {
+        let headers = new Headers();
+        let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
+        if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
+        headers.append('token',token);
+        headers.append("Content-Type", "application/json");
+        const request = await fetch(`${API}actualizarDireccion/${id}`,{
+            method:'PUT',
+            headers,
+            body:JSON.stringify(data)
+        });
+        if(request.status!=200) return dispatch({type:ERROR,payload:'Ocurrio un error, ¡intentelo más tarde!'})
+        const dataRequest = await request.json();
+        if(dataRequest.ok){
+            localStorage.setItem('oliverpetshop_usuario',JSON.stringify(dataRequest.usuario));
+            return dispatch({
+                type:UPDATE_USER,
+                payload:dataRequest.usuario
+            })
+        }
+        return dispatch({
+            type:ERROR,
+            payload:dataRequest.info
+        })
+    } catch (error) {
+        dispatch({
+            type:ERROR,
+            payload:error.message
+        }) 
+    }
+}
+
 export const sendEmailForResetPassword = idUsuario=> async dispatch=>{
     dispatch({
         type:LOADING

@@ -38,7 +38,8 @@ const FormModificarPw = (props) => {
             <div className="text-center">{(error)?<div className="alert alert-danger text-center">{error}</div>:null}</div>
             <div className={`alert alert-${(actionSuccess)?`info`:`warning`} text-center`}>{(actionSuccess)?<b>{actionSuccess}</b>:`Estaremos enviando un email con los pasos para poder realizar el proceso de modificación de contraseña`}</div>
             <div className="col-12 text-center">
-                {(loading)?<Loader/>:<button onClick={sendEmail} type="button" disabled={(actionSuccess)?true:false} className="boton bg-yellow">Enviar email</button>}
+                {(loading)?<Loader/>:null}
+                {(!actionSuccess && !loading)?<button onClick={sendEmail} type="button" className="boton bg-yellow">Enviar email</button>:null}
             </div>
             <style jsx>{`
                 .containerResetPass{

@@ -29,6 +29,10 @@ const Checkout = (props) => {
         props.carritoTraerProductos();
     }, []);
 
+    useEffect(() => {
+        console.log(props.carritoReducer.productos);
+    }, [props.carritoReducer.productos])
+
     const cambiarTipoDeEnvio = tipoDeEnvio=>{
         if(tipoDeEnvio==='normal'){
             return setTipoEnvio({
@@ -80,57 +84,61 @@ const Checkout = (props) => {
 
 
     return (
-        (!props.usuarioReducer.logueado)?null:
+        (!props.usuarioReducer.logueado)?<div className="mt-3"><Error message="No puedes realizar una compra sin tener una sesión activa."/></div>:
         <>
-            {(loading)?<div className="container-loader"><Loader/></div>:null}   
-            <Head title="Oliver Pet Shop"/>
-            <div className="container mb-4">
-                <div className="row">
-                    <div className="col-12 col-md-8 pt-4">
-                        <h2>Últimos pasos para terminar tu compra</h2>
-                        {(error)?<Error message={error}/>:null}
-                        <CardUbicacion dataUser={props.usuarioReducer.usuario}/>
-                        <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
-                        <h2 className="mt-5">Opciones de envío</h2>
-                        <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
-                        <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
-                        <div className="divTotalMobile">
-                            <span id="total">${props.carritoReducer.subtotal}</span>
-                            <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
+            {(props.carritoReducer.productos.length===0)?<div className="mt-3"><Error message="No hay productos para finalizar la compra."/></div>:
+                <>
+                    {(loading)?<div className="container-loader"><Loader/></div>:null}   
+                    <Head title="Oliver Pet Shop"/>
+                    <div className="container mb-4">
+                        <div className="row">
+                            <div className="col-12 col-md-8 pt-4">
+                                <h2>Últimos pasos para terminar tu compra</h2>
+                                {(error)?<Error message={error}/>:null}
+                                <CardUbicacion dataUser={props.usuarioReducer.usuario}/>
+                                <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
+                                <h2 className="mt-5">Opciones de envío</h2>
+                                <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
+                                <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
+                                <div className="divTotalMobile">
+                                    <span id="total">${props.carritoReducer.subtotal}</span>
+                                    <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-4 detalleProductos">
+                                <DetalleProductos data={props.carritoReducer}/>
+                            </div>
                         </div>
+                        <style jsx>{`
+                            h2{font-size:25px}
+                            button#btn-continuar{
+                                float:right;
+                                margin-top:20px
+                            }
+                            .divTotalMobile{display:none}
+                            @media(max-width:768px){
+                                #btn-continuar{display:none}
+                                .divTotalMobile{
+                                    display:flex;
+                                    justify-content:space-between;
+                                    position: fixed;
+                                    left:0;
+                                    right:0px;
+                                    bottom: 0px;
+                                    background-color: #f7f7f7;
+                                    padding: 16px;
+                                    box-shadow: 0 -2px 8px 2px rgba(0,0,0,.15);
+                                    border-width: 0 1px 1px;
+                                    font-family: 'Quicksand', sans-serif;
+                                } 
+                                .detalleProductos{
+                                    display:none
+                                }           
+                            }
+                        `}</style>
                     </div>
-                    <div className="col-12 col-md-4 detalleProductos">
-                        <DetalleProductos data={props.carritoReducer}/>
-                    </div>
-                </div>
-                <style jsx>{`
-                    h2{font-size:25px}
-                    button#btn-continuar{
-                        float:right;
-                        margin-top:20px
-                    }
-                    .divTotalMobile{display:none}
-                    @media(max-width:768px){
-                        #btn-continuar{display:none}
-                        .divTotalMobile{
-                            display:flex;
-                            justify-content:space-between;
-                            position: fixed;
-                            left:0;
-                            right:0px;
-                            bottom: 0px;
-                            background-color: #f7f7f7;
-                            padding: 16px;
-                            box-shadow: 0 -2px 8px 2px rgba(0,0,0,.15);
-                            border-width: 0 1px 1px;
-                            font-family: 'Quicksand', sans-serif;
-                        } 
-                        .detalleProductos{
-                            display:none
-                        }           
-                    }
-                `}</style>
-            </div>
+                </>
+            }
         </>
     );
 }

@@ -6,7 +6,7 @@ export const traerProductos = ()=>async (dispatch)=>{
         type:LOADING
     });
     try {
-        const productos = JSON.parse(localStorage.getItem('carrito'));
+        const productos = await JSON.parse(localStorage.getItem('carrito'));
         let subtotal = 0;
         productos.forEach(prd => {
             subtotal += parseInt(prd.precioUnidad * prd.cantidad);
@@ -15,12 +15,12 @@ export const traerProductos = ()=>async (dispatch)=>{
             productos,
             subtotal
         }
-        dispatch({
+        return dispatch({
             type:TRAER_PRODUCTOS,
             payload:payloadData
         });
     } catch (error) {
-        dispatch({
+        return dispatch({
             type:ERROR,
             payload:error
         })
