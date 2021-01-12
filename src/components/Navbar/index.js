@@ -14,6 +14,7 @@ import {connect} from 'react-redux';
 import * as usuarioActions from '../../../store/actions/usuarioActions';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import FiltroStyle from '../Filtro/Filtro.module.css';
+import FormModificarPw from '../formModificarPw/index';
 
 
 const Navbar = (props) => {
@@ -25,6 +26,7 @@ const Navbar = (props) => {
     const [login, setLogin] = useState(false);
     const [carrito, setCarrito] = useState(false);
     const [register, setRegister] = useState(false);
+    const [resetPassword, setResetPassword] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [dropdownOpen, setOpen] = useState(false);
     const location = useRouter();
@@ -40,6 +42,13 @@ const Navbar = (props) => {
         (login)?setLogin(false):false;
         (carrito)?setCarrito(false):null;
         setRegister(true);
+    }
+
+    const showResetPassword = ()=>{
+        (login)?setLogin(false):null;
+        (carrito)?setCarrito(false):null;
+        (register)?setRegister(false):null;
+        setResetPassword(true);
     }
 
     const closeModal=()=>(
@@ -80,10 +89,12 @@ const Navbar = (props) => {
     }
 
     const renderContenidoModal = ()=>{
-        if(login) return <Login showRegister={showRegister}/>;
+        if(login) return <Login showRegister={showRegister} showResetPassword={showResetPassword}/>;
         if(register) return <Register showLogin={showModalLogin}/>;
         if(carrito) return <Carrito/>
+        if(resetPassword) return <FormModificarPw withEmail={true}/>
     }
+
     const cerrarSesion = async()=>{
         await props.logout();
         setTimeout(() => {

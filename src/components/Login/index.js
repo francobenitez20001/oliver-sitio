@@ -56,7 +56,7 @@ const Login = (props) => {
                         <input type="password" className={LoginStyle.input + ' ' + `form-control`} id="password" name="password" value={formLoginValues.password} onChange={handleChangeLogin}/>
                         <br/>
                         <input type="submit" className="boton bg-yellow mb-1" value="Ingresar"/>
-                        <a href="/" className={LoginStyle.forgot__pass + ' ' + `text-center d-block`}>Olvidé mi constraseña</a>
+                        <a onClick={props.showResetPassword} style={{cursor:'pointer'}} className={LoginStyle.forgot__pass + ' ' + `text-center d-block`}>Olvidé mi constraseña</a>
                     </form>
                     <section className={LoginStyle.registerInLogin + ' ' + `text-center`}>
                         <span className="text-muted">¿No tenes cuenta?<span className={LoginStyle.registerLink} onClick={habilitarRegister}> Registrate</span></span>

@@ -7,18 +7,27 @@ const FormModificarPw = (props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [actionSuccess, setActionSuccess] = useState(null);
+    const [email, setEmail] = useState('');
 
     const sendEmail = async ()=>{
-        const {idUsuario,token} = props.usuarioReducer.usuario;
         let headers = new Headers();
-        if(!token) return setError('Ups.. ha ocurrido un error.');
+        let dataToSend;
+        if(props.usuarioReducer.logueado){
+            const {idUsuario,token} = props.usuarioReducer.usuario;
+            if(!token) return setError('Ups.. ha ocurrido un error.');
+            headers.append('token',token);
+            dataToSend={idUsuario};
+        }else{
+            if(email=='') return setError('Ups.. ha ocurrido un error.');
+            dataToSend = {email}
+        }
         setLoading(true);
-        headers.append('token',token);
         headers.append("Content-Type", "application/json");
+        console.log(dataToSend);
         const request = await fetch(`${API}resetPassword`,{
             method:'POST',
             headers,
-            body:JSON.stringify({idUsuario})
+            body:JSON.stringify(dataToSend)
         });
         if(request.status!=200){
             setLoading(false);
@@ -31,14 +40,18 @@ const FormModificarPw = (props) => {
         }
         return setError('Ups.. ha ocurrido un error.');
     };
+
+    const handleChangeEmail = event=>{
+        setEmail(event.target.value);
+    }
     
-    console.log(props);
     return (
         <div className="containerResetPass">
             <div className="text-center">{(error)?<div className="alert alert-danger text-center">{error}</div>:null}</div>
             <div className={`alert alert-${(actionSuccess)?`info`:`warning`} text-center`}>{(actionSuccess)?<b>{actionSuccess}</b>:`Estaremos enviando un email con los pasos para poder realizar el proceso de modificación de contraseña`}</div>
             <div className="col-12 text-center">
                 {(loading)?<Loader/>:null}
+                {(props.withEmail)?<input type="email" className="form-control mb-3" value={email} onChange={handleChangeEmail} required placeholder="Ingrese su email"/>:null}
                 {(!actionSuccess && !loading)?<button onClick={sendEmail} type="button" className="boton bg-yellow">Enviar email</button>:null}
             </div>
             <style jsx>{`
