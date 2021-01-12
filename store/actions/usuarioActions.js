@@ -72,7 +72,7 @@ export const logout = ()=>async(dispatch)=>{
 export const verificarSesion=(token=null)=>async(dispatch)=>{
     try {
         let dataUsuario = JSON.parse(localStorage.getItem('oliverpetshop_usuario'));
-        if(dataUsuario){
+        if(dataUsuario || token){
             // request para verificar que el token corresponda a una sesion activa
             let headers = new Headers();
             let tokenSend = (token)?token:dataUsuario.token;
