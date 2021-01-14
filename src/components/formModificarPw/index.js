@@ -24,7 +24,7 @@ const FormModificarPw = (props) => {
         setLoading(true);
         headers.append("Content-Type", "application/json");
         console.log(dataToSend);
-        const request = await fetch(`${API}resetPassword`,{
+        const request = await fetch(`${API}/resetPassword`,{
             method:'POST',
             headers,
             body:JSON.stringify(dataToSend)

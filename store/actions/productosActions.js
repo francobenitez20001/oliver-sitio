@@ -7,9 +7,9 @@ export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)
         type:LOADING
     });
     try {
-        let url = `${API}producto?desde=${desde}&limite=${limiteDesktop}`;
+        let url = `${API}/producto?desde=${desde}&limite=${limiteDesktop}`;
         if(isMobile()){
-            url = `${API}producto?desde=${desde}&limite=${limiteMobile}`;
+            url = `${API}/producto?desde=${desde}&limite=${limiteMobile}`;
         }
         return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
@@ -30,9 +30,9 @@ export const traerMas = (rangoProducto,prevProductos)=>async (dispatch)=>{
         type:LOADING_MAS
     });
     try {
-        let url = `${API}producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteDesktop}`;
+        let url = `${API}/producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteDesktop}`;
         if(isMobile()){
-            url = `${API}producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteMobile}`;
+            url = `${API}/producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteMobile}`;
         }
         return fetch(url).then(res=>res.json()).then(data=>{
             let updateproductos = [...prevProductos,...data.data];
@@ -54,7 +54,7 @@ export const traerPorId = id=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}producto/${id}`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/producto/${id}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_UNO,
                 payload:data
@@ -116,7 +116,7 @@ export const filtrarProductos = url=>async dispatch=>{
     });
     try {
         let urlFiltro = (url.includes('buscar?busqueda'))?`productos/${url}`:`productos/filtro/${url}`;
-        return fetch(`${API}${urlFiltro}`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/${urlFiltro}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,
                 payload:data.data
