@@ -72,14 +72,36 @@ const Checkout = (props) => {
             zona:zonaEnvio,
             address:props.usuarioReducer.usuario.address
         }
-        fetch(`${API}mercadopago`,{
-            method:'POST'
+        //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
+        localStorage.setItem('dataEnvio',JSON.stringify(dataEnvio));
+
+        const {token} = props.usuarioReducer.usuario;
+        const {productos:productosCarrito} = props.carritoReducer;
+        let productos = [];
+        productosCarrito.forEach(prd => {
+            productos.push({
+                title:prd.subProducto,
+                description:prd.tamaño,
+                quantity:prd.cantidad,
+                unit_price:prd.precioUnidad
+            })
+        });
+        let headers = new Headers();
+        headers.append('token',token);
+        headers.append("Content-Type", "application/json");
+        fetch(`${API}/mercadopago`,{
+            method:'POST',
+            headers,
+            body:JSON.stringify(productos)
         }).then(res=>res.json()).then(datamp=>{
             const {response} = datamp.info;
             setLoading(false);
             window.location.assign(response.init_point);
+        }).catch(err=>{
+            console.log(err);
+            setLoading(false);
+            setError(err.message);
         })
-        console.log(dataEnvio);
     }
 
 

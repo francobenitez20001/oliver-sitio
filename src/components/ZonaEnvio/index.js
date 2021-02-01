@@ -14,7 +14,7 @@ const ZonaEnvio = (props) => {
             const dataUser = JSON.parse(localStorage.getItem('oliverpetshop_usuario'));
             let myHeaders = new Headers();
             myHeaders.append("token", dataUser.token);
-            const zonasApi = await fetch(`${API}zonas`,{headers:myHeaders});
+            const zonasApi = await fetch(`${API}/zonas`,{headers:myHeaders});
             const dataZonas = await zonasApi.json();
             setZonas(dataZonas.data);
             verificarZonaDelDia(dataZonas.data);
