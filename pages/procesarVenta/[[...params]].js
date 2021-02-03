@@ -16,20 +16,20 @@ const ProcesarVenta = (props) => {
     const [ventaRegistrada, setVentaRegistrada] = useState(false);
 
     useEffect(() => {
-        if(props.usuarioReducer.logueado){
-            getData();
-        }
-    }, [props.usuarioReducer]);
-
-    const getData = async()=>{
         const dataEnvio = JSON.parse(localStorage.getItem('dataEnvio'));
         props.enviosGuardar(dataEnvio);
         props.carritoTraerProductos();
+        if(props.usuarioReducer.logueado && props.carritoReducer.productos.length>0 && props.enviosReducer.data){
+            procesarInfo();
+        }
+    }, [props.usuarioReducer]);
+
+    const procesarInfo = async()=>{
         const {idUsuario} = props.usuarioReducer.usuario;
         const {subtotal,porcentaje_descuento,descuento,total,productos} = props.carritoReducer;
-        const {zona,tipo} = dataEnvio;
+        const {zona,tipo} = props.enviosReducer.data;
         let f = new Date();
-        let mes = ((f.getMonth())<10)?`0${f.getMonth()}`:`${f.getMonth()}`;
+        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
         let dia = ((f.getDay())<10)?`0${f.getDay()}`:`${f.getDay()}`;
         let fecha = `${f.getFullYear()}-${mes}-${dia}`;
         let dataToRequest = {
@@ -63,7 +63,10 @@ const ProcesarVenta = (props) => {
             if(reqVenta.status == 200){
                 localStorage.removeItem('dataEnvio');
                 localStorage.removeItem('carrito');
-                setVentaRegistrada('Felicidades, Tu venta se registró con éxito. En breve nos comunicaremos con ustedes para informarle el estado de su compra.');
+                setVentaRegistrada('Felicidades, Tu venta se registró con éxito. En breve nos comunicaremos con usted para informarle el estado de su compra.');
+                setTimeout(() => {
+                    window.location.assign('/')
+                }, 5000);
             }else{
                 setError(true);
             }
