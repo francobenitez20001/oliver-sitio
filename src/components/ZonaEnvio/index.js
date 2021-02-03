@@ -58,7 +58,7 @@ const ZonaEnvio = (props) => {
                     <select className="form-control" name="zona" onChange={handleChange}>
                         <option value="">Seleccione una zona</option>
                         {zonas.map(zona=>(
-                                <option key={zona.idZona} value={zona.zona}>{zona.zona} ({zona.dia})</option>
+                                <option key={zona.idZona} value={zona.idZona}>{zona.zona} ({zona.dia})</option>
                             ))
                         }
                     </select>

@@ -10,12 +10,12 @@ import {URL_CLOUD_STORAGE} from '../../../config/index';
 
 const ProductoSingle = (props) => {
     useEffect(() => {
-        const {marca,producto} = props.producto;
+        const {marca,producto,idProducto} = props.producto;
         if(props.subProductos.length>0){
             const {foto,peso,precioUnidad,tamaño,idSubProducto,subProducto} = props.subProductos[0];
-            guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto);
+            guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto,idProducto);
         }else{
-            guardarProductoEnState(`${URL_CLOUD_STORAGE}/sin-imagen.png`,null,null,producto,null,null,marca,null);
+            guardarProductoEnState(`${URL_CLOUD_STORAGE}/sin-imagen.png`,null,null,producto,null,null,marca,null,idProducto);
         }
     }, [props.producto])
 
@@ -83,7 +83,7 @@ const ProductoSingle = (props) => {
         setModalIsOpen(false)
     );
     
-    const guardarProductoEnState = (foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto)=>{
+    const guardarProductoEnState = (foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto,idProducto)=>{
         setProductoData({
             producto,
             foto,
@@ -93,7 +93,8 @@ const ProductoSingle = (props) => {
             tamaño,
             idSubProducto,
             marca,
-            subProducto
+            subProducto,
+            idProducto
         })
     }
 

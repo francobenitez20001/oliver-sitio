@@ -2,6 +2,8 @@ import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR} from '
 
 const INITIAL_STATE = {
     productos:[],
+    porcentaje_descuento:0,
+    descuento:0,
     subtotal:0,
     total:0,
     loading:false,
