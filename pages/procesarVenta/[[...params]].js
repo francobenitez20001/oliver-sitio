@@ -12,7 +12,7 @@ const {guardar:enviosGuardar} = enviosActions;
 const {traerProductos:carritoTraerProductos} = carritoActions;
 
 const ProcesarVenta = (props) => {
-    const [error, setError] = useState(true);
+    const [error, setError] = useState(false);
     const [ventaRegistrada, setVentaRegistrada] = useState(false);
 
     useEffect(() => {
