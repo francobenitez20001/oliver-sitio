@@ -12,7 +12,7 @@ const {guardar:enviosGuardar} = enviosActions;
 const {traerProductos:carritoTraerProductos} = carritoActions;
 
 const ProcesarVenta = (props) => {
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(true);
     const [ventaRegistrada, setVentaRegistrada] = useState(false);
 
     useEffect(() => {
@@ -44,7 +44,8 @@ const ProcesarVenta = (props) => {
                 total,
                 idUsuario,
                 productos,
-                fecha
+                fecha,
+                operacion_id:props.collection_id
             }
         }
         return registrarVenta(dataToRequest);
@@ -74,8 +75,6 @@ const ProcesarVenta = (props) => {
             setError(error.message)
         }
     }
-
-    console.log(props);
     const router = useRouter();
     return (
         <>
@@ -107,8 +106,8 @@ const ProcesarVenta = (props) => {
 }
 
 ProcesarVenta.getInitialProps = async({query})=>{
-    const {collection_id,collection_status,external_reference,merchant,account_id,merchant_order_id,payment_id,payment_type,preference_id,processing_mode,site_id,status} = query;
-    return {collection_id,collection_status,external_reference,merchant,account_id,merchant_order_id,payment_id,payment_type,preference_id,processing_mode,site_id,status};
+    const {collection_id} = query;
+    return {collection_id};
 }
 
 const mapStateToProps = ({carritoReducer,enviosReducer,usuarioReducer})=>{
