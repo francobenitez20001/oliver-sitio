@@ -55,7 +55,7 @@ const ZonaEnvio = (props) => {
             <div className="form-zona">
                 <form className="form-group">
                     <label>Seleccione la zona que corresponde con su dirección</label>
-                    <select className="form-control" name="zona" onChange={handleChange}>
+                    <select className="form-control" name="zona" onChange={handleChange} id="form-zona-envio">
                         <option value="">Seleccione una zona</option>
                         {zonas.map(zona=>(
                                 <option key={zona.idZona} value={zona.idZona}>{zona.zona} ({zona.dia})</option>

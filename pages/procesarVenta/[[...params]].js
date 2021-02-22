@@ -26,7 +26,7 @@ const ProcesarVenta = (props) => {
 
     const procesarInfo = async()=>{
         const {idUsuario} = props.usuarioReducer.usuario;
-        const {subtotal,porcentaje_descuento,descuento,total,productos} = props.carritoReducer;
+        const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
         const {zona,tipo} = props.enviosReducer.data;
         let f = new Date();
         let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
@@ -45,9 +45,11 @@ const ProcesarVenta = (props) => {
                 idUsuario,
                 productos,
                 fecha,
-                operacion_id:props.collection_id
+                operacion_id:props.collection_id || null,
+                idMedioPago
             }
         }
+        console.log(dataToRequest);
         return registrarVenta(dataToRequest);
     }
 
@@ -56,7 +58,8 @@ const ProcesarVenta = (props) => {
             const headers = new Headers();
             headers.append('token',props.usuarioReducer.usuario.token);
             headers.append("Content-Type", "application/json");
-            const reqVenta = await fetch(`${API}/registrarVenta`,{
+            let url = (!data.venta.operacion_id)?`${API}/registrarVenta?mercadoPago=false`:`${API}/registrarVenta?mercadoPago=true`;
+            const reqVenta = await fetch(url,{
                 headers,
                 method:'POST',
                 body:JSON.stringify(data)
@@ -76,6 +79,7 @@ const ProcesarVenta = (props) => {
         }
     }
     const router = useRouter();
+    console.log(error);
     return (
         <>
             <Head title="Finalizacion de compra" metadesc=""/>
