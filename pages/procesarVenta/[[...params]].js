@@ -1,6 +1,5 @@
 import Head from '../../src/components/Head';
 import Loader from '../../src/components/Loader';
-import {useRouter} from 'next/router';
 import {connect} from 'react-redux';
 import * as carritoActions from '../../store/actions/carritoActions';
 import * as enviosActions from '../../store/actions/enviosActions';
@@ -16,41 +15,41 @@ const ProcesarVenta = (props) => {
     const [ventaRegistrada, setVentaRegistrada] = useState(false);
 
     useEffect(() => {
+        procesarInfo();
+    }, [props.usuarioReducer]);
+    
+    const procesarInfo = async()=>{
         const dataEnvio = JSON.parse(localStorage.getItem('dataEnvio'));
         props.enviosGuardar(dataEnvio);
         props.carritoTraerProductos();
         if(props.usuarioReducer.logueado && props.carritoReducer.productos.length>0 && props.enviosReducer.data){
-            procesarInfo();
-        }
-    }, [props.usuarioReducer]);
-
-    const procesarInfo = async()=>{
-        const {idUsuario} = props.usuarioReducer.usuario;
-        const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
-        const {zona,tipo} = props.enviosReducer.data;
-        let f = new Date();
-        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
-        let dia = ((f.getDay())<10)?`0${f.getDay()}`:`${f.getDay()}`;
-        let fecha = `${f.getFullYear()}-${mes}-${dia}`;
-        let dataToRequest = {
-            envio:{
-                idZona:zona,
-                tipo
-            },
-            venta:{
-                subtotal,
-                porcentaje_descuento,
-                descuento,
-                total,
-                idUsuario,
-                productos,
-                fecha,
-                operacion_id:props.collection_id || null,
-                idMedioPago
+            const {idUsuario} = props.usuarioReducer.usuario;
+            const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
+            const {zona,tipo} = props.enviosReducer.data;
+            let f = new Date();
+            let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
+            let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
+            let fecha = `${f.getFullYear()}-${mes}-${dia}`;
+            let dataToRequest = {
+                envio:{
+                    idZona:zona,
+                    tipo:tipo
+                },
+                venta:{
+                    subtotal,
+                    porcentaje_descuento,
+                    descuento,
+                    total,
+                    idUsuario,
+                    productos,
+                    fecha,
+                    operacion_id:props.collection_id || null,
+                    idMedioPago
+                }
             }
+            //console.log(dataToRequest);
+            return registrarVenta(dataToRequest);
         }
-        console.log(dataToRequest);
-        return registrarVenta(dataToRequest);
     }
 
     const registrarVenta = async data=>{
@@ -78,8 +77,7 @@ const ProcesarVenta = (props) => {
             setError(error.message)
         }
     }
-    const router = useRouter();
-    console.log(error);
+
     return (
         <>
             <Head title="Finalizacion de compra" metadesc=""/>

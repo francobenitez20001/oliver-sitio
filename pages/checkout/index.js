@@ -28,6 +28,7 @@ const Checkout = (props) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         props.carritoTraerProductos();
     }, []);
 
@@ -98,10 +99,10 @@ const Checkout = (props) => {
                 unit_price:prd.precioUnidad
             })
         });
-        let headers = new Headers();
-        headers.append('token',token);
-        headers.append("Content-Type", "application/json");
         if(props.carritoReducer.idMedioPago == '1'){
+            let headers = new Headers();
+            headers.append('token',token);
+            headers.append("Content-Type", "application/json");
             fetch(`${API}/mercadopago`,{
                 method:'POST',
                 headers,
@@ -116,7 +117,7 @@ const Checkout = (props) => {
                 setError(err.message);
             })
         }else{
-            Router.push('/procesarVenta')
+            Router.push(`/procesarVenta`);
         }
     }
 
