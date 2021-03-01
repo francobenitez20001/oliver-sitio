@@ -167,7 +167,7 @@ const Navbar = (props) => {
                                     </li>
                                 </a>
                             </Link>
-                            <Link href="/" onClick={toggleMenu}>
+                            <Link href="/productos" onClick={toggleMenu}>
                                 <a>
                                     <li className={NavbarStyle.item__menu__collapsed}>
                                         <FontAwesomeIcon icon={faPiggyBank} className={NavbarStyle.icon__itemMenu__collapsed}/>

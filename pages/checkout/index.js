@@ -60,8 +60,10 @@ const Checkout = (props) => {
     }
 
     const handleClick = ()=>{
-        if(!props.usuarioReducer.usuario.address || props.usuarioReducer.usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
-        if(zonaEnvio==='') return setError('Es obligatorio completar la zona de envío.');
+        if(!tipoEnvio.local){
+            if(!props.usuarioReducer.usuario.address || props.usuarioReducer.usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
+            if(zonaEnvio==='') return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
+        }
         setLoading(true);
         let tipoDeEnvioActivo;
         if(tipoEnvio.local){tipoDeEnvioActivo='Local'};
@@ -89,19 +91,19 @@ const Checkout = (props) => {
         let headers = new Headers();
         headers.append('token',token);
         headers.append("Content-Type", "application/json");
-        fetch(`${API}/mercadopago`,{
-            method:'POST',
-            headers,
-            body:JSON.stringify(productos)
-        }).then(res=>res.json()).then(datamp=>{
-            const {response} = datamp.info;
-            setLoading(false);
-            window.location.assign(response.init_point);
-        }).catch(err=>{
-            console.log(err);
-            setLoading(false);
-            setError(err.message);
-        })
+        // fetch(`${API}/mercadopago`,{
+        //     method:'POST',
+        //     headers,
+        //     body:JSON.stringify(productos)
+        // }).then(res=>res.json()).then(datamp=>{
+        //     const {response} = datamp.info;
+        //     setLoading(false);
+        //     window.location.assign(response.init_point);
+        // }).catch(err=>{
+        //     console.log(err);
+        //     setLoading(false);
+        //     setError(err.message);
+        // })
     }
 
 
@@ -119,6 +121,7 @@ const Checkout = (props) => {
                                 {(error)?<Error message={error}/>:null}
                                 <CardUbicacion dataUser={props.usuarioReducer.usuario}/>
                                 <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
+                                <div className="alert alert-warning"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
                                 <h2 className="mt-5">Opciones de envío</h2>
                                 <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
                                 <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
