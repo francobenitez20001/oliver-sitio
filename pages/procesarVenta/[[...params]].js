@@ -6,6 +6,7 @@ import * as enviosActions from '../../store/actions/enviosActions';
 import { useEffect, useState } from 'react';
 import {API} from '../../config/index';
 import Error from '../../src/components/Error';
+const Swal = require('sweetalert2');
 
 const {guardar:enviosGuardar} = enviosActions;
 const {traerProductos:carritoTraerProductos} = carritoActions;
@@ -66,10 +67,11 @@ const ProcesarVenta = (props) => {
             if(reqVenta.status == 200){
                 localStorage.removeItem('dataEnvio');
                 localStorage.removeItem('carrito');
-                setVentaRegistrada('Felicidades, Tu venta se registró con éxito. En breve nos comunicaremos con usted para informarle el estado de su compra.');
-                setTimeout(() => {
-                    window.location.assign('/')
-                }, 5000);
+                Swal.fire(
+                    'Listo',
+                    'Felicidades, tu compra se registró con éxito. En breve nos comunicaremos con usted para informarle el estado de su compra vía email.',
+                    'success'
+                ).then(()=>window.location.assign('/'));
             }else{
                 setError(true);
             }
@@ -82,7 +84,7 @@ const ProcesarVenta = (props) => {
         <>
             <Head title="Finalizacion de compra" metadesc=""/>
             <div className="wrapper">
-                {(!props.usuarioReducer.logueado || props.enviosReducer.error || props.carritoReducer.error || error)?<Error message="Ha ocurrido un error, intentalo mas tarde"/>:
+                {(props.enviosReducer.error || props.carritoReducer.error || error)?<Error message="Ha ocurrido un error, intentalo mas tarde"/>:
                     <>
                         {(ventaRegistrada)?<div className="alert alert-success">{ventaRegistrada}</div>:
                             <>

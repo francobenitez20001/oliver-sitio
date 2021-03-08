@@ -11,6 +11,7 @@ import * as usuarioActions from '../../store/actions/usuarioActions';
 import {API} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
+const Swal = require('sweetalert2');
 
 const {traerProductos:carritoTraerProductos,cambiarMedioDePago} = carritoActions;
 const {verificarSesion} = usuarioActions;
@@ -139,7 +140,7 @@ const Checkout = (props) => {
             return registrarVenta(dataToRequest);
         };
     }
-
+    
     const registrarVenta = async data=>{
         try {
             const headers = new Headers();
@@ -154,14 +155,26 @@ const Checkout = (props) => {
             if(reqVenta.status == 200){
                 localStorage.removeItem('dataEnvio');
                 localStorage.removeItem('carrito');
-                window.location.assign('/')
+                Swal.fire(
+                    'Listo',
+                    'Su compra se ha registrado con éxito, solo resta que se dirija a nuestro local para hacerse con su producto.',
+                    'success'
+                ).then(()=>window.location.assign('/'));
             }else{
                 setLoading(false);
-                setError('Problemas al registrar la venta, intentelo más tarde');
+                Swal.fire(
+                    'Error',
+                    'Ha ocurrido un error al momento de registrar la venta, intentalo más tarde',
+                    'error'
+                );
             }
         } catch (error) {
             setLoading(false);
-            setError('Problemas al registrar la venta, intentelo más tarde');
+            Swal.fire(
+                'Error',
+                'Ha ocurrido un error al momento de registrar la venta, intentalo más tarde',
+                'error'
+            );
             console.log(error.message);
         }
     }
