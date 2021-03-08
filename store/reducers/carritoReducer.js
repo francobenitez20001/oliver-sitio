@@ -1,4 +1,4 @@
-import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR} from '../types/carritoTypes';
+import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR, CAMBIAR_MEDIO_DE_PAGO} from '../types/carritoTypes';
 
 const INITIAL_STATE = {
     productos:[],
@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     subtotal:0,
     total:0,
     loading:false,
-    error:null
+    error:null,
+    idMedioPago:'1'
 };
 
 const carritoReducer = (state = INITIAL_STATE,action)=>{
@@ -18,6 +19,8 @@ const carritoReducer = (state = INITIAL_STATE,action)=>{
             return {...state,productos:action.payload.listProductosUpgrade,loading:false,error:null,subtotal:action.payload.subtotal}
         case ELIMINAR_PRODUCTO:
             return {...state,productos:action.payload.newProductos,loading:false,error:null,subtotal:action.payload.subtotal}
+        case CAMBIAR_MEDIO_DE_PAGO:
+            return {...state,idMedioPago:action.payload}
         case LOADING:
             return {...state,loading:true}
         case ERROR:

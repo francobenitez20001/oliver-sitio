@@ -10,8 +10,10 @@ import * as carritoActions from '../../store/actions/carritoActions';
 import * as usuarioActions from '../../store/actions/usuarioActions';
 import {API} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
+import MediosDePago from '../../src/components/MediosDePago';
+import Router from 'next/router';
 
-const {traerProductos:carritoTraerProductos} = carritoActions;
+const {traerProductos:carritoTraerProductos,cambiarMedioDePago} = carritoActions;
 const {verificarSesion} = usuarioActions;
 
 const Checkout = (props) => {
@@ -26,15 +28,15 @@ const Checkout = (props) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         props.carritoTraerProductos();
     }, []);
 
-    useEffect(() => {
-        console.log(props.carritoReducer.productos);
-    }, [props.carritoReducer.productos])
-
     const cambiarTipoDeEnvio = tipoDeEnvio=>{
         if(tipoDeEnvio==='normal'){
+            document.getElementById('form-zona-envio').removeAttribute('disabled');
+            document.getElementById('form-medios-pago').setAttribute('disabled','true');
+            props.cambiarMedioDePago('1');
             return setTipoEnvio({
                 normal:true,
                 express:false,
@@ -42,12 +44,17 @@ const Checkout = (props) => {
             })
         }
         if(tipoDeEnvio==='express'){
+            document.getElementById('form-zona-envio').removeAttribute('disabled');
+            document.getElementById('form-medios-pago').setAttribute('disabled','true');
+            props.cambiarMedioDePago('1');
             return setTipoEnvio({
                 normal:false,
                 express:true,
                 local:false
             })
         }
+        document.getElementById('form-zona-envio').setAttribute('disabled','true');
+        document.getElementById('form-medios-pago').removeAttribute('disabled');
         return setTipoEnvio({
             normal:false,
             express:false,
@@ -65,14 +72,14 @@ const Checkout = (props) => {
             if(zonaEnvio==='') return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
         }
         setLoading(true);
+        setError(false);
         let tipoDeEnvioActivo;
         if(tipoEnvio.local){tipoDeEnvioActivo='Local'};
         if(tipoEnvio.normal){tipoDeEnvioActivo='Domicilio'}
         if(tipoEnvio.express){tipoDeEnvioActivo='Express'}
         let dataEnvio = {
             tipo:tipoDeEnvioActivo,
-            zona:zonaEnvio,
-            address:props.usuarioReducer.usuario.address
+            zona:zonaEnvio
         }
         //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
         localStorage.setItem('dataEnvio',JSON.stringify(dataEnvio));
@@ -106,7 +113,6 @@ const Checkout = (props) => {
         // })
     }
 
-
     return (
         (!props.usuarioReducer.logueado)?<div className="mt-3"><Error message="No puedes realizar una compra sin tener una sesión activa."/></div>:
         <>
@@ -124,6 +130,9 @@ const Checkout = (props) => {
                                 <div className="alert alert-warning"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
                                 <h2 className="mt-5">Opciones de envío</h2>
                                 <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
+                                <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
+                                <h2 className="mt-5">Selecciona un medio de pago</h2>
+                                <MediosDePago/>
                                 <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
                                 <div className="divTotalMobile">
                                     <span id="total">${props.carritoReducer.subtotal}</span>
@@ -177,7 +186,8 @@ const mapStateToProps = ({carritoReducer,usuarioReducer})=>{
 
 const mapDispatchToProps = {
     carritoTraerProductos,
-    verificarSesion
+    verificarSesion,
+    cambiarMedioDePago
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Checkout);

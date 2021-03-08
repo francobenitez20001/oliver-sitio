@@ -37,7 +37,7 @@ const Carrito = (props) => {
     }
 
     const finalizarCompra = ()=>{
-        window.location.assign('/checkout');
+        Router.push('/checkout');
     }
     //console.log(props);
     return (

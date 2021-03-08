@@ -23,6 +23,21 @@ const SliderFotosProducto = (props) => {
             <style jsx>{`
                 .slider__fotos .col__imagenes-chicas{
                     height: 429px;
+                    overflow-y: auto;
+                }
+
+                .slider__fotos .col__imagenes-chicas::-webkit-scrollbar {
+                    width: 5px;     /* Tamaño del scroll en vertical */
+                    height:3px
+                }
+
+                    .slider__fotos .col__imagenes-chicas::-webkit-scrollbar-thumb {
+                    background: #FFB347;
+                    border-radius: 3px;
+                }
+                    .slider__fotos .col__imagenes-chicas::-webkit-scrollbar-thumb:hover {
+                    background: #b3b3b3;
+                    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
                 }
 
                 .slider__fotos .col__imagenes-chicas img{

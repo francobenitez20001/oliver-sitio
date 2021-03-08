@@ -1,5 +1,5 @@
 //import {API} from '../config/index';
-import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR} from '../types/carritoTypes';
+import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR, CAMBIAR_MEDIO_DE_PAGO} from '../types/carritoTypes';
 
 export const traerProductos = ()=>async (dispatch)=>{
     dispatch({
@@ -115,4 +115,11 @@ export const eliminarProducto = idSubProducto=>async (dispatch,getState)=>{
             payload:error
         })    
     }
+}
+
+export const cambiarMedioDePago = idMedioDePago =>dispatch=>{
+    return dispatch({
+        type:CAMBIAR_MEDIO_DE_PAGO,
+        payload:idMedioDePago
+    })
 }
