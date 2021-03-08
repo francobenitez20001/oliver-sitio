@@ -12,6 +12,7 @@ const OpcionesEnvio = (props) => {
             <div className="containerCajaEnvio my-2" onClick={()=>props.cambiarTipoDeEnvio('express')}>
                 <input type="radio" name="envio" onChange={()=>props.cambiarTipoDeEnvio('express')} checked={props.tipoEnvio.express}/>
                 <div className="descripcion_ubicacion py-0 px-2">
+                    <span className="limiteHorario">Hasta las <b>14hs</b></span>
                     <span className="d-block">Envío express</span>
                     <span className="text-muted direccionDetallada">Si lo queres lo antes posible, podemos enviartelo de manera express acordando un punto de entrega</span>
                 </div>
@@ -34,13 +35,20 @@ const OpcionesEnvio = (props) => {
                     background-color:white;
                     align-items:center;
                     border-radius:10px;
-                    height:100px;
+                    height:120px;
                     cursor:pointer;
                     font-family: 'Quicksand', sans-serif;
                 }
                 .containerCajaEnvio:hover{
                     -webkit-box-shadow: 1px 2px 7px #2e2e2e;
                     transition: all .3s ease;
+                }
+
+                .containerCajaEnvio .limiteHorario{
+                    font-size: 15px;
+                    position: absolute;
+                    color: #FFB347;
+                    top: 54%;
                 }
                 @media(max-width:768px){
                     .containerCajaEnvio{
@@ -51,6 +59,10 @@ const OpcionesEnvio = (props) => {
                     }
                     .local{
                         margin-bottom:50px!important
+                    }
+                    .containerCajaEnvio .limiteHorario{
+                        top: 64%;
+                        right:50px
                     }
                 }
 
