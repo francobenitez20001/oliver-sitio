@@ -11,7 +11,6 @@ import * as usuarioActions from '../../store/actions/usuarioActions';
 import {API} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
-import Router from 'next/router';
 
 const {traerProductos:carritoTraerProductos,cambiarMedioDePago} = carritoActions;
 const {verificarSesion} = usuarioActions;
@@ -81,36 +80,90 @@ const Checkout = (props) => {
             tipo:tipoDeEnvioActivo,
             zona:zonaEnvio
         }
-        //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
-        localStorage.setItem('dataEnvio',JSON.stringify(dataEnvio));
+        if(props.carritoReducer.idMedioPago == '1'){
+            //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
+            localStorage.setItem('dataEnvio',JSON.stringify(dataEnvio));
 
-        const {token} = props.usuarioReducer.usuario;
-        const {productos:productosCarrito} = props.carritoReducer;
-        let productos = [];
-        productosCarrito.forEach(prd => {
-            productos.push({
-                title:prd.subProducto,
-                description:prd.tamaño,
-                quantity:prd.cantidad,
-                unit_price:prd.precioUnidad
+            const {token} = props.usuarioReducer.usuario;
+            const {productos:productosCarrito} = props.carritoReducer;
+            let productos = [];
+            productosCarrito.forEach(prd => {
+                productos.push({
+                    title:prd.subProducto,
+                    description:prd.tamaño,
+                    quantity:prd.cantidad,
+                    unit_price:prd.precioUnidad
+                })
+            });
+            let headers = new Headers();
+            headers.append('token',token);
+            headers.append("Content-Type", "application/json");
+            fetch(`${API}/mercadopago`,{
+                method:'POST',
+                headers,
+                body:JSON.stringify(productos)
+            }).then(res=>res.json()).then(datamp=>{
+                const {response} = datamp.info;
+                setLoading(false);
+                window.location.assign(response.init_point);
+            }).catch(err=>{
+                console.log(err);
+                setLoading(false);
+                setError(err.message);
             })
-        });
-        let headers = new Headers();
-        headers.append('token',token);
-        headers.append("Content-Type", "application/json");
-        // fetch(`${API}/mercadopago`,{
-        //     method:'POST',
-        //     headers,
-        //     body:JSON.stringify(productos)
-        // }).then(res=>res.json()).then(datamp=>{
-        //     const {response} = datamp.info;
-        //     setLoading(false);
-        //     window.location.assign(response.init_point);
-        // }).catch(err=>{
-        //     console.log(err);
-        //     setLoading(false);
-        //     setError(err.message);
-        // })
+        }else{
+            const {idUsuario} = props.usuarioReducer.usuario;
+            const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
+            const {zona,tipo} = dataEnvio;
+            let f = new Date();
+            let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
+            let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
+            let fecha = `${f.getFullYear()}-${mes}-${dia}`;
+            let dataToRequest = {
+                envio:{
+                    idZona:zona,
+                    tipo:tipo
+                },
+                venta:{
+                    subtotal,
+                    porcentaje_descuento,
+                    descuento,
+                    total,
+                    idUsuario,
+                    productos,
+                    fecha,
+                    operacion_id:null,
+                    idMedioPago
+                }
+            }
+            return registrarVenta(dataToRequest);
+        };
+    }
+
+    const registrarVenta = async data=>{
+        try {
+            const headers = new Headers();
+            headers.append('token',props.usuarioReducer.usuario.token);
+            headers.append("Content-Type", "application/json");
+            let url = (!data.venta.operacion_id)?`${API}/registrarVenta?mercadoPago=false`:`${API}/registrarVenta?mercadoPago=true`;
+            const reqVenta = await fetch(url,{
+                headers,
+                method:'POST',
+                body:JSON.stringify(data)
+            });
+            if(reqVenta.status == 200){
+                localStorage.removeItem('dataEnvio');
+                localStorage.removeItem('carrito');
+                window.location.assign('/')
+            }else{
+                setLoading(false);
+                setError('Problemas al registrar la venta, intentelo más tarde');
+            }
+        } catch (error) {
+            setLoading(false);
+            setError('Problemas al registrar la venta, intentelo más tarde');
+            console.log(error.message);
+        }
     }
 
     return (
@@ -130,7 +183,6 @@ const Checkout = (props) => {
                                 <div className="alert alert-warning"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
                                 <h2 className="mt-5">Opciones de envío</h2>
                                 <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
-                                <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
                                 <h2 className="mt-5">Selecciona un medio de pago</h2>
                                 <MediosDePago/>
                                 <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
@@ -177,10 +229,11 @@ const Checkout = (props) => {
     );
 }
  
-const mapStateToProps = ({carritoReducer,usuarioReducer})=>{
+const mapStateToProps = ({carritoReducer,usuarioReducer,enviosReducer})=>{
     return {
         carritoReducer,
-        usuarioReducer
+        usuarioReducer,
+        enviosReducer
     };
 }
 
