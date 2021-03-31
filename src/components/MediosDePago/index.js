@@ -16,7 +16,6 @@ const MediosDePago = (props) => {
     const handleChange = event=>{
         props.cambiarMedioDePago(event.target.value);
     }
-    console.log(props);
     return (
         <Fragment>
             <select className="form-control" onChange={handleChange} defaultValue={props.carritoReducer.idMedioPago} id="form-medios-pago" disabled={true}>
@@ -24,6 +23,14 @@ const MediosDePago = (props) => {
                     return <option value={medio.idMedioPago} key={key}>{medio.medio}</option>
                 })}
             </select>
+
+            <style jsx>{`
+                @media(max-width:768px){
+                    select{
+                        margin-bottom:60px;
+                    }          
+                }
+            `}</style>
         </Fragment>
     );
 }

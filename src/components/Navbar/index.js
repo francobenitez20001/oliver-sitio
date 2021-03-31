@@ -203,8 +203,8 @@ const Navbar = (props) => {
                     </div>
                     <section className={NavbarStyle.collapsed_info + ' ' + `text-center`}>
                         <div className={NavbarStyle.redes__collapsed}>
-                            <FontAwesomeIcon icon={faFacebook} className={NavbarStyle.iconoRed}/>
-                            <FontAwesomeIcon icon={faInstagram} className={NavbarStyle.iconoRed}/>
+                            <FontAwesomeIcon onClick={()=>window.location.assign('https://www.facebook.com/Pet-shop-Oliver-1783777958556350')} icon={faFacebook} className={NavbarStyle.iconoRed}/>
+                            <FontAwesomeIcon onClick={()=>window.location.assign('https://www.instagram.com/petshopoliver/')} icon={faInstagram} className={NavbarStyle.iconoRed}/>
                         </div>
                         <span className="text-muted">&copy;Terminos y Condiciones</span>
                     </section>  

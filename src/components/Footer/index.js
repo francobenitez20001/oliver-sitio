@@ -9,8 +9,8 @@ const Footer = () => {
             <div className={styles.container__subfooter + ' ' + `py-2`}>
                 <div className={styles.containerImages + ` container`}>
                     <div className={styles.redes__footer}>
-                        <FontAwesomeIcon icon={faFacebook} className={styles.iconos__footer}/>
-                        <FontAwesomeIcon icon={faInstagram} className={styles.iconos__footer}/>
+                        <FontAwesomeIcon onClick={()=>window.location.assign('https://www.facebook.com/Pet-shop-Oliver-1783777958556350')} icon={faFacebook} className={styles.iconos__footer}/>
+                        <FontAwesomeIcon onClick={()=>window.location.assign('https://www.instagram.com/petshopoliver/')} icon={faInstagram} className={styles.iconos__footer}/>
                         <img src={`${URL_CLOUD_STORAGE}/static/mercadopago.png`} className="img-fluid" alt="mercado pago" width="35px"/>
                         <img src={`${URL_CLOUD_STORAGE}/static/comprasegura.jpeg`} className="img-fluid" alt="compra segura" width="65px"/>
                         <img src={`${URL_CLOUD_STORAGE}/static/afip.png`} className="img-fluid" alt="afip" width="45px"/>
