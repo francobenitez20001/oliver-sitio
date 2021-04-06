@@ -7,6 +7,8 @@ import subcategoriaReducer from './subcategoriasReducer';
 import usuarioReducer from './usuarioReducer';
 import enviosReducer from './enviosReducer';
 import mediosDePagoReducer from './mediosDePagoReducer';
+import bannerReducer from './bannerReducer';
+import politicaReducer from './politicaReducer';
 
 export default combineReducers({
     marcasReducer,
@@ -16,5 +18,7 @@ export default combineReducers({
     subcategoriaReducer,
     usuarioReducer,
     enviosReducer,
-    mediosDePagoReducer
+    mediosDePagoReducer,
+    bannerReducer,
+    politicaReducer
 });

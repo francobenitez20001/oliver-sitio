@@ -39,7 +39,7 @@ const CardProducto = ({imagen,prd}) => {
                         <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
                             {procesarNombre(prd.producto)}
                         </h6>
-                        {(prd.peso != null)?<span className={CardProductoModule.cantidad}>{prd.peso} KG</span>:null}
+                        {(prd.peso != null)?<span className={CardProductoModule.cantidad + ` d-none`}>{prd.peso} KG</span>:null}
                         <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
                     </section>
                     
@@ -58,7 +58,7 @@ const CardProducto = ({imagen,prd}) => {
                     <h6 className={CardProductoModule.nombre__producto+ ' ' + `text-muted`}>
                         {procesarNombre(prd.producto)}
                     </h6>
-                    <span className={CardProductoModule.cantidad}>{prd.peso} KG</span>
+                    <span className={CardProductoModule.cantidad + ` d-none`}>{prd.peso} KG</span>
                     <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
                 </section>
                 

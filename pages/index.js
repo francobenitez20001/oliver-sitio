@@ -10,8 +10,6 @@ import BannerMarcas from '../src/components/BannerMarcas';
 import FormContacto from '../src/components/FormContacto';
 import Footer from '../src/components/Footer';
 import Buscador from '../src/components/Buscador';
-import {URL_CLOUD_STORAGE} from '../config/index';
-
 const Home = () => {
 
     useEffect(() => {
@@ -20,7 +18,7 @@ const Home = () => {
     return (
         <>
             <Header title="Oliver PetShop"/>
-            <SliderPublicidad img={`${URL_CLOUD_STORAGE}/static/PublicidadProducto.jpg`} img_dos={`${URL_CLOUD_STORAGE}/static/envios.jpg`} img_tres={`${URL_CLOUD_STORAGE}/static/negocio.jpg`}/>
+            <SliderPublicidad/>
             <section className={styles.info_deCompra + ''}>
                 <div className="container">
                     <div className="row">
