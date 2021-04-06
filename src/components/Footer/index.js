@@ -17,8 +17,8 @@ const Footer = () => {
                     </div>
                     <div className={styles.legales__footer}>
                         <ul className={styles.ul}>
-                            <li className={styles.li}><a href="/">Terminos y condiciones</a></li>
-                            <li className={styles.li}><a href="/">Políticas de privacidad</a></li>
+                            <li className={styles.li}><a href="/politica">Terminos y condiciones</a></li>
+                            <li className={styles.li}><a href="/politica">Políticas de privacidad</a></li>
                         </ul>
                     </div>
                 </div>
