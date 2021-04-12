@@ -12,10 +12,10 @@ const ProductoSingle = (props) => {
     useEffect(() => {
         const {marca,producto,idProducto} = props.producto;
         if(props.subProductos.length>0){
-            const {foto,peso,precioUnidad,tamaño,idSubProducto,subProducto} = props.subProductos[0];
-            guardarProductoEnState(foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto,idProducto);
+            const {foto,peso,precioFinal,tamaño,idSubProducto,subProducto,stock} = props.subProductos[0];
+            guardarProductoEnState(foto,peso,precioFinal,producto,tamaño,idSubProducto,marca,subProducto,idProducto,stock);
         }else{
-            guardarProductoEnState(`${URL_CLOUD_STORAGE}/sin-imagen.png`,null,null,producto,null,null,marca,null,idProducto);
+            guardarProductoEnState(`${URL_CLOUD_STORAGE}/sin-imagen.png`,null,null,producto,null,null,marca,null,idProducto,null);
         }
     }, [props.producto])
 
@@ -47,19 +47,20 @@ const ProductoSingle = (props) => {
         })
     }
 
-    const changePeso = (index,peso,precio,tamaño,idSubProducto,subProducto)=>{
+    const changePeso = (index,peso,precio,tamaño,idSubProducto,subProducto,stock)=>{
         let cajaPeso = document.getElementsByClassName(ProductoSingleStyle.caja_cantidadKg);
         for (let index = 0; index < cajaPeso.length; index++) {
             (cajaPeso[index].classList.contains(ProductoSingleStyle.active))?cajaPeso[index].classList.remove(ProductoSingleStyle.active):null;
         }
         cajaPeso[index].classList.add(ProductoSingleStyle.active);
-        if(!peso || !precio || !tamaño || !idSubProducto || !subProducto){
+        if(!peso || !precio || !tamaño || !idSubProducto || !subProducto || !stock){
             return setProductoData({
                 ...productoData,
                 peso:props.subProductos[0].peso,
-                precio:props.subProductos[0].precioUnidad,
+                precio:props.subProductos[0].precioFinal,
                 idSubProducto:props.subProductos[0].idSubProducto,
-                subProducto:props.subProductos[0].subProducto
+                subProducto:props.subProductos[0].subProducto,
+                stock:props.subProductos[0].stock
             });
         };
         setProductoData({
@@ -68,7 +69,8 @@ const ProductoSingle = (props) => {
             precio,
             tamaño,
             idSubProducto,
-            subProducto
+            subProducto,
+            stock
         });
     }
 
@@ -83,18 +85,19 @@ const ProductoSingle = (props) => {
         setModalIsOpen(false)
     );
     
-    const guardarProductoEnState = (foto,peso,precioUnidad,producto,tamaño,idSubProducto,marca,subProducto,idProducto)=>{
+    const guardarProductoEnState = (foto,peso,precio,producto,tamaño,idSubProducto,marca,subProducto,idProducto,stock)=>{
         setProductoData({
             producto,
             foto,
             peso,
             cantidad:1,
-            precioUnidad,
             tamaño,
             idSubProducto,
             marca,
             subProducto,
-            idProducto
+            idProducto,
+            stock,
+            precio
         })
     }
 
@@ -109,7 +112,7 @@ const ProductoSingle = (props) => {
                 <div className={ProductoSingleStyle.precios + ' ' + `d-flex my-3`}>
                     <div className={ProductoSingleStyle.indicador__precio}>
                         <p>Precio</p>
-                        <span className={ProductoSingleStyle.valor__precio}>${productoData.precioUnidad}</span>
+                        <span className={ProductoSingleStyle.valor__precio}>${productoData.precio}</span>
                     </div>
 
                     <div className={ProductoSingleStyle.indicador__cantidad}>
@@ -117,15 +120,15 @@ const ProductoSingle = (props) => {
                         <div className="row justify-content-center">
                             {props.subProductos.map((mp,key)=>(
                                 (key==0)?
-                                    <div key={key} className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(key,`${mp.peso}`,mp.precioUnidad,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`)}>
+                                    <div key={key} className={ProductoSingleStyle.caja_cantidadKg + ' ' +ProductoSingleStyle.active} onClick={()=>changePeso(key,`${mp.peso}`,mp.precioFinal,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`,mp.stock)}>
                                         <p className={ProductoSingleStyle.kilos}>{mp.peso} Kgs</p>
-                                        <span className={ProductoSingleStyle.precioDelKg}>${productoData.precioUnidad}</span>
+                                        <span className={ProductoSingleStyle.precioDelKg}>${mp.precioFinal}</span>
                                     </div>
                                 :
                                 <div key={key} className={ProductoSingleStyle.caja_cantidadKg} 
-                                    onClick={()=>changePeso(key,`${mp.peso}`,mp.precioUnidad,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`)}>
+                                    onClick={()=>changePeso(key,`${mp.peso}`,mp.precioFinal,`${mp.tamaño}`,mp.idSubProducto,`${mp.subProducto}`,mp.stock)}>
                                     <p className={ProductoSingleStyle.kilos}>{mp.peso} Kgs</p>
-                                    <span className={ProductoSingleStyle.precioDelKg}>${mp.precioUnidad}</span>
+                                    <span className={ProductoSingleStyle.precioDelKg}>${mp.precioFinal}</span>
                                 </div>
                             ))}
                         </div>
@@ -140,7 +143,8 @@ const ProductoSingle = (props) => {
                         </div>
                     </div>
                 </div>
-                {(props.loading)?<div className="text-center"><Loader/></div>:<button className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
+                {(props.loading)?<div className="text-center"><Loader/></div>:<button disabled={productoData.stock>0?false:true} className="boton bg-yellow" onClick={agregarCarrito}>Comprar</button>}
+                {productoData.stock>0?null:<div className="alert alert-danger my-2 text-center">Producto sin stock</div>}
             </div>
             {(!modalIsOpen)?null:
                 <Modal closeModal={closeModalCarrito}>
