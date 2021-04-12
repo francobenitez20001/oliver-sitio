@@ -10,6 +10,7 @@ import BannerMarcas from '../src/components/BannerMarcas';
 import FormContacto from '../src/components/FormContacto';
 import Footer from '../src/components/Footer';
 import Buscador from '../src/components/Buscador';
+import BotonWhatsapp from '../src/components/BotonWhatsApp';
 const Home = () => {
 
     useEffect(() => {
@@ -45,6 +46,7 @@ const Home = () => {
             <FormContacto/>
             <Footer/>
             <Buscador/>
+            <BotonWhatsapp/>
         </>
     );
 }

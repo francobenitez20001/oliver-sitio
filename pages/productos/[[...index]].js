@@ -5,6 +5,7 @@ import Filtro from '../../src/components/Filtro';
 //import BotonScrollTop from '../src/components/botonScrollToTop';
 import Buscador from '../../src/components/Buscador';
 import {useRouter} from 'next/router';
+import BotonWhatsapp from '../../src/components/BotonWhatsApp';
 
 const ProductosPage = (props) => {
     const router = useRouter();
@@ -32,6 +33,7 @@ const ProductosPage = (props) => {
                 </div>
                 <Buscador/>
             </section>
+            <BotonWhatsapp/>
         </>
     );
 }

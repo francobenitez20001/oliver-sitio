@@ -7,6 +7,7 @@ import ProductoSingle from '../../src/components/ProductoSingle';
 import InfoProducto from '../../src/components/ProductoSingle/infoProducto';
 import Promociones from '../../src/components/Promociones';
 import {useRouter} from 'next/router';
+import BotonWhatsapp from '../../src/components/BotonWhatsApp';
 
 const Producto = (props) => {
     useEffect(() => {
@@ -41,6 +42,7 @@ const Producto = (props) => {
             <div className="container">
                 <Promociones/>
             </div>
+            <BotonWhatsapp/>
         </>
     }
     return (

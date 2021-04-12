@@ -3,6 +3,7 @@ import Header from '../src/components/Head';
 import Footer from '../src/components/Footer/index';
 import { connect } from "react-redux";
 import * as politicaActions from '../store/actions/politicaActions';
+import BotonWhatsapp from '../src/components/BotonWhatsApp';
 const {traerInfo} = politicaActions;
 
 const Politica = (props) => {
@@ -37,6 +38,7 @@ const Politica = (props) => {
                     color: #FFB347;
                 }    
             `}</style>
+            <BotonWhatsapp/>
         </>
     );
 }
