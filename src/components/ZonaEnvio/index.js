@@ -2,6 +2,11 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import {API} from '../../../config/index';
 import {ObtenerDia} from '../../../helpers/index';
+import {connect} from 'react-redux';
+import * as carritoActions from '../../../store/actions/carritoActions';
+
+const {setCostoEnvio} = carritoActions;
+
 const ZonaEnvio = (props) => {
     const [zonas, setZonas] = useState([]);
     const [zonaDelDia, setZonaDelDia] = useState('');
@@ -26,6 +31,9 @@ const ZonaEnvio = (props) => {
     const handleChange = event=>{
         event.persist();
         props.setZonaEnvio(event.target.value);
+        const zonaChecked = zonas.filter(zona=>zona.idZona === parseInt(event.target.value))[0];
+        const {precio} = zonaChecked;
+        props.setCostoEnvio(precio);
     }
 
     const verificarZonaDelDia = (zonas)=>{
@@ -102,5 +110,11 @@ const ZonaEnvio = (props) => {
         </div>
     );
 }
+
+const mapStateToProps = ({carritoReducer})=>carritoReducer;
+
+const mapDispatchToProps = {
+    setCostoEnvio
+}
  
-export default ZonaEnvio;
+export default connect(mapStateToProps,mapDispatchToProps)(ZonaEnvio);

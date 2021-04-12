@@ -23,12 +23,12 @@ const DetalleProductos = (props) => {
                 </span>
                 <span className="d-flex justify-content-between precioProducto">
                     <p>Envío</p>
-                    <span>$0</span>
+                    <span>${props.data.costoEnvio}</span>
                 </span>
                 <hr className="mt-0"/>
                 <span className="d-flex justify-content-between precioTotal" style={{fontWeight:'bold'}}>
                     <p>Pagás</p>
-                    <span>${props.data.subtotal}</span>
+                    <span>${props.data.total}</span>
                 </span>
             </div>
             <style jsx>{`

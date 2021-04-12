@@ -12,9 +12,9 @@ const OpcionesEnvio = (props) => {
             <div className="containerCajaEnvio my-2" onClick={()=>props.cambiarTipoDeEnvio('express')}>
                 <input type="radio" name="envio" onChange={()=>props.cambiarTipoDeEnvio('express')} checked={props.tipoEnvio.express}/>
                 <div className="descripcion_ubicacion py-0 px-2">
-                    <span className="limiteHorario">Hasta las <b>14hs</b></span>
+                    <span className="limiteHorario">Hasta las <b>15hs</b></span>
                     <span className="d-block">Envío express</span>
-                    <span className="text-muted direccionDetallada">Si lo queres lo antes posible, podemos enviartelo de manera express acordando un punto de entrega</span>
+                    <span className="text-muted direccionDetallada">Si lo queres lo antes posible, podemos enviartelo de manera express a tu domicilio. Si lo pedis antes de las 15 hs, te llegará en el día.</span>
                 </div>
                 <span style={{color:'#3483fa',cursor:'pointer'}}></span>
             </div>

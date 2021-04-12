@@ -1,5 +1,5 @@
 //import {API} from '../config/index';
-import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR, CAMBIAR_MEDIO_DE_PAGO} from '../types/carritoTypes';
+import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR, CAMBIAR_MEDIO_DE_PAGO, CAMBIAR_COSTO_ENVIO} from '../types/carritoTypes';
 
 export const traerProductos = ()=>async (dispatch)=>{
     dispatch({
@@ -121,5 +121,12 @@ export const cambiarMedioDePago = idMedioDePago =>dispatch=>{
     return dispatch({
         type:CAMBIAR_MEDIO_DE_PAGO,
         payload:idMedioDePago
+    })
+}
+
+export const setCostoEnvio = costo=>dispatch=>{
+    return dispatch({
+        type:CAMBIAR_COSTO_ENVIO,
+        payload:costo
     })
 }

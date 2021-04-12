@@ -13,7 +13,7 @@ import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
 const Swal = require('sweetalert2');
 
-const {traerProductos:carritoTraerProductos,cambiarMedioDePago} = carritoActions;
+const {traerProductos:carritoTraerProductos,cambiarMedioDePago,setCostoEnvio} = carritoActions;
 const {verificarSesion} = usuarioActions;
 
 const Checkout = (props) => {
@@ -53,8 +53,14 @@ const Checkout = (props) => {
                 local:false
             })
         }
+        setZonaEnvio('');
         document.getElementById('form-zona-envio').setAttribute('disabled','true');
-        document.getElementById('form-medios-pago').removeAttribute('disabled');
+        document.getElementById('form-zona-envio').value="";
+        document.getElementById('form-medios-pago').removeAttribute('disabled');        
+
+        //seteo el costo del envio porque es retiro en el local
+        props.setCostoEnvio(0);
+        
         return setTipoEnvio({
             normal:false,
             express:false,
@@ -253,7 +259,8 @@ const mapStateToProps = ({carritoReducer,usuarioReducer,enviosReducer})=>{
 const mapDispatchToProps = {
     carritoTraerProductos,
     verificarSesion,
-    cambiarMedioDePago
+    cambiarMedioDePago,
+    setCostoEnvio
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Checkout);

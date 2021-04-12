@@ -48,7 +48,7 @@ const Carrito = (props) => {
             </section>
             <div className={CarritoModule.footer__carrito}>
                 <section className={CarritoModule.section__carrito__total + ' ' + `d-flex justify-content-between`}>
-                    <p>Subtotal</p>
+                    <p>Total</p>
                     <span className={CarritoModule.subtotal__carrito}>${totalCarrito}</span>
                 </section>
                 {(props.productos.length==0)?null:<button className="boton bg-yellow" onClick={finalizarCompra} type="button">Finalizar compra</button>}
