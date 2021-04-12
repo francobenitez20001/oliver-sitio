@@ -16,7 +16,7 @@ const Productos = (props) => {
     const [rangoProducto, setRangoProducto] = useState({
         desde:1,
         limiteDesktop:20,
-        limiteMobile:10
+        limiteMobile:8
     });
 
     useEffect(() => {

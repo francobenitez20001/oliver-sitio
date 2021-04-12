@@ -10,7 +10,7 @@ const Promociones = (props) => {
     }, []);
 
     const getPromociones = ()=>{
-        if(props.promociones.length===0){
+        if(props.ofertas.length===0){
             props.traerPromociones();
         }
     }
@@ -19,8 +19,8 @@ const Promociones = (props) => {
             <h4 className="text-black">Nuestras Promociones</h4>
             <div className="row">
                 {(props.loading)?<Loader/>:
-                    props.promociones.map(prd=>(
-                        <div key={prd.idProducto} className="col-6 col-md-4 col-xl-3">
+                    props.ofertas.map(prd=>(
+                        <div key={prd.idSubProducto} className="col-6 col-md-4 col-xl-3">
                             <CardProducto imagen={prd.foto} prd={prd}/>
                         </div>
                     ))

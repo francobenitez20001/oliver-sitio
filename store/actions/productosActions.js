@@ -1,6 +1,6 @@
 import {API} from '../../config/index';
 import {isMobile} from '../../helpers/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS} from '../types/productosTypes';
 
 export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)=>{
     dispatch({
@@ -73,20 +73,20 @@ export const traerPromociones = ()=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        let url = `${API}/producto?desde=1&limite=8`;
+        let url = `${API}/subproductos/ofertas?desde=0&limite=9`;
         if(isMobile()){
-            url = `${API}/producto?desde=1&limite=4`;
+            url = `${API}/subproductos/ofertas?desde=0&limite=6`;
         }
         return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
-                type:TRAER_PROMOCIONES,
+                type:TRAER_OFERTAS,
                 payload:data.data
             });
         })
     } catch (error) {
         dispatch({
             type:ERROR,
-            payload:error
+            payload:error.message
         })
     }
 }

@@ -32,7 +32,7 @@ const Home = () => {
                         </div>
                         <div className="col-4 text-center">
                             <FontAwesomeIcon icon={faThumbtack} className={`my-3` + ' ' + styles.iconHome}/>
-                            <h5>Envíos en la zona de Pilar</h5>
+                            <h5>Envíos en la zona de Pilar <br/> y aledaños</h5>
                         </div>
                     </div>
                 </div>

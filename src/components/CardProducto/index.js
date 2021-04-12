@@ -43,7 +43,7 @@ const CardProducto = ({imagen,prd}) => {
                         <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioUnidad}</h3>
                     </section>
                     
-                    <span className={CardProductoModule.label__descuento+ ' ' + `bg-red`}>15% Off</span>
+                    {prd.descuento ? <span className={CardProductoModule.label__descuento+ ' ' + `bg-red`}>{prd.descuento}% Off</span> : null}
                 </div>
             </a>
         </Link>

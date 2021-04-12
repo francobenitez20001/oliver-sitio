@@ -1,12 +1,12 @@
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS} from '../types/productosTypes';
 
 const INITIAL_STATE = {
     productos:[],
     producto:null,
-    promociones:[],
     loading:false,
     loading_mas:false,
-    error:null
+    error:null,
+    ofertas:[]
 };
 
 const subproductosReducer = (state=INITIAL_STATE,action)=>{
@@ -29,6 +29,8 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {...state,loading_mas:true}
         case ERROR:
             return {...state,loading:false,error:action.payload}
+        case TRAER_OFERTAS:
+            return {...state,ofertas:action.payload,loading:false,error:null};
         default:
             return state;
     }
