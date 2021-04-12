@@ -93,15 +93,25 @@ const Checkout = (props) => {
 
             const {token} = props.usuarioReducer.usuario;
             const {productos:productosCarrito} = props.carritoReducer;
-            let productos = [];
-            productosCarrito.forEach(prd => {
-                productos.push({
-                    title:prd.subProducto,
-                    description:prd.tamaño,
-                    quantity:prd.cantidad,
-                    unit_price:prd.precioUnidad
-                })
-            });
+
+            //SOLUCION TEMPORAL PARA QUE SE SUME AL PAGO LO DEL ENVIO
+            let productos = [{
+                title:'Nueva compra en Oliver PetShop',
+                description:'Compra de uno o mas productos',
+                quantity:1,
+                unit_price:props.carritoReducer.total
+            }];
+
+            // TODO: VER LA FORMA DE MANDAR LOS PRODUCTOS JUNTO CON EL MONTO DEL ENVIO
+            // productosCarrito.forEach(prd => {
+            //     productos.push({
+            //         title:prd.subProducto,
+            //         description:prd.tamaño,
+            //         quantity:prd.cantidad,
+            //         unit_price:prd.precioUnidad
+            //     })
+            // });
+            
             let headers = new Headers();
             headers.append('token',token);
             headers.append("Content-Type", "application/json");
@@ -110,6 +120,7 @@ const Checkout = (props) => {
                 headers,
                 body:JSON.stringify(productos)
             }).then(res=>res.json()).then(datamp=>{
+                // console.log(datamp);
                 const {response} = datamp.info;
                 setLoading(false);
                 window.location.assign(response.init_point);
