@@ -18,6 +18,7 @@ const Producto = (props) => {
     }, []);
 
     const getData = async()=>{
+        props.restablecerFiltros();
         try {
             await props.traerPorId(props.idProducto);
         } catch (error) {
