@@ -11,7 +11,7 @@ import { isMobile } from '../../../helpers';
 import NavbarStyle from '../Navbar/Navbar.module.css';
 
 const Productos = (props) => {
-    const {filtros,paginacion} = props;
+    const {filtros,paginacion,filtrando} = props;
     const [filtro, setFiltro] = useState('');
 
     useEffect(() => {
@@ -31,7 +31,19 @@ const Productos = (props) => {
     }, [paginacion]);
     
     useEffect(() => {
-        getProductos();
+        if(props.location !== '/productos'){
+            //si se filtra directamente por categoria,marca,etc desde otra pagina.. esperar a que se aplique el filtro para no hacer dos peticiones.
+            if(filtrando){
+                getProductos();
+            }else{
+                //request para cuando se restablecen los filtros en pagina 'productos/royal-canin' por ejemplo.
+                if(props.productos.length>0){
+                    getProductos();
+                }
+            }
+        }else{
+            getProductos();
+        }
     }, [filtros])
 
     const getProductos = async ()=>{

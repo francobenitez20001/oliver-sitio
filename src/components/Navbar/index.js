@@ -203,7 +203,9 @@ const Navbar = (props) => {
                             <FontAwesomeIcon onClick={()=>window.location.assign('https://www.facebook.com/Pet-shop-Oliver-1783777958556350')} icon={faFacebook} className={NavbarStyle.iconoRed}/>
                             <FontAwesomeIcon onClick={()=>window.location.assign('https://www.instagram.com/petshopoliver/')} icon={faInstagram} className={NavbarStyle.iconoRed}/>
                         </div>
-                        <span className="text-muted">&copy;Terminos y Condiciones</span>
+                        <Link href={`${PUBLIC_URL}/politica`}>
+                            <span className="text-muted">&copy;Terminos y Condiciones</span>
+                        </Link>
                     </section>  
                 </div>
             </div>
