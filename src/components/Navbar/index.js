@@ -6,7 +6,7 @@ import Modal from '../Modal/index';
 import Login from '../Login';
 import Register from '../Login/Register';
 import Carrito from '../Carrito';
-import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {PUBLIC_URL, URL_CLOUD_STORAGE} from '../../../config/index';
@@ -155,7 +155,7 @@ const Navbar = (props) => {
                 <div className={NavbarStyle.menu__collapsed}>
                     <section className={NavbarStyle.header__collapsed_nav}>
                         <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo} alt="Oliver pet shop"/>
-                        <i onClick={toggleMenu} className={NavbarStyle.close_btn_menu + ' ' + `fas fa-times`}></i>
+                        <FontAwesomeIcon onClick={toggleMenu} className={NavbarStyle.close_btn_menu} icon={faTimes}/>
                     </section>
                     <div className={NavbarStyle.main__collapsed}>
                         <ul className={NavbarStyle.list__menu__collapsed}>
@@ -196,9 +196,6 @@ const Navbar = (props) => {
                                 <span className={NavbarStyle.label__item__menu}>Ingresá ahora / Registrate</span>
                             </li>
                             }
-                            <li className={NavbarStyle.item__menu__collapsed + ' ' + NavbarStyle.__withButton}>
-                                <a href="/" className="boton bg-yellow">Ofertas</a>
-                            </li>
                         </ul>
                     </div>
                     <section className={NavbarStyle.collapsed_info + ' ' + `text-center`}>
