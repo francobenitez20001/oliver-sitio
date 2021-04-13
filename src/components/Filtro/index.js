@@ -10,7 +10,7 @@ import * as subcategoriasActions from '../../../store/actions/subcategoriasActio
 import Loader from '../Loader';
 
 const {traerTodas:marcasTraerTodas} = marcasActions;
-const {filtrarProductos:productosFiltrarProductos,traerTodos:productosTraerTodos,aplicarFiltro,quitarFiltro,restablecerFiltros} = productosActions;
+const {aplicarFiltro,quitarFiltro,restablecerFiltros} = productosActions;
 const {traerTodas:categoriasTraerTodas} = categoriasActions;
 const {traerTodas:subcategoriaTraerTodas} = subcategoriasActions;
 
@@ -141,8 +141,6 @@ const mapStateToProps = ({marcasReducer,productosReducer,categoriasReducer,subca
 
 const mapDispatchToProps = {
     marcasTraerTodas,
-    productosFiltrarProductos,
-    productosTraerTodos,
     categoriasTraerTodas,
     subcategoriaTraerTodas,
     aplicarFiltro,

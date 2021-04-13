@@ -11,13 +11,8 @@ import { isMobile } from '../../../helpers';
 import NavbarStyle from '../Navbar/Navbar.module.css';
 
 const Productos = (props) => {
-
+    const {filtros,paginacion} = props;
     const [filtro, setFiltro] = useState('');
-    const [rangoProducto, setRangoProducto] = useState({
-        desde:0,
-        limiteDesktop:20,
-        limiteMobile:8
-    });
 
     useEffect(() => {
         if(props.location !== '/productos'){
@@ -26,16 +21,30 @@ const Productos = (props) => {
             }else{
                 mostrarSolapaFiltro(props.query.index[0]);
             }
-        }else{
-            getProductos();
         }
     }, []);
 
     useEffect(() => {
-        if(rangoProducto.desde>0){
-            props.traerMas(rangoProducto,props.productos);
+        if(paginacion.desde>0){
+            props.traerMas();
         }
-    }, [rangoProducto])
+    }, [paginacion]);
+    
+    useEffect(() => {
+        getProductos();
+    }, [filtros])
+
+    const getProductos = async ()=>{
+        try {
+            await props.traerProductos();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const cargarMas = ()=>{
+        props.updatePaginacion();
+    }
 
     const showFiltrosMobile = ()=>{
         if(document.getElementsByClassName(NavbarStyle.menu__collapsed)[0].classList.contains(NavbarStyle.showCollapsed)){
@@ -44,13 +53,6 @@ const Productos = (props) => {
         document.getElementsByClassName('Filtro_filtros__contanier__3knXf')[0].classList.add(FiltroStyle.show_filtros);
     }
 
-    const getProductos = async ()=>{
-        try {
-            await props.traerTodos(rangoProducto);
-        } catch (error) {
-            console.log(error);
-        }
-    }
     
     const mostrarSolapaFiltro = filtro=>{
         setFiltro(filtro);
@@ -78,19 +80,6 @@ const Productos = (props) => {
         setFiltro('');
     }
 
-    const cargarMas = ()=>{
-        if(isMobile()){
-            setRangoProducto({
-                ...rangoProducto,
-                desde: rangoProducto.desde + rangoProducto.limiteMobile - 1,
-            })
-        }else{
-            setRangoProducto({
-                ...rangoProducto,
-                desde: rangoProducto.desde + rangoProducto.limiteDesktop - 1
-            })
-        }
-    }
 
     const handleScrollFeedProductos = event=>{
         let feedProductos = document.querySelector('.feedProductos');
@@ -124,32 +113,6 @@ const Productos = (props) => {
             return <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
         }
                 
-    }
-
-    const armarUrlFiltro = ()=>{
-        // let url = '';
-        // //si buscador viene true, es porque viene desde el buscador del menu o modal de buscador(mobile).
-        // if(estadoFiltro.buscador!=='') return url += `buscar?busqueda=${estadoFiltro.buscador}`;
-        // url += 'filtrar';
-        
-        // if(estadoFiltro.categoria && estadoFiltro.categoria !== ''){
-        //     url += `?categoria=${estadoFiltro.categoria}`;
-        // }
-        // if(estadoFiltro.subcategoria && estadoFiltro.subcategoria !== ''){
-        //     if(estadoFiltro.categoria!== ''){
-        //         url += `&subcategoria=${estadoFiltro.subcategoria}`; 
-        //     }else{
-        //         url += `?subcategoria=${estadoFiltro.subcategoria}`;
-        //     }
-        // }
-        // if(estadoFiltro.marca && estadoFiltro.marca !== ''){
-        //     if(estadoFiltro.categoria == '' && estadoFiltro.subcategoria == ''){
-        //         url += `?marca=${estadoFiltro.marca}`;
-        //     }else{
-        //         url += `&marca=${estadoFiltro.marca}`;
-        //     }
-        // }
-        // return url;
     }
 
     return (

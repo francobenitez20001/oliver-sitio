@@ -1,4 +1,4 @@
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION} from '../types/productosTypes';
 
 const INITIAL_STATE = {
     productos:[],
@@ -8,6 +8,11 @@ const INITIAL_STATE = {
     error:null,
     ofertas:[],
     filtrando:false,
+    paginacion:{
+        limiteMobile:10,
+        limiteDesktop:20,
+        desde:0,
+    },
     filtros:{
         categoria:null,
         subcategoria:null,
@@ -49,6 +54,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                     marca:null,
                     search:'',
                     orden:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case APLICAR_FILTRO_CATEGORIA:
@@ -58,6 +67,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     categoria:action.payload
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case APLICAR_FILTRO_SUBCATEGORIA:
@@ -67,6 +80,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     subcategoria:action.payload
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case APLICAR_FILTRO_MARCA:
@@ -76,6 +93,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     marca:action.payload
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case APLICAR_FILTRO_BUSCADOR:
@@ -85,6 +106,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     search:action.payload
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case APLICAR_FILTRO_ORDEN:
@@ -93,6 +118,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     orden:action.payload
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case ELIMINAR_FILTRO_CATEGORIA:
@@ -102,6 +131,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     categoria:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case ELIMINAR_FILTRO_SUBCATEGORIA:
@@ -111,6 +144,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     subcategoria:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case ELIMINAR_FILTRO_MARCA:
@@ -120,6 +157,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     marca:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case ELIMINAR_FILTRO_BUSCADOR:
@@ -129,6 +170,10 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     buscador:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
                 }
             }
         case ELIMINAR_FILTRO_ORDEN:
@@ -137,6 +182,18 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
                 filtros:{
                     ...state.filtros,
                     orden:null
+                },
+                paginacion:{
+                    ...state.paginacion,
+                    desde:0
+                }
+            }
+        case PRODUCTOS_PAGINACION:
+            return{
+                ...state,
+                paginacion:{
+                    ...state.paginacion,
+                    desde:action.payload
                 }
             }
         default:

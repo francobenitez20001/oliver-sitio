@@ -1,16 +1,31 @@
 import {API} from '../../config/index';
 import {isMobile} from '../../helpers/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION} from '../types/productosTypes';
 
-export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)=>{
+export const traerProductos = ()=>async (dispatch,getState)=>{
     dispatch({
         type:LOADING
     });
     try {
-        let url = `${API}/producto?desde=${desde}&limite=${limiteDesktop}`;
-        if(isMobile()){
-            url = `${API}/producto?desde=${desde}&limite=${limiteMobile}`;
+        //obtengo el estado actualizado de los filtros
+        const {filtrando,filtros:{categoria,subcategoria,marca,search,orden},paginacion:{desde,limiteMobile,limiteDesktop}} = getState().productosReducer;
+
+        let url = `${API}`;
+        if(!filtrando){
+            url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
+        }else{
+            if(search.trim() !== ""){
+                url += `/buscar?busqueda=${search}`
+            }else{
+                url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
+                if(categoria) { url += `categoria=${categoria}&` }
+                if(subcategoria) { url += `subcategoria=${subcategoria}&` }
+                if(marca) { url += `marca=${marca}`}
+            }
         }
+
+        // console.log(url);
+        
         return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_TODOS,
@@ -25,17 +40,30 @@ export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)
     }
 }
 
-export const traerMas = (rangoProducto,prevProductos)=>async (dispatch)=>{
+export const traerMas = ()=>async (dispatch,getState)=>{
     dispatch({
         type:LOADING_MAS
     });
     try {
-        let url = `${API}/producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteDesktop}`;
-        if(isMobile()){
-            url = `${API}/producto?desde=${rangoProducto.desde}&limite=${rangoProducto.limiteMobile}`;
+        //obtengo el estado actualizado de los filtros
+        const {productos,filtrando,filtros:{categoria,subcategoria,marca,search,orden},paginacion:{desde,limiteMobile,limiteDesktop}} = getState().productosReducer;
+
+        let url = `${API}`;
+        if(!filtrando){
+            url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
+        }else{
+            if(search.trim() !== ""){
+                url += `/buscar?busqueda=${search}`
+            }else{
+                url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
+                if(categoria) { url += `categoria=${categoria}&` }
+                if(subcategoria) { url += `subcategoria=${subcategoria}&` }
+                if(marca) { url += `marca=${marca}`}
+            }
         }
+
         return fetch(url).then(res=>res.json()).then(data=>{
-            let updateproductos = [...prevProductos,...data.data];
+            let updateproductos = [...productos,...data.data];
             dispatch({
                 type:TRAER_MAS,
                 payload:updateproductos
@@ -100,33 +128,6 @@ export const ordenarProductos = productosOrdenados=>async dispatch=>{
             type:ORDENAR_PRODUCTOS,
             payload:productosOrdenados
         });
-    } catch (error) {
-        dispatch({
-            type:ERROR,
-            payload:error
-        })
-    }
-}
-
-export const filtrarProductos = (url,desde,limiteDesktop,limiteMobile)=>async dispatch=>{
-    //console.log('filtrando');
-    //console.log(url);
-    dispatch({
-        type:LOADING
-    });
-    try {
-        let urlFiltro = (url.includes('buscar?busqueda'))?`productos/${url}&`:`productos/filtro/${url}&`;
-        if(isMobile()){
-            urlFiltro += `desde=${desde}&limite=${limiteMobile}`;
-        }else{
-            urlFiltro += `desde=${desde}&limite=${limiteDesktop}`;
-        }
-        return fetch(`${API}/${urlFiltro}`).then(res=>res.json()).then(data=>{
-            dispatch({
-                type:FILTRANDO,
-                payload:data.data
-            })
-        })
     } catch (error) {
         dispatch({
             type:ERROR,
@@ -227,4 +228,13 @@ export const restablecerFiltros = ()=>dispatch=>{
     dispatch({
         type:PRODUCTOS_RESTABLECER_FILTROS
     })
+}
+
+export const updatePaginacion = ()=>(dispatch,getState)=>{
+    const {paginacion} = getState().productosReducer;
+    let desdeUpdated = isMobile() ? paginacion.desde + paginacion.limiteMobile : paginacion.desde + paginacion.limiteDesktop;
+    dispatch({
+        type:PRODUCTOS_PAGINACION,
+        payload:desdeUpdated
+    });
 }
