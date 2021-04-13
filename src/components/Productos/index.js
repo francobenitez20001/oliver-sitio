@@ -14,7 +14,7 @@ const Productos = (props) => {
 
     const [filtro, setFiltro] = useState('');
     const [rangoProducto, setRangoProducto] = useState({
-        desde:1,
+        desde:0,
         limiteDesktop:20,
         limiteMobile:8
     });
@@ -32,7 +32,7 @@ const Productos = (props) => {
     }, []);
 
     useEffect(() => {
-        if(rangoProducto.desde>1){
+        if(rangoProducto.desde>0){
             props.traerMas(rangoProducto,props.productos);
         }
     }, [rangoProducto])
@@ -124,6 +124,32 @@ const Productos = (props) => {
             return <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
         }
                 
+    }
+
+    const armarUrlFiltro = ()=>{
+        // let url = '';
+        // //si buscador viene true, es porque viene desde el buscador del menu o modal de buscador(mobile).
+        // if(estadoFiltro.buscador!=='') return url += `buscar?busqueda=${estadoFiltro.buscador}`;
+        // url += 'filtrar';
+        
+        // if(estadoFiltro.categoria && estadoFiltro.categoria !== ''){
+        //     url += `?categoria=${estadoFiltro.categoria}`;
+        // }
+        // if(estadoFiltro.subcategoria && estadoFiltro.subcategoria !== ''){
+        //     if(estadoFiltro.categoria!== ''){
+        //         url += `&subcategoria=${estadoFiltro.subcategoria}`; 
+        //     }else{
+        //         url += `?subcategoria=${estadoFiltro.subcategoria}`;
+        //     }
+        // }
+        // if(estadoFiltro.marca && estadoFiltro.marca !== ''){
+        //     if(estadoFiltro.categoria == '' && estadoFiltro.subcategoria == ''){
+        //         url += `?marca=${estadoFiltro.marca}`;
+        //     }else{
+        //         url += `&marca=${estadoFiltro.marca}`;
+        //     }
+        // }
+        // return url;
     }
 
     return (

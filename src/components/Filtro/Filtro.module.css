@@ -36,13 +36,31 @@
 
 .filtros__contanier .lista{
     list-style: none;
-    padding: 0px 0px 0px 20px;
+    padding: 0px 10px 0px 0px;
     border-bottom: 1px solid #b6b6b6;
+}
+
+.filtros__contanier .listaMarca{
+    height: calc(52vh - 45px);
+    overflow-y: auto;
+}
+.filtros__contanier .listaMarca::-webkit-scrollbar {
+    width: 4px;     /* Tamaño del scroll en vertical */
+    height:3px
+}
+
+.filtros__contanier .listaMarca::-webkit-scrollbar-thumb {
+    background: #FFB347;
+    border-radius: 4px;
+}
+.filtros__contanier .listaMarca::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .filtros__contanier .lista .item_filtro{
     margin: 10px 0px;
-    font-size: 13px;
+    font-size: 16px;
     font-family: 'Lato',sans-serif;
     cursor: pointer;
     display: flex;
@@ -93,7 +111,7 @@
     }
 
     .filtros__contanier .lista li span{
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .filtros__contanier .boton{

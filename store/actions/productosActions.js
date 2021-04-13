@@ -1,6 +1,6 @@
 import {API} from '../../config/index';
 import {isMobile} from '../../helpers/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS} from '../types/productosTypes';
 
 export const traerTodos = ({desde,limiteDesktop,limiteMobile})=>async (dispatch)=>{
     dispatch({
@@ -108,14 +108,19 @@ export const ordenarProductos = productosOrdenados=>async dispatch=>{
     }
 }
 
-export const filtrarProductos = url=>async dispatch=>{
+export const filtrarProductos = (url,desde,limiteDesktop,limiteMobile)=>async dispatch=>{
     //console.log('filtrando');
     //console.log(url);
     dispatch({
         type:LOADING
     });
     try {
-        let urlFiltro = (url.includes('buscar?busqueda'))?`productos/${url}`:`productos/filtro/${url}`;
+        let urlFiltro = (url.includes('buscar?busqueda'))?`productos/${url}&`:`productos/filtro/${url}&`;
+        if(isMobile()){
+            urlFiltro += `desde=${desde}&limite=${limiteMobile}`;
+        }else{
+            urlFiltro += `desde=${desde}&limite=${limiteDesktop}`;
+        }
         return fetch(`${API}/${urlFiltro}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:FILTRANDO,
@@ -128,4 +133,98 @@ export const filtrarProductos = url=>async dispatch=>{
             payload:error
         })
     }
+}
+
+export const aplicarFiltro = (tipo,valor)=>dispatch=>{
+    switch (tipo) {
+        case 'categoria':
+            dispatch({
+                type:APLICAR_FILTRO_CATEGORIA,
+                payload:valor
+            })
+            break;
+        case 'subcategoria':
+            dispatch({
+                type:APLICAR_FILTRO_SUBCATEGORIA,
+                payload:valor
+            })
+            break;
+        case 'marca':
+            dispatch({
+                type:APLICAR_FILTRO_MARCA,
+                payload:valor
+            })
+            break;
+        case 'search':
+            dispatch({
+                type:APLICAR_FILTRO_BUSCADOR,
+                payload:valor
+            })
+            break;
+        case 'orden':
+            dispatch({
+                type:APLICAR_FILTRO_ORDEN,
+                payload:valor
+            })
+            break;
+        default:
+            break;
+    }
+}
+
+export const quitarFiltro = (tipo)=>(dispatch,getState)=>{
+    const {filtros:{categoria,subcategoria,marca,search,orden}} = getState().productosReducer;
+    switch (tipo) {
+        case 'categoria':
+            if(!subcategoria && !marca){
+                dispatch({
+                    type:PRODUCTOS_RESTABLECER_FILTROS
+                })
+            }else{
+                dispatch({
+                    type:ELIMINAR_FILTRO_CATEGORIA
+                })
+            }
+            break;
+        case 'subcategoria':
+            if(!categoria && !marca){
+                dispatch({
+                    type:PRODUCTOS_RESTABLECER_FILTROS
+                })
+            }else{
+                dispatch({
+                    type:ELIMINAR_FILTRO_SUBCATEGORIA
+                })
+            }
+            break;
+        case 'marca':
+            if(!categoria && !subcategoria){
+                dispatch({
+                    type:PRODUCTOS_RESTABLECER_FILTROS
+                })
+            }else{
+                dispatch({
+                    type:ELIMINAR_FILTRO_MARCA
+                })
+            }
+            break;
+        case 'buscador':
+            dispatch({
+                type:ELIMINAR_FILTRO_BUSCADOR
+            })
+            break;
+        case 'orden':
+            dispatch({
+                type:ELIMINAR_FILTRO_ORDEN
+            })
+            break;
+        default:
+            break;
+    }
+}
+
+export const restablecerFiltros = ()=>dispatch=>{
+    dispatch({
+        type:PRODUCTOS_RESTABLECER_FILTROS
+    })
 }

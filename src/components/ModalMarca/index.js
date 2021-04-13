@@ -19,7 +19,7 @@ const ModalMarca = (props) => {
 
     const activarFiltro = marca=>{
         props.closeModal();
-        props.activarFiltro('marca',marca);
+        props.activarFiltro('marca',marca,true);
     }
 
     return (
