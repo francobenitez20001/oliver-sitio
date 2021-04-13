@@ -3,7 +3,7 @@ import { URL_CLOUD_STORAGE } from '../../../config';
 const BotonWhatsapp = () => {
     
     const handleClick = ()=>{
-        window.location.assign(`https://api.whatsapp.com/send?phone=01166245206&text=Consulta desde pagina web`);
+        window.location.assign(`https://api.whatsapp.com/send?phone=+542304347008&text=Consulta desde pagina web`);
     }
 
     return (
