@@ -1,6 +1,6 @@
 import {API} from '../../config/index';
 import {isMobile} from '../../helpers/index';
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION, PRODUCTOS_SIN_RESULTADO} from '../types/productosTypes';
 
 export const traerProductos = ()=>async (dispatch,getState)=>{
     dispatch({
@@ -15,7 +15,7 @@ export const traerProductos = ()=>async (dispatch,getState)=>{
             url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
         }else{
             if(search.trim() !== ""){
-                url += `/buscar?busqueda=${search}`
+                url += `/productos/buscar?busqueda=${search}&desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`
             }else{
                 url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
                 if(categoria) { url += `categoria=${categoria}&` }
@@ -63,6 +63,12 @@ export const traerMas = ()=>async (dispatch,getState)=>{
         }
 
         return fetch(url).then(res=>res.json()).then(data=>{
+            if(data.data.length===0){
+                dispatch({
+                    type:PRODUCTOS_SIN_RESULTADO
+                })
+                return;
+            }
             let updateproductos = [...productos,...data.data];
             dispatch({
                 type:TRAER_MAS,

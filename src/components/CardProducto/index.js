@@ -4,9 +4,11 @@ import Link from 'next/link';
 import {slug,isMobile} from '../../../helpers/index';
 import {PUBLIC_URL} from '../../../config/index';
 import Router from 'next/router';
+import ImagenLoader from '../Loader/ImagenLoader';
 
 const CardProducto = ({imagen,prd}) => {
     const [isProductoDetalle, setIsProductoDetalle] = useState(false);
+    const [loadingImagen, setLoadingImagen] = useState(true);
     useEffect(() => {
         const {router} = Router;
         if(router.route == '/producto/[...producto]'){
@@ -26,13 +28,21 @@ const CardProducto = ({imagen,prd}) => {
         }
         return nombreProcesado;
     }
+
+    const handleLoad = e=>{
+        let imagen = e.target;
+        setLoadingImagen(false);
+        imagen.classList.remove('d-none');
+    }
+
     return (
         (!isProductoDetalle)?
         <Link href={`${PUBLIC_URL}/producto/${slug(prd.producto)}/${prd.idProducto}`}>
             <a>
                 <div className={CardProductoModule.container__producto + ' ' + `my-3`}>
                     <section className={CardProductoModule.header__card}>
-                        <img src={imagen} alt="prd" className={CardProductoModule.img}/>
+                        <img src={imagen} alt="prd" className={CardProductoModule.img + ' d-none'} onLoad={handleLoad}/>
+                        {loadingImagen ? <ImagenLoader/> :null}
                     </section>
                     <section className={CardProductoModule.body__card}>
                         <span className="d-block text-muted">{prd.marca}</span>
@@ -51,7 +61,8 @@ const CardProducto = ({imagen,prd}) => {
         <a href={`${PUBLIC_URL}/producto/${slug(prd.producto)}/${prd.idProducto}`}>
             <div className={CardProductoModule.container__producto + ' ' + `my-3`}>
                 <section className={CardProductoModule.header__card}>
-                    <img src={imagen} alt="prd" className={CardProductoModule.img}/>
+                    <img src={imagen} alt="prd" className={CardProductoModule.img + ' d-none'} onLoad={handleLoad}/>
+                    {loadingImagen ? <ImagenLoader/> :null}
                 </section>
                 <section className={CardProductoModule.body__card}>
                     <span className={CardProductoModule.label__marca+ ' ' + `d-block text-muted`}>{prd.marca}</span>

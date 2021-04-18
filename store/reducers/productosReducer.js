@@ -1,4 +1,4 @@
-import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION} from '../types/productosTypes';
+import {TRAER_TODOS,TRAER_UNO,LOADING,ERROR,TRAER_PROMOCIONES,ORDENAR_PRODUCTOS,FILTRANDO,LOADING_MAS,TRAER_MAS, TRAER_OFERTAS, APLICAR_FILTRO_CATEGORIA, APLICAR_FILTRO_SUBCATEGORIA, APLICAR_FILTRO_MARCA, APLICAR_FILTRO_BUSCADOR, APLICAR_FILTRO_ORDEN, ELIMINAR_FILTRO_CATEGORIA, ELIMINAR_FILTRO_SUBCATEGORIA, ELIMINAR_FILTRO_MARCA, ELIMINAR_FILTRO_BUSCADOR, ELIMINAR_FILTRO_ORDEN, PRODUCTOS_RESTABLECER_FILTROS, PRODUCTOS_PAGINACION, PRODUCTOS_SIN_RESULTADO} from '../types/productosTypes';
 
 const INITIAL_STATE = {
     productos:[],
@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     error:null,
     ofertas:[],
     filtrando:false,
+    sinResultados:false,
     paginacion:{
         limiteMobile:10,
         limiteDesktop:20,
@@ -44,10 +45,13 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {...state,loading:false,error:action.payload}
         case TRAER_OFERTAS:
             return {...state,ofertas:action.payload,loading:false,error:null};
+        case PRODUCTOS_SIN_RESULTADO:
+            return {...state,loading:false,error:null,sinResultados:true,loading_mas:false}
         case PRODUCTOS_RESTABLECER_FILTROS:
             return {
                 ...state,
                 filtrando:false,
+                sinResultados:false,
                 filtros:{
                     categoria:null,
                     subcategoria:null,
@@ -64,6 +68,7 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {
                 ...state,
                 filtrando:true,
+                sinResultados:false,
                 filtros:{
                     ...state.filtros,
                     categoria:action.payload
@@ -77,6 +82,7 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {
                 ...state,
                 filtrando:true,
+                sinResultados:false,
                 filtros:{
                     ...state.filtros,
                     subcategoria:action.payload
@@ -90,6 +96,7 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {
                 ...state,
                 filtrando:true,
+                sinResultados:false,
                 filtros:{
                     ...state.filtros,
                     marca:action.payload
@@ -103,6 +110,7 @@ const subproductosReducer = (state=INITIAL_STATE,action)=>{
             return {
                 ...state,
                 filtrando:true,
+                sinResultados:false,
                 filtros:{
                     ...state.filtros,
                     search:action.payload

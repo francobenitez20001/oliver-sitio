@@ -1,5 +1,5 @@
 import Head from '../../src/components/Head'
-import React from 'react';
+import React, { useEffect } from 'react';
 import BannerUsuario from '../../src/components/BannerUsuario';
 import TabsNav from '../../src/components/Tabs/navs';
 import FormEditUsuario from '../../src/components/FormEditUsuario';
@@ -8,12 +8,21 @@ import ProductosUsuario from '../../src/components/ProductosUsuario';
 import Modal from '../../src/components/Modal/index';
 import FormModificarFotoUsuario from '../../src/components/FormModificarFotoUsuario';
 import FormModificarPw from '../../src/components/formModificarPw';
-const Perfil = () => {
+import { connect } from "react-redux";
+import * as productosActions from '../../store/actions/productosActions';
+const {restablecerFiltros} = productosActions;
+
+const Perfil = (props) => {
     const [activeTab, setActiveTab] = React.useState('1');
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const [renderModalProfile, setRenderModalProfile] = React.useState(false);
     const [renderModalPw, setRenderModalPw] = React.useState(false);
-
+    useEffect(() => {
+        document.getElementsByTagName('body')[0].style.overflowY="auto";
+        if(props.productosReducer.filtrando){
+            props.restablecerFiltros()
+        }
+    }, [])
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
     }
@@ -93,5 +102,12 @@ const Perfil = () => {
         </>
     );
 }
- 
-export default Perfil;
+const mapStateToProps = (productosReducer)=>{
+    return productosReducer
+}
+
+const mapDispatchToProps = {
+    restablecerFiltros
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Perfil);

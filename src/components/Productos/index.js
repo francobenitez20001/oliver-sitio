@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiltroStyle from '../Filtro/Filtro.module.css';
 import { isMobile } from '../../../helpers';
 import NavbarStyle from '../Navbar/Navbar.module.css';
+const Swal = require('sweetalert2');
 
 const Productos = (props) => {
     const {filtros,paginacion,filtrando} = props;
@@ -93,45 +94,11 @@ const Productos = (props) => {
     }
 
 
-    const handleScrollFeedProductos = event=>{
-        let feedProductos = document.querySelector('.feedProductos');
-        let botonCargarMas = document.querySelector('.btn-vermas');
-        let alturaTotalFeed = feedProductos.scrollHeight;
-        let alturaActual = feedProductos.scrollTop;
-        let porcentajeSuficiente = (alturaTotalFeed * 80) / 100;
-        if(isMobile()){
-            porcentajeSuficiente = (alturaTotalFeed * 70) / 100;
-        }else{
-            if(alturaTotalFeed == 2060){
-                porcentajeSuficiente = (alturaTotalFeed * 65) / 100;
-            };
-        }
-        if(botonCargarMas){
-            if(alturaActual>=porcentajeSuficiente){
-                return botonCargarMas.classList.remove('d-none');
-            }else{
-                return botonCargarMas.classList.add('d-none');
-            }
-        }
-    }
-
-    const renderBotonCargarMas = ()=>{
-        let minimoPosteos = 20;
-        if(isMobile()){
-            minimoPosteos = 10;
-        }
-
-        if(props.productos && props.productos.length>=minimoPosteos){
-            return <button className="boton bg-yellow btn-vermas d-none" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
-        }
-                
-    }
-
     return (
         <>
             {(props.loading || !props.productos)?<div className="col-12 text-center"><Loader/></div>:
             <>
-                {(filtro!=='')?
+                {(filtro!=='' && props.filtrando)?
                     <span id="label__filtro-busqueda" className={ProductosStyle.label__filtro_busqueda}>
                         <FontAwesomeIcon icon={faSearch}/>
                         <span className={ProductosStyle.item_filtro_busqueda}>
@@ -150,7 +117,7 @@ const Productos = (props) => {
                     </div>
                     <button onClick={showFiltrosMobile} className={`boton bg-yellow mt-3 d-none` + ' ' + ProductosStyle.boton_filtrar_mobile}>Filtrar</button>
                 </div>
-                <div className="row feedProductos" onScroll={handleScrollFeedProductos}>
+                <div className="row feedProductos">
                     {!props.productos ? null :
                         props.productos.map(prd=>(
                             <div key={prd.idProducto} className="col-6 col-md-3">
@@ -158,8 +125,9 @@ const Productos = (props) => {
                             </div>
                         ))
                     }
+                    {props.sinResultados ? <div className="alert alert-warning text-center w-100" style={{height:'50px'}}>No se encontraron más resultados</div> : <button className="boton bg-yellow btn-vermas" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>}
                 </div>
-                {renderBotonCargarMas()}
+                {/* {renderBotonCargarMas()} */}
             </>
             }
             <style jsx>{`
@@ -169,7 +137,7 @@ const Productos = (props) => {
                 }    
                 .btn-vermas{
                     position:relative;
-                    top:12px
+                    height:40px;
                 }
                 .feedProductos::-webkit-scrollbar {
                     width: 8px;     /* Tamaño del scroll en vertical */
@@ -186,7 +154,7 @@ const Productos = (props) => {
                 }
                 @media(max-width:768px){
                     .feedProductos{
-                        height:65vh;
+                        height:68vh;
                         overflow-y:scroll;
                     } 
                     .feedProductos::-webkit-scrollbar {

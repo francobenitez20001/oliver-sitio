@@ -11,10 +11,18 @@ import FormContacto from '../src/components/FormContacto';
 import Footer from '../src/components/Footer';
 import Buscador from '../src/components/Buscador';
 import BotonWhatsapp from '../src/components/BotonWhatsApp';
-const Home = () => {
+import {connect} from 'react-redux';
+import * as productosActions from '../store/actions/productosActions';
+const {restablecerFiltros} = productosActions;
+
+const Home = (props) => {
 
     useEffect(() => {
         //scrollToTop()
+        document.getElementsByTagName('body')[0].style.overflowY="auto";
+        if(props.filtrando){
+            props.restablecerFiltros();
+        }
     }, [])
     return (
         <>
@@ -50,5 +58,11 @@ const Home = () => {
         </>
     );
 }
+
+const mapDispatchToProps = {
+    restablecerFiltros
+}
+
+const mapStateToProps = ({productosReducer})=>productosReducer;
  
-export default Home;
+export default connect(mapStateToProps,mapDispatchToProps)(Home);

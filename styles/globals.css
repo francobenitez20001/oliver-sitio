@@ -107,9 +107,6 @@ body{
     transition: all .5 ease;
 }
 
-.btn-wpp:hover{
-    right: 50px;
-}
 
 .txt-yellow{
     color: #FFB347!important;
@@ -216,4 +213,10 @@ a:hover{text-decoration: none!important;}
 }
 .btn-secondary:focus{
     background-color: transparent !important;
+}
+
+h3{
+    line-height: 2.2;
+    font-weight: 300;
+    color: #FFB347;
 }
