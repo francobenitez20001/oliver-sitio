@@ -15,6 +15,7 @@ const Productos = (props) => {
     const {filtros,paginacion,filtrando} = props;
     const [filtro, setFiltro] = useState('');
 
+    //loop para mostrar filtro en pantalla
     useEffect(() => {
         if(props.location !== '/productos'){
             if(props.query.search){
@@ -25,6 +26,7 @@ const Productos = (props) => {
         }
     }, []);
 
+    //loop para paginacion
     useEffect(() => {
         if(paginacion.desde>0){
             props.traerMas();
@@ -32,17 +34,11 @@ const Productos = (props) => {
     }, [paginacion]);
     
     useEffect(() => {
-        if(props.location !== '/productos'){
-            //si se filtra directamente por categoria,marca,etc desde otra pagina.. esperar a que se aplique el filtro para no hacer dos peticiones.
-            if(filtrando){
-                getProductos();
-            }else{
-                //request para cuando se restablecen los filtros en pagina 'productos/royal-canin' por ejemplo.
-                if(props.productos.length>0){
-                    getProductos();
-                }
-            }
-        }else{
+        // veo si se esta filtrando para no hacer request innecesarios
+        if(props.location !== '/productos' && filtrando){
+            getProductos();
+            return;
+        }else if(props.location === '/productos'){
             getProductos();
         }
     }, [filtros])

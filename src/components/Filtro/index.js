@@ -66,6 +66,10 @@ const Filtro = (props) => {
         document.getElementById('iconFiltroContainer').classList.toggle(FiltroStyle.rotar);
     }
 
+    const handleRestablecer = ()=>{
+        props.restablecerFiltros();
+    }
+
     const {filtrando,filtros} = props.productosReducer;
     
     return (
@@ -76,7 +80,7 @@ const Filtro = (props) => {
             <div>
                 {(props.categoriasReducer.categorias.length==0 || props.subcategoriaReducer.subcategorias.length==0 || props.marcasReducer.marcas.length==0)?<Loader/>:
                     <>  
-                        {(filtrando)?<button className="boton bg-yellow mb-3" onClick={props.restablecerFiltros}>
+                        {(filtrando)?<button className="boton bg-yellow mb-3" onClick={handleRestablecer}>
                             <FontAwesomeIcon icon={faBroom}/> Limpiar Filtros
                         </button>:null}
 
