@@ -53,7 +53,7 @@ export const traerMas = ()=>async (dispatch,getState)=>{
             url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
         }else{
             if(search.trim() !== ""){
-                url += `/buscar?busqueda=${search}`
+                url += `/productos/buscar?busqueda=${search}&desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`
             }else{
                 url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
                 if(categoria) { url += `categoria=${categoria}&` }
