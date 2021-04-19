@@ -23,6 +23,8 @@ const Productos = (props) => {
             }else{
                 mostrarSolapaFiltro(props.query.index[0]);
             }
+        }else{
+            getProductos();
         }
     }, []);
 
@@ -35,11 +37,9 @@ const Productos = (props) => {
     
     useEffect(() => {
         // veo si se esta filtrando para no hacer request innecesarios
-        if(props.location !== '/productos' && filtrando){
+        if(filtrando){
             getProductos();
             return;
-        }else if(props.location === '/productos'){
-            getProductos();
         }
     }, [filtros])
 
@@ -89,6 +89,13 @@ const Productos = (props) => {
         setFiltro('');
     }
 
+    const renderBotonCargarMas = ()=>{
+        if(isMobile()){
+            return <button className={`boton bg-yellow btn-vermas ${props.productos.length<paginacion.limiteMobile ? 'd-none':''}`} onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
+        }
+        return <button className={`boton bg-yellow btn-vermas ${props.productos.length<paginacion.limiteDesktop ? 'd-none':''}`} onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>
+    }
+
 
     return (
         <>
@@ -121,7 +128,7 @@ const Productos = (props) => {
                             </div>
                         ))
                     }
-                    {props.sinResultados ? <div className="alert alert-warning text-center w-100" style={{height:'50px'}}>No se encontraron más resultados</div> : <button className="boton bg-yellow btn-vermas" onClick={cargarMas}>{(props.loading_mas)?'Obteniendo productos...':'Cargar más'}</button>}
+                    {props.sinResultados ? <div className="alert alert-warning text-center w-100" style={{height:'50px'}}>No se encontraron más resultados</div> : renderBotonCargarMas()}
                 </div>
                 {/* {renderBotonCargarMas()} */}
             </>

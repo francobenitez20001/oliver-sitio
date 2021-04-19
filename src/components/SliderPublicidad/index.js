@@ -35,7 +35,9 @@ const SliderPublicidad = (props) => {
   }
 
   useEffect(() => {
-    props.traerTodas();
+    if(props.data.length===0){
+      props.traerTodas();
+    }
   }, [])
   
   const slides = props.data.map((item) => {

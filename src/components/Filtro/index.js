@@ -10,7 +10,7 @@ import * as subcategoriasActions from '../../../store/actions/subcategoriasActio
 import Loader from '../Loader';
 
 const {traerTodas:marcasTraerTodas} = marcasActions;
-const {aplicarFiltro,quitarFiltro,restablecerFiltros} = productosActions;
+const {aplicarFiltro,quitarFiltro,restablecerFiltros,traerProductos} = productosActions;
 const {traerTodas:categoriasTraerTodas} = categoriasActions;
 const {traerTodas:subcategoriaTraerTodas} = subcategoriasActions;
 
@@ -68,6 +68,7 @@ const Filtro = (props) => {
 
     const handleRestablecer = ()=>{
         props.restablecerFiltros();
+        props.traerProductos();
     }
 
     const {filtrando,filtros} = props.productosReducer;
@@ -149,7 +150,8 @@ const mapDispatchToProps = {
     subcategoriaTraerTodas,
     aplicarFiltro,
     quitarFiltro,
-    restablecerFiltros
+    restablecerFiltros,
+    traerProductos
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Filtro);

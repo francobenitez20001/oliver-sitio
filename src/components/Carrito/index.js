@@ -21,7 +21,7 @@ const Carrito = (props) => {
                 idSubProducto={prd.idSubProducto}
                 producto={prd.producto}
                 peso={prd.peso}
-                total={prd.precioUnidad}
+                total={prd.precio}
                 foto={prd.foto}
                 cantidad={prd.cantidad}
                 eliminarProducto={props.eliminarProducto}/>
@@ -31,7 +31,7 @@ const Carrito = (props) => {
     const calcularTotal = prds=>{
         let total = 0;
         prds.forEach(prd => {
-            total += parseInt(prd.precioUnidad * prd.cantidad);
+            total += parseInt(prd.precio * prd.cantidad);
         });
         return total;
     }
