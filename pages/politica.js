@@ -22,7 +22,7 @@ const Politica = (props) => {
             <Header title="Oliver PetShop - Políticas"/>
             <div className="container mt-5 py-4">
                 <h2>Política de privacidad</h2>
-                <div id="info">{props.politicaReducer.politica}</div>
+                <div id="info" dangerouslySetInnerHTML={{__html:props.politicaReducer.politica}}></div>
                 <br/>
                 <hr/>
                 <h2>Terminos y condiciones</h2>
