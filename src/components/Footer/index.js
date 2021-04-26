@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './footer.module.css';
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {URL_CLOUD_STORAGE} from '../../../config';
+import Modal from '../Modal/index';
+import Instructivo from '../Instructivo';
+
 const Footer = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const habilitarInstructivo = ()=>{
+        setModalIsOpen(!modalIsOpen);
+    }
+
     return (
         <>
+            {modalIsOpen ? <Modal closeModal={habilitarInstructivo}>
+                <Instructivo/>
+            </Modal>:null}
             <div className={styles.container__subfooter + ' ' + `py-2`}>
                 <div className={styles.containerImages + ` container`}>
                     <div className={styles.redes__footer}>
@@ -19,6 +31,7 @@ const Footer = () => {
                         <ul className={styles.ul}>
                             <li className={styles.li}><a href="/politica">Terminos y condiciones</a></li>
                             <li className={styles.li}><a href="/politica">Políticas de privacidad</a></li>
+                            <li style={{cursor:'pointer'}} onClick={habilitarInstructivo} className={styles.li}>¿Cómo comprar?</li>
                         </ul>
                     </div>
                 </div>
