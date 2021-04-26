@@ -32,6 +32,10 @@ const ZonaEnvio = (props) => {
         event.persist();
         props.setZonaEnvio(event.target.value);
         const zonaChecked = zonas.filter(zona=>zona.idZona === parseInt(event.target.value))[0];
+        if(event.target.value == ""){
+            props.setCostoEnvio(0);
+            return;
+        }
         const {precio} = zonaChecked;
         props.setCostoEnvio(precio);
     }

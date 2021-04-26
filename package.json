@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "dev": "NEXT_PUBLIC_PUBLIC_URL=http://localhost:3000 next",
+    "build": "NEXT_PUBLIC_PUBLIC_URL=https://developers.oliverpetshop.com.ar next build",
+    "start": "NEXT_PUBLIC_PUBLIC_URL=https://developers.oliverpetshop.com.ar next start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",

@@ -61,7 +61,7 @@ const OpcionesEnvio = (props) => {
                         margin-bottom:50px!important
                     }
                     .containerCajaEnvio .limiteHorario{
-                        top: 64%;
+                        top: 59%;
                         right:50px
                     }
                 }
@@ -69,6 +69,10 @@ const OpcionesEnvio = (props) => {
                 @media(max-width:370px){
                     .direccionDetallada{
                         font-size:12px
+                    }
+                    .containerCajaEnvio .limiteHorario{
+                        top: 60%;
+                        right:50px
                     }
                 }
             `}</style>

@@ -24,7 +24,7 @@ const BannerMarcas = (props) => {
                 </div>
             : 
                 <div className="container">
-                    <h3 className="mb-4">Nuestras marcas</h3>
+                    <h3 className="mb-4">Nuestras principales marcas</h3>
                     <div className="row">
                         {props.marcas.map((marca,key)=>{
                             if(key>=12) return false;

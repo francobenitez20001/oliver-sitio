@@ -18,7 +18,7 @@ const CardProducto = ({imagen,prd}) => {
     const procesarNombre = nombre=>{
         let nombreProcesado = nombre;
         if(isMobile()){
-            if(nombreProcesado.length>25){
+            if(nombreProcesado.length>20){
                 nombreProcesado = nombre.substring(0,22)+'...';
             }
         }else{

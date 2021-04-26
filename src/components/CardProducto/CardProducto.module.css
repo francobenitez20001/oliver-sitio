@@ -25,6 +25,11 @@
     padding: 10px 0px 0px 0px;
 }
 
+.container__producto .body__card .precio{
+    position: absolute;
+    bottom: 15px;
+}
+
 .container__producto .body__card .cantidad{
     background-color: #FFB347;
     padding: 3px 6px;

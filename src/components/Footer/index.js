@@ -25,7 +25,7 @@ const Footer = () => {
             </div>
             <footer className="bg-yellow">
                 <div className="container d-flex align-items-center justify-content-between py-2">
-                    <span className="text-bold">Copyright &copy; 2020 oliverpetshop.com.ar. Todos los derechos reservados</span>
+                    <span className="text-bold">Copyright &copy; {new Date().getFullYear()} oliverpetshop.com.ar. Todos los derechos reservados</span>
                     <img src={`${URL_CLOUD_STORAGE}/Perro.png`} alt="Oliver" width="50px" height="50px"/>
                 </div>
             </footer>

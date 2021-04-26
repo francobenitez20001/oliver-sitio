@@ -217,7 +217,7 @@ const Checkout = (props) => {
                                 <MediosDePago/>
                                 <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
                                 <div className="divTotalMobile">
-                                    <span id="total">${props.carritoReducer.subtotal}</span>
+                                    <span id="total">${props.carritoReducer.total}</span>
                                     <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
                                 </div>
                             </div>
