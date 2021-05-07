@@ -116,17 +116,18 @@ const Navbar = (props) => {
         setModalIsOpen(true);
     }
 
+    const navegar = (path)=>{
+        Router.push(path);
+        toggleMenu();
+    }
+
     return (
         <>
             <div className={NavbarStyle.navbar + ' ' + `sticky-top`}>
                 <div className={NavbarStyle.wrapper__navbar  + ' ' +  `container`}>
                     <nav className="row ml-0 w-100">
                         <div className={NavbarStyle.container__logo}>
-                            <Link href="/">
-                                <a>
-                                    <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop"/>
-                                </a>
-                            </Link>
+                            <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop" onClick={navegar}/>
                         </div>
                         <span className={NavbarStyle.search_mobile} onClick={showModalBuscador}>
                             <FontAwesomeIcon icon={faSearch} className={NavbarStyle.txt__item_menu}/>
@@ -176,32 +177,20 @@ const Navbar = (props) => {
                     </section>
                     <div className={NavbarStyle.main__collapsed}>
                         <ul className={NavbarStyle.list__menu__collapsed}>
-                            <Link href="/" onClick={toggleMenu}>
-                                <a>
-                                    <li className={NavbarStyle.item__menu__collapsed}>
-                                        <FontAwesomeIcon icon={faHome} className={NavbarStyle.icon__itemMenu__collapsed}/>
-                                        <span className={NavbarStyle.label__item__menu}>Inicio</span>
-                                    </li>
-                                </a>
-                            </Link>
-                            <Link href="/productos" onClick={toggleMenu}>
-                                <a>
-                                    <li className={NavbarStyle.item__menu__collapsed}>
-                                        <FontAwesomeIcon icon={faPiggyBank} className={NavbarStyle.icon__itemMenu__collapsed}/>
-                                        <span className={NavbarStyle.label__item__menu}>Productos</span>
-                                    </li>
-                                </a>
-                            </Link>
+                            <li className={NavbarStyle.item__menu__collapsed} onClick={()=>navegar('/')}>
+                                <FontAwesomeIcon icon={faHome} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                <span className={NavbarStyle.label__item__menu}>Inicio</span>
+                            </li>
+                            <li className={NavbarStyle.item__menu__collapsed} onClick={()=>navegar('/productos')}>
+                                <FontAwesomeIcon icon={faPiggyBank} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                <span className={NavbarStyle.label__item__menu}>Productos</span>
+                            </li>
                             {(props.logueado && props.usuario)?
                             <>
-                                <Link href={`${PUBLIC_URL}/perfil`} onClick={toggleMenu}>
-                                    <a>
-                                        <li className={NavbarStyle.item__menu__collapsed}>
-                                            <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
-                                            <span className={NavbarStyle.label__item__menu}>Mi perfil</span>
-                                        </li>
-                                    </a>
-                                </Link>
+                                <li className={NavbarStyle.item__menu__collapsed} onClick={()=>navegar('/perfil')}>
+                                    <FontAwesomeIcon icon={faUser} className={NavbarStyle.icon__itemMenu__collapsed}/>
+                                    <span className={NavbarStyle.label__item__menu}>Mi perfil</span>
+                                </li>
                                 <li className={NavbarStyle.item__menu__collapsed} onClick={cerrarSesion}>
                                     <FontAwesomeIcon icon={faSignOutAlt} className={NavbarStyle.icon__itemMenu__collapsed}/>
                                     <span className={NavbarStyle.label__item__menu}>Cerrar Sesión</span>
