@@ -1,22 +1,9 @@
 import React,{useState} from 'react';
-import Router,{useRouter} from 'next/router'
-import Modal from '../Modal/index';
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const Buscador = () => {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+import Router,{useRouter} from 'next/router';
+
+const FormBuscadorMobile = () => {
     const [buscador, setBuscador] = useState('');
     const location = useRouter();
-    const showModalBuscador = ()=>{
-        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-        setModalIsOpen(true)
-    };
-
-    const closeModal = ()=>{
-        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
-        setModalIsOpen(false)
-    };
-
     const handleChangeBuscador = event=>(
         setBuscador(event.target.value)
     );
@@ -24,6 +11,7 @@ const Buscador = () => {
     const handleSubmit = event=>{
         event.preventDefault();
         if(buscador.trim()== '')return false; 
+        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         if(location.pathname == '/'){
             return Router.push(`/productos?search=${buscador}`);
         }
@@ -32,16 +20,10 @@ const Buscador = () => {
 
     return (
         <>
-            <button className="boton__float__search bg-yellow" onClick={showModalBuscador}>
-                <FontAwesomeIcon icon={faSearch}/>
-            </button>
-            {(modalIsOpen)?
-            <Modal closeModal={closeModal}>
-                <form className="form-group mt-4" onSubmit={handleSubmit}>
-                    <input type="text" className="form-control" placeholder="¿Qué andas buscando?" onChange={handleChangeBuscador} required/>
-                    <button type="submit" className="boton bg-yellow mt-3">Buscar</button>
-                </form>
-            </Modal>:null}
+            <form className="form-group mt-4" onSubmit={handleSubmit}>
+                <input type="text" className="form-control" placeholder="¿Qué andas buscando?" onChange={handleChangeBuscador} required/>
+                <button type="submit" className="boton bg-yellow mt-3">Buscar</button>
+            </form>
             <style jsx>{`
                 .boton__float__search{
                     position: fixed;
@@ -68,4 +50,4 @@ const Buscador = () => {
     );
 }
  
-export default Buscador;
+export default FormBuscadorMobile;

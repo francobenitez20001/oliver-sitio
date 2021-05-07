@@ -193,6 +193,16 @@
         color: white;
     }
 
+    .search_mobile{
+        display: block;
+        position: absolute;
+        right: 120px;
+        top: 26%;
+        font-size: 20px;
+        color: white;
+    }
+
+
     .showCollapsed{
         left:0% !important;
     }

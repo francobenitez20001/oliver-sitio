@@ -3,7 +3,6 @@ import Header from '../../src/components/Head';
 import Productos from '../../src/components/Productos';
 import Filtro from '../../src/components/Filtro';
 //import BotonScrollTop from '../src/components/botonScrollToTop';
-import Buscador from '../../src/components/Buscador';
 import {useRouter} from 'next/router';
 import BotonWhatsapp from '../../src/components/BotonWhatsApp';
 
@@ -31,7 +30,6 @@ const ProductosPage = (props) => {
                                     query={query}/>
                     </div>
                 </div>
-                <Buscador/>
             </section>
             <BotonWhatsapp/>
         </>

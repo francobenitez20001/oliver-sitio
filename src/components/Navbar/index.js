@@ -6,7 +6,7 @@ import Modal from '../Modal/index';
 import Login from '../Login';
 import Register from '../Login/Register';
 import Carrito from '../Carrito';
-import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faHome,faUser,faPiggyBank,faShoppingCart,faAlignLeft,faSignOutAlt, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 import {faFacebook,faInstagram} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {PUBLIC_URL, URL_CLOUD_STORAGE} from '../../../config/index';
@@ -15,6 +15,7 @@ import * as usuarioActions from '../../../store/actions/usuarioActions';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import FiltroStyle from '../Filtro/Filtro.module.css';
 import FormModificarPw from '../formModificarPw/index';
+import FormBuscadorMobile from '../Buscador/form';
 
 
 const Navbar = (props) => {
@@ -27,6 +28,7 @@ const Navbar = (props) => {
     const [carrito, setCarrito] = useState(false);
     const [register, setRegister] = useState(false);
     const [resetPassword, setResetPassword] = useState(false);
+    const [mostrarBuscadorMobile, setMostrarBuscadorMobile] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [dropdownOpen, setOpen] = useState(false);
     const location = useRouter();
@@ -93,6 +95,7 @@ const Navbar = (props) => {
         if(register) return <Register showLogin={showModalLogin}/>;
         if(carrito) return <Carrito/>
         if(resetPassword) return <FormModificarPw withEmail={true}/>
+        if(mostrarBuscadorMobile) return <FormBuscadorMobile/>
     }
 
     const cerrarSesion = async()=>{
@@ -102,6 +105,17 @@ const Navbar = (props) => {
         }, 800);
     }
     const toggle = () => setOpen(!dropdownOpen);
+
+    const showModalBuscador = ()=>{
+        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+        (login)?setLogin(false):null;
+        (register)?setRegister(false):null;
+        //si el menu esta abierto, lo cierro.
+        setCarrito(false);
+        setMostrarBuscadorMobile(true);
+        setModalIsOpen(true);
+    }
+
     return (
         <>
             <div className={NavbarStyle.navbar + ' ' + `sticky-top`}>
@@ -114,6 +128,9 @@ const Navbar = (props) => {
                                 </a>
                             </Link>
                         </div>
+                        <span className={NavbarStyle.search_mobile} onClick={showModalBuscador}>
+                            <FontAwesomeIcon icon={faSearch} className={NavbarStyle.txt__item_menu}/>
+                        </span>
                         <span className={NavbarStyle.boton__menu + ' ' + NavbarStyle.btn_carrito + ' ' + NavbarStyle.carrito_mobile} onClick={showModalCarrito}>
                             <FontAwesomeIcon icon={faShoppingCart} className={NavbarStyle.txt__item_menu}/>
                         </span>

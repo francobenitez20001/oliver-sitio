@@ -9,7 +9,6 @@ import BannerCategorias from '../src/components/BannerCategorias';
 import BannerMarcas from '../src/components/BannerMarcas';
 import FormContacto from '../src/components/FormContacto';
 import Footer from '../src/components/Footer';
-import Buscador from '../src/components/Buscador';
 import BotonWhatsapp from '../src/components/BotonWhatsApp';
 import {connect} from 'react-redux';
 import * as productosActions from '../store/actions/productosActions';
@@ -53,7 +52,6 @@ const Home = (props) => {
             <BannerMarcas/>
             <FormContacto/>
             <Footer/>
-            <Buscador/>
             <BotonWhatsapp/>
         </>
     );
