@@ -7,13 +7,17 @@ export const traerProductos = ()=>async (dispatch)=>{
     });
     try {
         const productos = await JSON.parse(localStorage.getItem('carrito'));
-        let subtotal = 0;
+        let total = 0;
         productos.forEach(prd => {
-            subtotal += parseInt(prd.precio * prd.cantidad);
+            total += parseFloat(prd.precio * prd.cantidad);
         });
+
+        let cantidad = productos.length;
+
         let payloadData = {
             productos,
-            subtotal
+            total,
+            cantidad
         }
         return dispatch({
             type:TRAER_PRODUCTOS,
@@ -60,14 +64,16 @@ export const agregarProducto = producto=>async (dispatch,getState)=>{
 
         //calculo el subtotal
         const prds = JSON.parse(localStorage.getItem('carrito'));
-        let subtotal = 0;
+        let total = 0;
         prds.forEach(prd => {
-            subtotal += parseInt(prd.precioUnidad * prd.cantidad);
+            total += parseFloat(prd.precio * prd.cantidad);
         });
+        let cantidad = listProductosUpgrade.length;
 
         let payloadData = {
             listProductosUpgrade,
-            subtotal
+            total,
+            cantidad
         }
         setTimeout(() => {
             dispatch({
@@ -91,19 +97,21 @@ export const eliminarProducto = idSubProducto=>async (dispatch,getState)=>{
         const {productos} = getState().carritoReducer;
         //filtro los productos que no tengan el idProducto que se recibió. entonces elimino ese producto y actualizo el reducer.
         const newProductos = productos.filter(newArray=>newArray.idSubProducto !== idSubProducto);
+
         //console.log(newProductos);
         localStorage.setItem('carrito',JSON.stringify(newProductos));
 
         //calculo el subtotal
         const prds = JSON.parse(localStorage.getItem('carrito'));
-        let subtotal = 0;
+        let total = 0;
         prds.forEach(prd => {
-            subtotal += parseInt(prd.precio * prd.cantidad);
+            total += parseFloat(prd.precio * prd.cantidad);
         });
         
         let payloadData = {
             newProductos,
-            subtotal
+            total,
+            cantidad:prds.length
         }
         dispatch({
             type:ELIMINAR_PRODUCTO,
@@ -115,18 +123,4 @@ export const eliminarProducto = idSubProducto=>async (dispatch,getState)=>{
             payload:error
         })    
     }
-}
-
-export const cambiarMedioDePago = idMedioDePago =>dispatch=>{
-    return dispatch({
-        type:CAMBIAR_MEDIO_DE_PAGO,
-        payload:idMedioDePago
-    })
-}
-
-export const setCostoEnvio = costo=>dispatch=>{
-    return dispatch({
-        type:CAMBIAR_COSTO_ENVIO,
-        payload:costo
-    })
 }

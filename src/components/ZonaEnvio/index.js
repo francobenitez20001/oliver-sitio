@@ -1,43 +1,33 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import {API} from '../../../config/index';
 import {ObtenerDia} from '../../../helpers/index';
 import {connect} from 'react-redux';
-import * as carritoActions from '../../../store/actions/carritoActions';
+import * as ventasActions from '../../../store/actions/ventasActions';
+import * as zonaActions from '../../../store/actions/zonasActions';
 
-const {setCostoEnvio} = carritoActions;
+const {traerTodas:traerZonas,seleccionar:seleccionarZona} = zonaActions;
+const {setCostoEnvio} = ventasActions;
 
 const ZonaEnvio = (props) => {
-    const [zonas, setZonas] = useState([]);
     const [zonaDelDia, setZonaDelDia] = useState('');
+    const {zonas} = props.zonasReducer;
+
     useEffect(() => {
-        getZonas();
+        props.traerZonas();
     }, []);
 
-    const getZonas = async()=>{
-        try {
-            const dataUser = JSON.parse(localStorage.getItem('oliverpetshop_usuario'));
-            let myHeaders = new Headers();
-            myHeaders.append("token", dataUser.token);
-            const zonasApi = await fetch(`${API}/zonas`,{headers:myHeaders});
-            const dataZonas = await zonasApi.json();
-            setZonas(dataZonas.data);
-            verificarZonaDelDia(dataZonas.data);
-        } catch (error) {
-            alert(error);
+    useEffect(() => {
+        if(zonas.length>0){
+            verificarZonaDelDia(zonas);
         }
-    }
+    }, [zonas])
 
     const handleChange = event=>{
         event.persist();
-        props.setZonaEnvio(event.target.value);
-        const zonaChecked = zonas.filter(zona=>zona.idZona === parseInt(event.target.value))[0];
-        if(event.target.value == ""){
-            props.setCostoEnvio(0);
-            return;
-        }
-        const {precio} = zonaChecked;
-        props.setCostoEnvio(precio);
+        props.seleccionarZona(event.target.value)
+        
+        //ejecutar funcion para modificar el state de ventasReducer con el monto del envio adecuado.
+        props.setCostoEnvio();
     }
 
     const verificarZonaDelDia = (zonas)=>{
@@ -58,6 +48,7 @@ const ZonaEnvio = (props) => {
             setZonaDelDia(tempzonas);
         }
     }
+
     return (
         <div className="zona-envios pt-4">
             <div className="zonaDiaContainer">
@@ -115,9 +106,16 @@ const ZonaEnvio = (props) => {
     );
 }
 
-const mapStateToProps = ({carritoReducer})=>carritoReducer;
+const mapStateToProps = ({carritoReducer,zonasReducer})=>{
+    return {
+        carritoReducer,
+        zonasReducer
+    }
+};
 
 const mapDispatchToProps = {
+    traerZonas,
+    seleccionarZona,
     setCostoEnvio
 }
  

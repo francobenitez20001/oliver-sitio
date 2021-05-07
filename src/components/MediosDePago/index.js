@@ -1,10 +1,8 @@
 import { Fragment,useEffect } from "react";
 import {connect} from 'react-redux';
 import * as mediosActions from '../../../store/actions/medioDePagoActions';
-import * as carritoActions from '../../../store/actions/carritoActions';
 
 const {traerMedios} = mediosActions;
-const {cambiarMedioDePago} = carritoActions;
 
 const MediosDePago = (props) => {
     useEffect(() => {
@@ -36,6 +34,6 @@ const MediosDePago = (props) => {
 }
 
 const mapStateToProps = ({mediosDePagoReducer,carritoReducer})=>{return {mediosDePagoReducer,carritoReducer}};
-const mapDispatchToProps = {traerMedios,cambiarMedioDePago};
+const mapDispatchToProps = {traerMedios};
  
 export default connect(mapStateToProps,mapDispatchToProps)(MediosDePago);

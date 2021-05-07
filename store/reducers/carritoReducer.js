@@ -1,33 +1,46 @@
-import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR, CAMBIAR_MEDIO_DE_PAGO, CAMBIAR_COSTO_ENVIO} from '../types/carritoTypes';
+import {TRAER_PRODUCTOS,AGREGAR_PRODUCTO,ELIMINAR_PRODUCTO,LOADING,ERROR} from '../types/carritoTypes';
 
 const INITIAL_STATE = {
     productos:[],
-    porcentaje_descuento:0,
-    costoEnvio:0,
-    descuento:0,
-    subtotal:0,
+    cantidad:0,
     total:0,
     loading:false,
-    error:null,
-    idMedioPago:'1'
+    error:null
 };
 
 const carritoReducer = (state = INITIAL_STATE,action)=>{
     switch (action.type) {
         case TRAER_PRODUCTOS:
-            return {...state,productos:action.payload.productos,loading:false,error:null,subtotal:action.payload.subtotal,total:action.payload.subtotal + state.costoEnvio}
+            return {
+                ...state,
+                productos:action.payload.productos,
+                cantidad:action.payload.cantidad,
+                total:action.payload.total,
+                loading:false,
+                error:null
+            }
         case AGREGAR_PRODUCTO:
-            return {...state,productos:action.payload.listProductosUpgrade,loading:false,error:null,subtotal:action.payload.subtotal,total:action.payload.subtotal + state.costoEnvio}
+            return {
+                ...state,
+                productos:action.payload.listProductosUpgrade,
+                cantidad:action.payload.cantidad,
+                total:action.payload.total,
+                loading:false,
+                error:null
+            }
         case ELIMINAR_PRODUCTO:
-            return {...state,productos:action.payload.newProductos,loading:false,error:null,subtotal:action.payload.subtotal,total:action.payload.subtotal + state.costoEnvio}
-        case CAMBIAR_MEDIO_DE_PAGO:
-            return {...state,idMedioPago:action.payload}
+            return {
+                ...state,
+                productos:action.payload.newProductos,
+                cantidad:action.payload.cantidad,
+                total:action.payload.total,
+                loading:false,
+                error:null
+            }
         case LOADING:
             return {...state,loading:true}
         case ERROR:
             return {...state,error:action.payload,loading:false}
-        case CAMBIAR_COSTO_ENVIO:
-            return {...state,costoEnvio:action.payload,total:state.subtotal+action.payload}
         default:
             return state;
     }

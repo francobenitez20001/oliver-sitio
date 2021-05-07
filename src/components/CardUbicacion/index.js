@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React,{ useState } from 'react';
 import FormEditUbicacion from '../FormEditUbicacion';
 import Modal from '../Modal/index';
+import { connect } from "react-redux";
+
 
 const CardUbicacion = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -10,7 +12,7 @@ const CardUbicacion = (props) => {
     const switchModalEditUbicacion = ()=>{
         setModalIsOpen(!modalIsOpen);
     } 
-    const{dataUser:usuario} = props;
+    const{usuario} = props;
     let direccionAcortada;
     if(usuario.address){
         direccionAcortada = usuario.address.split(',')[0];
@@ -71,4 +73,6 @@ const CardUbicacion = (props) => {
     );
 }
 
-export default CardUbicacion;
+const mapStateToProps = ({usuarioReducer})=>usuarioReducer;
+
+export default connect(mapStateToProps,{})(CardUbicacion);

@@ -1,7 +1,11 @@
 import { LOADING,ERROR,GUARDAR } from "../types/enviosTypes";
 
 const INITIAL_STATE = {
-    data:null,
+    tipos:{
+        normal:true,
+        express:false,
+        local:false
+    },
     loading:false,
     error:null
 }
@@ -9,7 +13,40 @@ const INITIAL_STATE = {
 const enviosReducer = (state = INITIAL_STATE,action)=>{
     switch (action.type) {           
         case GUARDAR:
-            return {data:action.payload,loading:false,error:null}
+            switch (action.payload) {
+                case 'normal':
+                    return {
+                        tipos:{
+                            normal:true,
+                            express:false,
+                            local:false 
+                        },
+                        loading:false,
+                        error:null
+                    }
+                case 'express':
+                    return {
+                        tipos:{
+                            normal:false,
+                            express:true,
+                            local:false 
+                        },
+                        loading:false,
+                        error:null
+                    }
+                case 'local':
+                    return {
+                        tipos:{
+                            normal:false,
+                            express:false,
+                            local:true 
+                        },
+                        loading:false,
+                        error:null
+                    }
+                default:
+                    break;
+            }
         case LOADING:
             return {...state,loading:true}
         case ERROR:

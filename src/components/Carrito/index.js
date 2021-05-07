@@ -10,12 +10,10 @@ const Carrito = (props) => {
     useEffect(() => {
         props.traerProductos();
     }, []);
-    let totalCarrito = 0;
 
     const showProductos=()=>{
         if(!props.productos || props.productos.length === 0) return <div className="alert alert-warning">Ningun producto en el carrito</div>
         //calculo el subtotal para mostrarlo abajo de todo en el modal
-        totalCarrito = calcularTotal(props.productos);
         return props.productos.map((prd,key)=>(
             <ProductoCarrito key={key}
                 idSubProducto={prd.idSubProducto}
@@ -26,14 +24,6 @@ const Carrito = (props) => {
                 cantidad={prd.cantidad}
                 eliminarProducto={props.eliminarProducto}/>
         ))
-    }
-
-    const calcularTotal = prds=>{
-        let total = 0;
-        prds.forEach(prd => {
-            total += parseInt(prd.precio * prd.cantidad);
-        });
-        return total;
     }
 
     const finalizarCompra = ()=>{
@@ -49,7 +39,7 @@ const Carrito = (props) => {
             <div className={CarritoModule.footer__carrito}>
                 <section className={CarritoModule.section__carrito__total + ' ' + `d-flex justify-content-between`}>
                     <p>Total</p>
-                    <span className={CarritoModule.subtotal__carrito}>${totalCarrito}</span>
+                    <span className={CarritoModule.subtotal__carrito}>${props.total}</span>
                 </section>
                 {(props.productos.length==0)?null:<button className="boton bg-yellow" onClick={finalizarCompra} type="button">Finalizar compra</button>}
             </div>

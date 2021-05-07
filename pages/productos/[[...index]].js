@@ -8,7 +8,6 @@ import BotonWhatsapp from '../../src/components/BotonWhatsApp';
 
 const ProductosPage = (props) => {
     const router = useRouter();
-    console.log(router);
     const {asPath,query} = router;
     let tituloSite = 'Oliver - Productos';
     if(asPath!=='/productos'){

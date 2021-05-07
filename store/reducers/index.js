@@ -9,6 +9,8 @@ import enviosReducer from './enviosReducer';
 import mediosDePagoReducer from './mediosDePagoReducer';
 import bannerReducer from './bannerReducer';
 import politicaReducer from './politicaReducer';
+import zonasReducer from "./zonasReducer";
+import ventaReducer from './ventaReducer';
 
 export default combineReducers({
     marcasReducer,
@@ -20,5 +22,7 @@ export default combineReducers({
     enviosReducer,
     mediosDePagoReducer,
     bannerReducer,
-    politicaReducer
+    politicaReducer,
+    zonasReducer,
+    ventaReducer
 });
