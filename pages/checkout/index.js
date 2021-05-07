@@ -196,6 +196,14 @@ const Checkout = (props) => {
         }
     }
 
+    if(error){
+        Swal.fire(
+            'Error',
+            error,
+            'error'
+        ).then(()=>setError(false))
+    }
+
     return (
         (!props.usuarioReducer.logueado)?<div className="mt-3"><Error message="No puedes realizar una compra sin tener una sesión activa."/></div>:
         <>
@@ -207,10 +215,9 @@ const Checkout = (props) => {
                         <div className="row">
                             <div className="col-12 col-md-8 pt-4">
                                 <h2>Últimos pasos para terminar tu compra</h2>
-                                {(error)?<Error message={error}/>:null}
                                 <CardUbicacion dataUser={props.usuarioReducer.usuario}/>
+                                <div className="alert alert-warning mt-3"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
                                 <ZonaEnvio setZonaEnvio={insertarZonaDeEnvio}/>
-                                <div className="alert alert-warning"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
                                 <h2 className="mt-5">Opciones de envío</h2>
                                 <OpcionesEnvio tipoEnvio={tipoEnvio} cambiarTipoDeEnvio={cambiarTipoDeEnvio}/>
                                 <h2 className="mt-5">Selecciona un medio de pago</h2>
