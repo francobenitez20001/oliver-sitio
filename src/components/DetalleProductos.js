@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import * as ventasActions from '../../store/actions/ventasActions';
+import * as carritoActions from '../../store/actions/carritoActions';
+
+const {traerProductos:traerProductosDeCarrito} = carritoActions;
+const {init} = ventasActions;
+
+
 const DetalleProductos = (props) => {
+    const {productos} = props.carritoReducer;
+    const {subtotal,total,totalEnvio} = props.ventaReducer;
+
+    useEffect(() => {
+        if(!productos.length){
+            props.traerProductosDeCarrito();
+        }
+        props.init(); //inciializa el state de ventas para traer totales, cantidad de productos, etc.
+    }, [])
+
     return (
-        (!props.data.productos.length)?null:
+        (!productos.length)?null:
         <div className="containerDetalleProducto">
             <div className="infoProducto text-center mb-2">
-                {(props.data.productos.length==1)?
+                {(productos.length==1)?
                 <>
-                    <img src={props.data.productos[0].foto} alt={props.data.productos[0].producto}/>
-                    <h3 className="my-2">{props.data.productos[0].subProducto}</h3>
-                    <span>Cantidad: {props.data.productos[0].cantidad}</span>
+                    <img src={productos[0].foto} alt={productos[0].producto}/>
+                    <h3 className="my-2">{productos[0].subProducto}</h3>
+                    <span>Cantidad: {productos[0].cantidad}</span>
                 </>
                 :
                     null
@@ -18,17 +36,17 @@ const DetalleProductos = (props) => {
             <div className="infoPago ">
                 <hr className="mt-0"/>
                 <span className="d-flex justify-content-between precioProducto">
-                    <p>Productos ({props.data.productos.length})</p>
-                    <span>${props.data.subtotal}</span>
+                    <p>Productos ({productos.length})</p>
+                    <span>${subtotal}</span>
                 </span>
                 <span className="d-flex justify-content-between precioProducto">
                     <p>Envío</p>
-                    <span>${props.data.costoEnvio}</span>
+                    <span>${totalEnvio}</span>
                 </span>
                 <hr className="mt-0"/>
                 <span className="d-flex justify-content-between precioTotal" style={{fontWeight:'bold'}}>
                     <p>Pagás</p>
-                    <span>${props.data.total}</span>
+                    <span>${total}</span>
                 </span>
             </div>
             <style jsx>{`
@@ -86,5 +104,17 @@ const DetalleProductos = (props) => {
         </div>
     );
 }
- 
-export default DetalleProductos;
+
+const mapStateToProps = ({carritoReducer,ventaReducer})=>{
+    return {
+        carritoReducer,
+        ventaReducer
+    }
+}
+
+const mapDispatchToProps = {
+    traerProductosDeCarrito,
+    init
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(DetalleProductos);

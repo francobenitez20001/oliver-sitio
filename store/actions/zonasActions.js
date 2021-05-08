@@ -1,5 +1,5 @@
 import {API} from '../../config/index';
-import {TRAER_ZONAS,SELECCIONAR,LOADING,ERROR} from '../types/zonasTypes';
+import {TRAER_ZONAS,SELECCIONAR,LOADING,ERROR, LIMPIAR_ACTIVO} from '../types/zonasTypes';
 
 export const traerTodas = ()=>async (dispatch)=>{
     dispatch({
@@ -25,6 +25,13 @@ export const traerTodas = ()=>async (dispatch)=>{
 }
 
 export const seleccionar = id =>(dispatch,getState)=>{
+    if(!id){
+        console.log('aca');
+        dispatch({
+            type:LIMPIAR_ACTIVO
+        })
+        return;
+    }
     const {zonas} = getState().zonasReducer;
     let zona = zonas.filter(z=>z.idZona == id);
     if(!zona.length){

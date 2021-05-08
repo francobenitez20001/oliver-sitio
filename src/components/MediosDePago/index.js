@@ -1,8 +1,10 @@
 import { Fragment,useEffect } from "react";
 import {connect} from 'react-redux';
 import * as mediosActions from '../../../store/actions/medioDePagoActions';
+import * as ventasActions from '../../../store/actions/ventasActions';
 
 const {traerMedios} = mediosActions;
+const {cambiarMedioDePago} = ventasActions;
 
 const MediosDePago = (props) => {
     useEffect(() => {
@@ -16,7 +18,7 @@ const MediosDePago = (props) => {
     }
     return (
         <Fragment>
-            <select className="form-control" onChange={handleChange} defaultValue={props.carritoReducer.idMedioPago} id="form-medios-pago" disabled={true}>
+            <select className="form-control" onChange={handleChange} defaultValue={props.ventaReducer.idMedioPago} id="form-medios-pago" disabled={true}>
                 {props.mediosDePagoReducer.mediosDePago.map((medio,key)=>{
                     return <option value={medio.idMedioPago} key={key}>{medio.medio}</option>
                 })}
@@ -33,7 +35,7 @@ const MediosDePago = (props) => {
     );
 }
 
-const mapStateToProps = ({mediosDePagoReducer,carritoReducer})=>{return {mediosDePagoReducer,carritoReducer}};
-const mapDispatchToProps = {traerMedios};
+const mapStateToProps = ({mediosDePagoReducer,ventaReducer})=>{return {mediosDePagoReducer,ventaReducer}};
+const mapDispatchToProps = {traerMedios,cambiarMedioDePago};
  
 export default connect(mapStateToProps,mapDispatchToProps)(MediosDePago);

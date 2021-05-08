@@ -1,4 +1,4 @@
-import {SELECCIONAR, TRAER_ZONAS,LOADING,ERROR} from '../types/zonasTypes'
+import {SELECCIONAR, TRAER_ZONAS,LOADING,ERROR, LIMPIAR_ACTIVO} from '../types/zonasTypes'
 
 const INITIAL_STATE = {
     zonas:[],
@@ -23,6 +23,11 @@ const zonasReducer = (state=INITIAL_STATE,action)=>{
                 zona:action.payload,
                 loading:false,
                 error:null
+            }
+        case LIMPIAR_ACTIVO:
+            return {
+                ...state,
+                zona:null
             }
         case LOADING:
             return {...state,loading:true}

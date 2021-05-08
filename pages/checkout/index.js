@@ -186,7 +186,7 @@ const Checkout = (props) => {
                                 </div>
                             </div>
                             <div className="col-12 col-md-4 detalleProductos">
-                                <DetalleProductos data={props.carritoReducer}/>
+                                <DetalleProductos/>
                             </div>
                         </div>
                         <style jsx>{`

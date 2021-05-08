@@ -2,9 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import * as envioActions from '../../../store/actions/enviosActions';
 import * as ventasActions from '../../../store/actions/ventasActions';
+import * as zonasActions from '../../../store/actions/zonasActions';
 
 const {guardar:guardarTipoDeEnvio} = envioActions;
 const {setCostoEnvio:actualizarCostosDeEnvio} = ventasActions;
+const {seleccionar:seleccionarZona} = zonasActions;
 
 const OpcionesEnvio = (props) => {
     const {tipos:tipoEnvio} = props;
@@ -14,15 +16,18 @@ const OpcionesEnvio = (props) => {
             case 'normal':
                 document.getElementById('form-zona-envio').removeAttribute('disabled');
                 document.getElementById('form-medios-pago').setAttribute('disabled','true');
+                document.getElementById('form-medios-pago').value="1";
                 break;
             case 'express':
                 document.getElementById('form-zona-envio').removeAttribute('disabled');
                 document.getElementById('form-medios-pago').setAttribute('disabled','true');
+                document.getElementById('form-medios-pago').value="1";
                 break;
             default:
                 document.getElementById('form-zona-envio').setAttribute('disabled','true');
                 document.getElementById('form-zona-envio').value="";
-                document.getElementById('form-medios-pago').removeAttribute('disabled');        
+                document.getElementById('form-medios-pago').removeAttribute('disabled');    
+                props.seleccionarZona(null);    
                 break;
         }
         props.guardarTipoDeEnvio(tipoDeEnvio);
@@ -113,7 +118,8 @@ const OpcionesEnvio = (props) => {
 
 const mapDispatchToProps = {
     guardarTipoDeEnvio,
-    actualizarCostosDeEnvio
+    actualizarCostosDeEnvio,
+    seleccionarZona
 }
 
 const mapStateToProps = ({enviosReducer})=>enviosReducer;
