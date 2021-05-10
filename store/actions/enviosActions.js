@@ -11,7 +11,7 @@ export const guardar = data => async dispatch=>{
         })
         dispatch({
             type:GUARDAR,
-            payload:data
+            payload:`${data}`.toLowerCase()
         })
     } catch (error) {
         dispatch({

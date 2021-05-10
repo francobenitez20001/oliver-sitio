@@ -6,14 +6,12 @@ import Head from '../../src/components/Head';
 import DetalleProductos from '../../src/components/DetalleProductos';
 import Error from '../../src/components/Error';
 import { connect } from 'react-redux';
-import * as carritoActions from '../../store/actions/carritoActions';
 import * as usuarioActions from '../../store/actions/usuarioActions';
 import {API} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
 const Swal = require('sweetalert2');
 
-const {traerProductos:carritoTraerProductos} = carritoActions;
 const {verificarSesion} = usuarioActions;
 
 const Checkout = (props) => {
@@ -21,56 +19,43 @@ const Checkout = (props) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        props.verificarSesion();
         document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
     }, []);
 
     const handleClick = ()=>{
-        if(!tipoEnvio.local){
-            if(!props.usuarioReducer.usuario.address || props.usuarioReducer.usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
-            if(zonaEnvio==='') return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
+        const {usuario} = props.usuarioReducer;
+        const {tipos:envio} = props.enviosReducer;
+        const {zona} = props.zonasReducer;
+        const {tipoEnvio,idZona,idMedioPago,total,subtotal,productos,porcentaje_descuento,descuento} = props.ventaReducer;
+
+        if(!envio.local){
+            if(!usuario.address || usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
+            if(!zona) return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
         }
         setLoading(true);
         setError(false);
-        let tipoDeEnvioActivo;
-        if(tipoEnvio.local){tipoDeEnvioActivo='Local'};
-        if(tipoEnvio.normal){tipoDeEnvioActivo='Domicilio'}
-        if(tipoEnvio.express){tipoDeEnvioActivo='Express'}
-        let dataEnvio = {
-            tipo:tipoDeEnvioActivo,
-            zona:zonaEnvio
-        }
-        if(props.carritoReducer.idMedioPago == '1'){
-            //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
-            localStorage.setItem('dataEnvio',JSON.stringify(dataEnvio));
 
-            const {token} = props.usuarioReducer.usuario;
-            const {productos:productosCarrito} = props.carritoReducer;
+        if(idMedioPago == '1'){
+            //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
+            localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
+
+            const {token} = usuario;
 
             //SOLUCION TEMPORAL PARA QUE SE SUME AL PAGO LO DEL ENVIO
-            let productos = [{
+            let data = [{
                 title:'Nueva compra en Oliver PetShop',
                 description:'Compra de uno o mas productos',
                 quantity:1,
-                unit_price:props.carritoReducer.total
+                unit_price:total
             }];
-
-            // TODO: VER LA FORMA DE MANDAR LOS PRODUCTOS JUNTO CON EL MONTO DEL ENVIO
-            // productosCarrito.forEach(prd => {
-            //     productos.push({
-            //         title:prd.subProducto,
-            //         description:prd.tamaño,
-            //         quantity:prd.cantidad,
-            //         unit_price:prd.precioUnidad
-            //     })
-            // });
-            
             let headers = new Headers();
             headers.append('token',token);
             headers.append("Content-Type", "application/json");
             fetch(`${API}/mercadopago`,{
                 method:'POST',
                 headers,
-                body:JSON.stringify(productos)
+                body:JSON.stringify(data)
             }).then(res=>res.json()).then(datamp=>{
                 // console.log(datamp);
                 const {response} = datamp.info;
@@ -82,17 +67,15 @@ const Checkout = (props) => {
                 setError(err.message);
             })
         }else{
-            const {idUsuario} = props.usuarioReducer.usuario;
-            const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
-            const {zona,tipo} = dataEnvio;
+            const {idUsuario} = usuario;
             let f = new Date();
             let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
             let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
             let fecha = `${f.getFullYear()}-${mes}-${dia}`;
             let dataToRequest = {
                 envio:{
-                    idZona:zona,
-                    tipo:tipo
+                    idZona,
+                    tipo:tipoEnvio
                 },
                 venta:{
                     subtotal,
@@ -115,7 +98,7 @@ const Checkout = (props) => {
             const headers = new Headers();
             headers.append('token',props.usuarioReducer.usuario.token);
             headers.append("Content-Type", "application/json");
-            let url = (!data.venta.operacion_id)?`${API}/registrarVenta?mercadoPago=false`:`${API}/registrarVenta?mercadoPago=true`;
+            let url = `${API}/registrarVenta?mercadoPago=false`;
             const reqVenta = await fetch(url,{
                 headers,
                 method:'POST',
@@ -159,80 +142,76 @@ const Checkout = (props) => {
     return (
         (!props.usuarioReducer.logueado)?<div className="mt-3"><Error message="No puedes realizar una compra sin tener una sesión activa."/></div>:
         <>
-            {(props.carritoReducer.productos.length===0)?<div className="mt-3"><Error message="No hay productos para finalizar la compra."/></div>:
-                <>
-                    {(loading)?<div className="container-loader"><Loader/></div>:null}   
-                    <Head title="Oliver Pet Shop"/>
-                    <div className="container mb-4">
-                        <div className="row">
-                            <div className="col-12 col-md-8 pt-4">
-                                <h2>Últimos pasos para terminar tu compra</h2>
-                                <CardUbicacion/>
+            {(loading)?<div className="container-loader"><Loader/></div>:null}   
+            <Head title="Oliver Pet Shop"/>
+            <div className="container mb-4">
+                <div className="row">
+                    <div className="col-12 col-md-8 pt-4">
+                        <h2>Últimos pasos para terminar tu compra</h2>
+                        <CardUbicacion/>
 
-                                <div className="alert alert-warning mt-3"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
+                        <div className="alert alert-warning mt-3"><b>Atención:</b> Sí desea retirar su compra en nuestro local, no es necesario que seleccione una zona de envío</div>
 
-                                <ZonaEnvio/>
+                        <ZonaEnvio/>
 
-                                <h2 className="mt-5">Opciones de envío</h2>
-                                <OpcionesEnvio/>
+                        <h2 className="mt-5">Opciones de envío</h2>
+                        <OpcionesEnvio/>
 
-                                <h2 className="mt-5">Selecciona un medio de pago</h2>
-                                <MediosDePago/>
+                        <h2 className="mt-5">Selecciona un medio de pago</h2>
+                        <MediosDePago/>
 
-                                <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
-                                <div className="divTotalMobile">
-                                    <span id="total">${props.carritoReducer.total}</span>
-                                    <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-4 detalleProductos">
-                                <DetalleProductos/>
-                            </div>
+                        <button type="button" className="btn btn-primary" onClick={handleClick} id="btn-continuar">Continuar</button>
+                        <div className="divTotalMobile">
+                            <span id="total">${props.ventaReducer.total}</span>
+                            <button type="button" className="btn btn-primary" onClick={handleClick}>Continuar</button>
                         </div>
-                        <style jsx>{`
-                            h2{font-size:25px}
-                            button#btn-continuar{
-                                float:right;
-                                margin-top:20px
-                            }
-                            .divTotalMobile{display:none}
-                            @media(max-width:768px){
-                                #btn-continuar{display:none}
-                                .divTotalMobile{
-                                    display:flex;
-                                    justify-content:space-between;
-                                    position: fixed;
-                                    left:0;
-                                    right:0px;
-                                    bottom: 0px;
-                                    background-color: #f7f7f7;
-                                    padding: 16px;
-                                    box-shadow: 0 -2px 8px 2px rgba(0,0,0,.15);
-                                    border-width: 0 1px 1px;
-                                    font-family: 'Quicksand', sans-serif;
-                                } 
-                                .detalleProductos{
-                                    display:none
-                                }           
-                            }
-                        `}</style>
                     </div>
-                </>
-            }
+                    <div className="col-12 col-md-4 detalleProductos">
+                        <DetalleProductos/>
+                    </div>
+                </div>
+                <style jsx>{`
+                    h2{font-size:25px}
+                    button#btn-continuar{
+                        float:right;
+                        margin-top:20px
+                    }
+                    .divTotalMobile{display:none}
+                    @media(max-width:768px){
+                        #btn-continuar{display:none}
+                        .divTotalMobile{
+                            display:flex;
+                            justify-content:space-between;
+                            position: fixed;
+                            left:0;
+                            right:0px;
+                            bottom: 0px;
+                            background-color: #f7f7f7;
+                            padding: 16px;
+                            box-shadow: 0 -2px 8px 2px rgba(0,0,0,.15);
+                            border-width: 0 1px 1px;
+                            font-family: 'Quicksand', sans-serif;
+                        } 
+                        .detalleProductos{
+                            display:none
+                        }           
+                    }
+                `}</style>
+            </div>
         </>
     );
 }
  
-const mapStateToProps = ({carritoReducer,usuarioReducer,enviosReducer})=>{
+const mapStateToProps = ({usuarioReducer,enviosReducer,ventaReducer,zonasReducer})=>{
     return {
-        carritoReducer,
+        ventaReducer,
         usuarioReducer,
-        enviosReducer
+        enviosReducer,
+        zonasReducer
     };
 }
 
 const mapDispatchToProps = {
-    carritoTraerProductos,
     verificarSesion
 };
 

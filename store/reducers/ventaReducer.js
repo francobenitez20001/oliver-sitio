@@ -8,6 +8,8 @@ const INTITAL_STATE = {
     productos:[],
     cantidad:0,
     subtotal:0,
+    porcentaje_descuento:0,
+    descuento:0,
     total:0
 }
 

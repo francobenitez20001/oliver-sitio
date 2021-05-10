@@ -15,8 +15,13 @@ const DetalleProductos = (props) => {
         if(!productos.length){
             props.traerProductosDeCarrito();
         }
-        props.init(); //inciializa el state de ventas para traer totales, cantidad de productos, etc.
-    }, [])
+    }, []);
+    
+    useEffect(() => {
+        if(productos.length>0){
+            props.init(); //inciializa el state de ventas para traer totales, cantidad de productos, etc.
+        }
+    }, [productos])
 
     return (
         (!productos.length)?null:

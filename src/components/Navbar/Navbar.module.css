@@ -73,6 +73,10 @@
     background-color: white!important;
 }
 
+.search_mobile{
+    display: none;
+}
+
 @media(max-width:1200px){
     .container__login_menu .boton__menu{
         background-color: transparent;

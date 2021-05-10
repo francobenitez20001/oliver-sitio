@@ -11,7 +11,6 @@ export const traerTodas = ()=>async (dispatch)=>{
         myHeaders.append("token", dataUser.token);
         const zonasApi = await fetch(`${API}/zonas`,{headers:myHeaders});
         const dataZonas = await zonasApi.json();
-        console.log(dataZonas);
         dispatch({
             type:TRAER_ZONAS,
             payload:dataZonas.data

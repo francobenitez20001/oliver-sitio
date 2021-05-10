@@ -72,8 +72,7 @@ const CardProducto = ({imagen,prd}) => {
                     <span className={CardProductoModule.cantidad + ` d-none`}>{prd.peso} KG</span>
                     <h3 className={CardProductoModule.precio + ' ' + `text-black`}>${prd.precioFinal}</h3>
                 </section>
-                
-                <span className={CardProductoModule.label__descuento+ ' ' + `bg-red`}>15% Off</span>
+                {prd.descuento ? <span className={CardProductoModule.label__descuento+ ' ' + `bg-red`}>{prd.descuento}% Off</span> : null}
             </div>
         </a>
     );

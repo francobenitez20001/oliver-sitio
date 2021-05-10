@@ -16,6 +16,7 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 import FiltroStyle from '../Filtro/Filtro.module.css';
 import FormModificarPw from '../formModificarPw/index';
 import FormBuscadorMobile from '../Buscador/form';
+import {isMobile} from '../../../helpers/index'
 
 
 const Navbar = (props) => {
@@ -116,9 +117,9 @@ const Navbar = (props) => {
         setModalIsOpen(true);
     }
 
-    const navegar = (path)=>{
+    const navegar = (path,e=null)=>{
         Router.push(path);
-        toggleMenu();
+        (path == '/' && isMobile() && e && e.path) ? null :toggleMenu();
     }
 
     return (
@@ -127,7 +128,7 @@ const Navbar = (props) => {
                 <div className={NavbarStyle.wrapper__navbar  + ' ' +  `container`}>
                     <nav className="row ml-0 w-100">
                         <div className={NavbarStyle.container__logo}>
-                            <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop" onClick={navegar}/>
+                            <img src={`${URL_CLOUD_STORAGE}/static/Perro.png`} className={NavbarStyle.logo + ' ' + `img-fluid`} alt="Oliver pet shop" onClick={()=>navegar('/',event)}/>
                         </div>
                         <span className={NavbarStyle.search_mobile} onClick={showModalBuscador}>
                             <FontAwesomeIcon icon={faSearch} className={NavbarStyle.txt__item_menu}/>

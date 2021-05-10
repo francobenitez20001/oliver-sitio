@@ -3,60 +3,80 @@ import Loader from '../../src/components/Loader';
 import {connect} from 'react-redux';
 import * as carritoActions from '../../store/actions/carritoActions';
 import * as enviosActions from '../../store/actions/enviosActions';
+import * as zonasActions from '../../store/actions/zonasActions';
+import * as ventasActions from '../../store/actions/ventasActions';
 import { useEffect, useState } from 'react';
 import {API} from '../../config/index';
 import Error from '../../src/components/Error';
 const Swal = require('sweetalert2');
 
-const {guardar:enviosGuardar} = enviosActions;
 const {traerProductos:carritoTraerProductos} = carritoActions;
+const {guardar:enviosGuardar} = enviosActions;
+const {seleccionar:zonasGuardar,traerTodas:traerZonas} = zonasActions;
+const {init:inicializarStoreVenta,setCostoEnvio:setDataEnvioEnVenta} = ventasActions;
 
 const ProcesarVenta = (props) => {
     const [error, setError] = useState(false);
-    const [ventaRegistrada, setVentaRegistrada] = useState(false);
+    const {carritoReducer,ventaReducer,carritoTraerProductos,enviosGuardar,zonasGuardar,inicializarStoreVenta,setDataEnvioEnVenta,traerZonas} = props;
+    const {usuario,logueado} = props.usuarioReducer;
+    const {zonas,zona} = props.zonasReducer;
+    const {idMedioPago,tipoEnvio,productos,cantidad,subtotal,porcentaje_descuento,descuento,total} = props.ventaReducer;
 
     useEffect(() => {
-        procesarInfo();
-    }, [props.usuarioReducer]);
-    
-    const procesarInfo = async()=>{
-        const dataEnvio = JSON.parse(localStorage.getItem('dataEnvio'));
-        props.enviosGuardar(dataEnvio);
-        props.carritoTraerProductos();
-        if(props.usuarioReducer.logueado && props.carritoReducer.productos.length>0 && props.enviosReducer.data){
-            const {idUsuario} = props.usuarioReducer.usuario;
-            const {subtotal,porcentaje_descuento,descuento,total,productos,idMedioPago} = props.carritoReducer;
-            const {zona,tipo} = props.enviosReducer.data;
-            let f = new Date();
-            let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
-            let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
-            let fecha = `${f.getFullYear()}-${mes}-${dia}`;
-            let dataToRequest = {
-                envio:{
-                    idZona:zona,
-                    tipo:tipo
-                },
-                venta:{
-                    subtotal,
-                    porcentaje_descuento,
-                    descuento,
-                    total,
-                    idUsuario,
-                    productos,
-                    fecha,
-                    operacion_id:props.collection_id || null,
-                    idMedioPago
-                }
-            }
-            //console.log(dataToRequest);
-            return registrarVenta(dataToRequest);
-        }
-    }
+        traerZonas();
+    }, [])
 
+    useEffect(() => {
+        if(logueado && zonas.length>0){
+            const dataEnvio = JSON.parse(localStorage.getItem('dataEnvio'));
+            enviosGuardar(dataEnvio.tipo);
+            zonasGuardar(dataEnvio.zona);
+            carritoTraerProductos();
+        }
+    }, [logueado,zonas]);
+
+    useEffect(() => {
+        if(carritoReducer.productos.length>0){
+            inicializarStoreVenta();
+            setDataEnvioEnVenta();
+        }
+    }, [carritoReducer.productos]);
+
+    useEffect(() => {
+        if(!tipoEnvio || !productos.length || cantidad==0 || total == 0 ){
+            console.log('no se puede completar la operacion');
+            return;
+        }
+        const {idUsuario} = usuario;
+        let f = new Date();
+        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
+        let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
+        let fecha = `${f.getFullYear()}-${mes}-${dia}`;
+        let dataToRequest = {
+            envio:{
+                idZona:zona.idZona,
+                tipo:tipoEnvio
+            },
+            venta:{
+                subtotal,
+                porcentaje_descuento,
+                descuento,
+                total,
+                idUsuario,
+                productos,
+                fecha,
+                operacion_id:props.collection_id || null,
+                idMedioPago
+            }
+        }
+        //console.log(dataToRequest);
+        registrarVenta(dataToRequest);
+    }, [ventaReducer])
+    
     const registrarVenta = async data=>{
         try {
             const headers = new Headers();
-            headers.append('token',props.usuarioReducer.usuario.token);
+            headers.append('token',usuario.token);
             headers.append("Content-Type", "application/json");
             let url = (!data.venta.operacion_id)?`${API}/registrarVenta?mercadoPago=false`:`${API}/registrarVenta?mercadoPago=true`;
             const reqVenta = await fetch(url,{
@@ -79,21 +99,13 @@ const ProcesarVenta = (props) => {
             setError(error.message)
         }
     }
-
     return (
+        error ? <Error message="Ha ocurrido un error, intentalo mas tarde"/>:
         <>
             <Head title="Finalizacion de compra" metadesc=""/>
             <div className="wrapper">
-                {(props.enviosReducer.error || props.carritoReducer.error || error)?<Error message="Ha ocurrido un error, intentalo mas tarde"/>:
-                    <>
-                        {(ventaRegistrada)?<div className="alert alert-success">{ventaRegistrada}</div>:
-                            <>
-                                <Loader/>
-                                <p>Su compra esta siento procesada, aguarde unos segundos...</p>
-                            </>
-                        }
-                    </>
-                }
+                <Loader/>
+                <p>Su compra esta siento procesada, aguarde unos segundos...</p>
             </div>
 
             <style jsx>{`
@@ -114,12 +126,16 @@ ProcesarVenta.getInitialProps = async({query})=>{
     return {collection_id};
 }
 
-const mapStateToProps = ({carritoReducer,enviosReducer,usuarioReducer})=>{
-    return {carritoReducer,enviosReducer,usuarioReducer}
+const mapStateToProps = ({carritoReducer,enviosReducer,usuarioReducer,zonasReducer,ventaReducer})=>{
+    return {carritoReducer,enviosReducer,usuarioReducer,zonasReducer,ventaReducer}
 };
 const mapDispatchToProps = {
     enviosGuardar,
-    carritoTraerProductos
+    carritoTraerProductos,
+    zonasGuardar,
+    setDataEnvioEnVenta,
+    inicializarStoreVenta,
+    traerZonas
 }
  
 export default connect(mapStateToProps,mapDispatchToProps)(ProcesarVenta);
