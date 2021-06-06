@@ -178,7 +178,7 @@ const Checkout = (props) => {
                     }
                 `}</style>
             </div>
-            {modalIsOpen ? <Modal closeModal={habilitarModal}><FormVenta/></Modal> : null}
+            {modalIsOpen ? <Modal closeModal={habilitarModal}><FormVenta closeModal={habilitarModal}/></Modal> : null}
         </>
     );
 }

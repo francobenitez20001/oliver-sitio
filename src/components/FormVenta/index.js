@@ -1,40 +1,55 @@
 import { useEffect, useState } from "react";
-const FormVenta = () => {
+import { MP_AC_TOKEN } from "../../../config";
+import {connect} from 'react-redux';
+import Swal from "sweetalert2";
+
+const FormVenta = (props) => {
+    const {usuarioReducer:{usuario},ventaReducer} = props;
     const [formValues, setFormValues] = useState({
-        email:'',
         docType:'',
         docNumber:'',
-        cardTitular:'',
         issuer:'',
         installments:'',
-        total:120,
-        paymentMethodId:null
-    });
-
-    const [vencimientosValues, setVencimientosValues] = useState({
-        cardExpirationMonth:'',
-        cardExpirationYear:''
+        total:ventaReducer.total,
+        paymentMethod:null,
+        email:usuario.email,
+        token:null,
+        descripcion:''
     });
 
     const [issuers, setIssuers] = useState([]);//lista de bancos emisores segun la tarjeta del usuario
     const [payerCosts, setPayerCosts] = useState([]);//lista de opciones de cuotas
 
     useEffect(function mount() {
-        window.Mercadopago.setPublishableKey("TEST-1f5f55a0-b128-49c4-9217-110a8d9fba43");
+        window.Mercadopago.setPublishableKey(MP_AC_TOKEN);
         window.Mercadopago.getIdentificationTypes();
     });
 
     useEffect(() => {
-        if(formValues.paymentMethodId){
-            getIssuers(formValues.paymentMethodId.id);
+        let descripcion = `Compra de ${ventaReducer.productos.length} producto${ventaReducer.productos.length>1 ? 's' : ''} en Oliver PetShop`;
+        setFormValues({
+            ...formValues,
+            descripcion
+        })
+    }, [])
+
+    useEffect(() => {
+        if(formValues.paymentMethod){
+            getIssuers(formValues.paymentMethod.id);
         }
-    }, [formValues.paymentMethodId]);
+    }, [formValues.paymentMethod]);
 
     useEffect(() => {
         if(issuers.length>0){
             getInstallments(issuers);
         }
-    }, [issuers])
+    }, [issuers]);
+
+    useEffect(() => {
+        if(formValues.token){
+            enviarData();
+        }
+    }, [formValues.token])
 
     const handleChange = e=>{
         if(e.target.id == "cardNumber"){
@@ -47,13 +62,6 @@ const FormVenta = () => {
         })
     }
 
-    const handleChangeVencimiento = e=>{
-        setVencimientosValues({
-            ...vencimientosValues,
-            [e.target.id]:e.target.value
-        })
-    };
-
     const guessPaymentMethod = (cardnumber)=>{
         if (cardnumber.length >= 6) {
             let bin = cardnumber.substring(0,6);
@@ -64,7 +72,7 @@ const FormVenta = () => {
                     let paymentMethod = response[0];
                     return setFormValues({
                         ...formValues,
-                        paymentMethodId:paymentMethod
+                        paymentMethod:paymentMethod
                     });
                 }
                 console.log(response);
@@ -86,7 +94,7 @@ const FormVenta = () => {
 
     const getInstallments = (issuers)=>{
         window.Mercadopago.getInstallments({
-            "payment_method_id": formValues.paymentMethodId.id,
+            "payment_method_id": formValues.paymentMethod.id,
             "amount": parseFloat(formValues.total),
             "issuer_id": parseInt(issuers[0].value)
         }, (status,response)=>{
@@ -101,14 +109,24 @@ const FormVenta = () => {
 
     const handleSubmit = e=>{
         e.preventDefault();
-        console.log(e.target)
         window.Mercadopago.createToken(e.target, (status,response)=>{
             if(status == 200 || status == 201){
-                console.log(response.id);
+                setFormValues({
+                    ...formValues,
+                    docType:document.getElementById('docType').value,
+                    token:response.id
+                })
             }
             return false;
         });
     };
+
+    const enviarData = ()=>{
+        props.closeModal();
+        document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
+        Swal.fire('En proceso','Estamos trabajando para habilitar esta funcionalidad','warning');
+        console.log(formValues);
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -116,23 +134,19 @@ const FormVenta = () => {
             <div className="form-group row">
                 <div className="col-4 my-2">
                     <label htmlFor="docType">Tipo de doc.</label>
-                    <select className="form-control" id="docType" name="docType" data-checkout="docType" type="text" value={formValues.docType} onChange={handleChange}>
+                    <select className="form-control" id="docType" name="docType" data-checkout="docType" type="text">
                     </select>
                 </div>
                 <div className="col-8 my-2">
                     <label htmlFor="docNumber">Número de documento</label>
                     <input className="form-control" id="docNumber" name="docNumber" data-checkout="docNumber" value={formValues.docNumber} type="text" onChange={handleChange}/>
                 </div>
-                <div className="col-12 my-2">
-                    <label htmlFor="email">E-mail</label>
-                    <input className="form-control" id="email" name="email" type="text" value={formValues.email} onChange={handleChange}/>
-                </div>
             </div>
             <h3>Detalles de la tarjeta</h3>
             <div className="form-group row">
                 <div className="col-12 my-2">
                     <label htmlFor="cardNumber">Número de la tarjeta</label>
-                    <input type="text" id="cardNumber" data-checkout="cardNumber"
+                    <input type="number" id="cardNumber" data-checkout="cardNumber"
                     onselectstart="return false" onPaste={()=>false}
                     onCopy={()=>false} onCut={()=>false}
                     onDrag={()=>false} onDrop={()=>false} autoComplete="off" onChange={handleChange} className="form-control"/>
@@ -144,25 +158,25 @@ const FormVenta = () => {
                 <div className="col-6 my-2">
                     <label htmlFor="">Vencimiento</label>
                     <div className="row px-3">
-                        <input className="form-control col-5 mr-auto" type="text" placeholder="Mes" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
+                        <input className="form-control col-5 mr-auto" type="number" placeholder="Mes" id="cardExpirationMonth" data-checkout="cardExpirationMonth"
                             onselectstart="return false" onPaste={()=>false}
                             onCopy={()=>false} onCut={()=>false}
-                            onDrag={()=>false} onDrop={()=>false} autoComplete="off" onChange={handleChangeVencimiento} value={vencimientosValues.cardExpirationMonth} maxLength={2}/>
-                        <input className="form-control col-5" type="text" placeholder="Año" id="cardExpirationYear" data-checkout="cardExpirationYear"
+                            onDrag={()=>false} onDrop={()=>false} autoComplete="off" maxLength={2}/>
+                        <input className="form-control col-5" type="number" placeholder="Año" id="cardExpirationYear" data-checkout="cardExpirationYear"
                             oonselectstart="return false" onPaste={()=>false}
                             onCopy={()=>false} onCut={()=>false}
-                            onDrag={()=>false} onDrop={()=>false} autoComplete="off" onChange={handleChangeVencimiento} value={vencimientosValues.cardExpirationYear}maxLength={2}/>
+                            onDrag={()=>false} onDrop={()=>false} autoComplete="off" maxLength={2}/>
                     </div>
                 </div>
                 <div className="col-6 my-2">
                     <label htmlFor="securityCode">Código de seguridad</label>
-                    <input id="securityCode" data-checkout="securityCode" type="text"
+                    <input id="securityCode" data-checkout="securityCode" type="number"
                     onselectstart="return false" onPaste={()=>false}
                     onCopy={()=>false} onCut={()=>false}
                     onDrag={()=>false} onDrop={()=>false} autoComplete="off" className="form-control"/>
                 </div>
                 <div id="issuerInput" className="col-6 my-2">
-                    <label htmlFor="issuer">Banco emisor</label>
+                    <label htmlFor="issuer">Entidad emisora</label>
                     <select id="issuer" name="issuer" data-checkout="issuer" defaultValue={formValues.issuer} onChange={handleChange} className="form-control">
                         <option value="">Seleccione Banco emisor</option>
                         {issuers.map((issuer,key)=>(
@@ -189,4 +203,11 @@ const FormVenta = () => {
     );
 }
  
-export default FormVenta;
+const mapStateToProps = ({usuarioReducer,ventaReducer})=>{
+    return {
+        usuarioReducer,
+        ventaReducer
+    }
+}
+
+export default connect(mapStateToProps,{})(FormVenta);
