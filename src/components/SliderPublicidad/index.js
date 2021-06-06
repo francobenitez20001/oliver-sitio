@@ -47,7 +47,7 @@ const SliderPublicidad = (props) => {
           onExited={() => setAnimating(false)}
           key={item.url}
         >
-          <img src={item.url} alt={item.descripcion} className="d-block w-100"/>
+          <img src={item.url} alt={item.descripcion} className="d-block w-100" lazy="loading"/>
         </CarouselItem>
       );
   });

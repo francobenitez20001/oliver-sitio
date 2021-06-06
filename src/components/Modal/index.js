@@ -25,9 +25,9 @@ const Modal = (props) => {
         ReactDOM.createPortal(
             <div className={ModalStyle.Modal}>
                 <div className={ModalStyle.modal_dialog} id="body__modal_buscador">
+                    <FontAwesomeIcon icon={faTimes} onClick={closeModal} className={ModalStyle.close_modal} style={{cursor:'pointer'}}/>
                     <div className={ModalStyle.modal_content}>
                         {props.children}
-                        <FontAwesomeIcon icon={faTimes} onClick={closeModal} className={ModalStyle.close_modal} style={{cursor:'pointer'}}/>
                     </div>
                 </div>
             </div>,

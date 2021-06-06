@@ -10,6 +10,9 @@ import * as usuarioActions from '../../store/actions/usuarioActions';
 import {API} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
+import Router from 'next/router';
+import Modal from '../../src/components/Modal';
+import FormVenta from '../../src/components/FormVenta';
 const Swal = require('sweetalert2');
 
 const {verificarSesion} = usuarioActions;
@@ -17,6 +20,7 @@ const {verificarSesion} = usuarioActions;
 const Checkout = (props) => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);//modal para mostrar el form de datos de tarjeta
 
     useEffect(() => {
         props.verificarSesion();
@@ -33,64 +37,36 @@ const Checkout = (props) => {
             if(!usuario.address || usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
             if(!zona) return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
         }
-        setLoading(true);
         setError(false);
-
+        
         if(idMedioPago == '1'){
-            //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
-            localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
-
-            const {token} = usuario;
-
-            //SOLUCION TEMPORAL PARA QUE SE SUME AL PAGO LO DEL ENVIO
-            let data = [{
-                title:'Nueva compra en Oliver PetShop',
-                description:'Compra de uno o mas productos',
-                quantity:1,
-                unit_price:total
-            }];
-            let headers = new Headers();
-            headers.append('token',token);
-            headers.append("Content-Type", "application/json");
-            fetch(`${API}/mercadopago`,{
-                method:'POST',
-                headers,
-                body:JSON.stringify(data)
-            }).then(res=>res.json()).then(datamp=>{
-                // console.log(datamp);
-                const {response} = datamp.info;
-                setLoading(false);
-                window.location.assign(response.init_point);
-            }).catch(err=>{
-                console.log(err);
-                setLoading(false);
-                setError(err.message);
-            })
-        }else{
-            const {idUsuario} = usuario;
-            let f = new Date();
-            let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
-            let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
-            let fecha = `${f.getFullYear()}-${mes}-${dia}`;
-            let dataToRequest = {
-                envio:{
-                    idZona,
-                    tipo:tipoEnvio
-                },
-                venta:{
-                    subtotal,
-                    porcentaje_descuento,
-                    descuento,
-                    total,
-                    idUsuario,
-                    productos,
-                    fecha,
-                    operacion_id:null,
-                    idMedioPago
-                }
+            habilitarModal();
+            return;
+        }
+        setLoading(true);
+        const {idUsuario} = usuario;
+        let f = new Date();
+        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
+        let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
+        let fecha = `${f.getFullYear()}-${mes}-${dia}`;
+        let dataToRequest = {
+            envio:{
+                idZona,
+                tipo:tipoEnvio
+            },
+            venta:{
+                subtotal,
+                porcentaje_descuento,
+                descuento,
+                total,
+                idUsuario,
+                productos,
+                fecha,
+                operacion_id:null,
+                idMedioPago
             }
-            return registrarVenta(dataToRequest);
-        };
+        }
+        return registrarVenta(dataToRequest);
     }
     
     const registrarVenta = async data=>{
@@ -137,6 +113,10 @@ const Checkout = (props) => {
             error,
             'warning'
         ).then(()=>setError(false))
+    }
+
+    const habilitarModal = ()=>{
+        setModalIsOpen(!modalIsOpen);
     }
 
     return (
@@ -198,6 +178,7 @@ const Checkout = (props) => {
                     }
                 `}</style>
             </div>
+            {modalIsOpen ? <Modal closeModal={habilitarModal}><FormVenta/></Modal> : null}
         </>
     );
 }

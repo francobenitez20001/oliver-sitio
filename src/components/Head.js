@@ -9,6 +9,7 @@ const Header = ({title,metadesc}) => {
             <link rel="icon" href={`${URL_CLOUD_STORAGE}/static/Perro.png`} />
             {(metadesc)?
             <meta name="description" content={metadesc}/>:null}
+            <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
         </Head>
     );
 }
