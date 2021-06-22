@@ -12,7 +12,7 @@ import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
 import Router from 'next/router';
 import Modal from '../../src/components/Modal';
-import FormVenta from '../../src/components/FormVenta';
+//import FormVenta from '../../src/components/FormVenta';
 const Swal = require('sweetalert2');
 
 const {verificarSesion} = usuarioActions;
@@ -31,20 +31,15 @@ const Checkout = (props) => {
         const {usuario} = props.usuarioReducer;
         const {tipos:envio} = props.enviosReducer;
         const {zona} = props.zonasReducer;
-        const {tipoEnvio,idZona,idMedioPago,total,subtotal,productos,porcentaje_descuento,descuento} = props.ventaReducer;
+        const {tipoEnvio,idZona,idMedioPago,total,subtotal,productos,porcentaje_descuento,descuento,totalEnvio} = props.ventaReducer;
 
         if(!envio.local){
             if(!usuario.address || usuario.address==='') return setError('Es obligatorio completar tu ubicación.');
             if(!zona) return setError('En caso de no retirarlo por nuestro local, es obligatorio completar la zona de envío.');
         }
         setError(false);
-        
-        if(idMedioPago == '1'){
-            habilitarModal();
-            return;
-        }
         setLoading(true);
-        const {idUsuario} = usuario;
+        const {idUsuario,token,nombre,email,telefono,address} = usuario;
         let f = new Date();
         let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
         let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
@@ -63,16 +58,45 @@ const Checkout = (props) => {
                 productos,
                 fecha,
                 operacion_id:null,
-                idMedioPago
+                idMedioPago,
+                totalEnvio
+            },
+            usuario:{
+                nombre,
+                email,
+                telefono,
+                address
             }
         }
-        return registrarVenta(dataToRequest);
+        if(idMedioPago == '1'){
+            //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
+            //localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
+            let headers = new Headers();
+            headers.append('token',token);
+            headers.append("Content-Type", "application/json");
+            fetch(`${API}/mercadopago`,{
+                method:'POST',
+                headers,
+                body:JSON.stringify(dataToRequest)
+            }).then(res=>res.json()).then(datamp=>{
+                // console.log(datamp);
+                const {response} = datamp.info;
+                setLoading(false);
+                window.location.assign(response.init_point);
+            }).catch(err=>{
+                console.log(err);
+                setLoading(false);
+                setError(err.message);
+            })
+            return;
+        }
+        return registrarVenta(dataToRequest,token);
     }
     
-    const registrarVenta = async data=>{
+    const registrarVenta = async (data,token)=>{
         try {
             const headers = new Headers();
-            headers.append('token',props.usuarioReducer.usuario.token);
+            headers.append('token',token);
             headers.append("Content-Type", "application/json");
             let url = `${API}/registrarVenta?mercadoPago=false`;
             const reqVenta = await fetch(url,{
