@@ -72,21 +72,78 @@ const Checkout = (props) => {
             //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
             //localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
             let headers = new Headers();
-            headers.append('token',token);
+            headers.append('Authorization',`Bearer APP_USR-2687910292298842-062215-dedefffbf200c367904e03c489d2cbdc-779530591`);
             headers.append("Content-Type", "application/json");
-            fetch(`${API}/mercadopago`,{
+            // fetch(`${API}/mercadopago`,{
+            //     method:'POST',
+            //     headers,
+            //     body:JSON.stringify(dataToRequest)
+            // }).then(res=>res.json()).then(datamp=>{
+            //     // console.log(datamp);
+            //     const {response} = datamp.info;
+            //     setLoading(false);
+            //     window.location.assign(response.init_point);
+            // }).catch(err=>{
+            //     console.log(err);
+            //     setLoading(false);
+            //     setError(err.message);
+            // })
+            // console.log(dataToRequest);
+            let items = [];
+            productos.map(prd=>{
+                items.push({
+                    id:prd.idSubProducto,
+                    title:prd.subProducto,
+                    currency_id:"ARS",
+                    picture_url:prd.foto,
+                    description:prd.producto + ' ('+ prd.tamaño + ')',
+                    quantity:prd.cantidad,
+                    unit_price:prd.precio
+                })
+            });
+            let preference = {
+                items,
+                payer: {
+                    name: nombre,
+                    email: email,
+                    phone: {
+                        area_code: "11",
+                        number: telefono
+                    },
+                    address: {
+                        street_name: address
+                    }
+                },
+                back_urls: {
+                    success: "https://developers.oliverpetshop.com.ar",
+                    failure: "https://developers.oliverpetshop.com.ar",
+                    pending: "https://developers.oliverpetshop.com.ar"
+                },
+                payment_methods: {
+                    excluded_payment_types: [
+                        { id: "ticket" }
+                    ],
+                    installments: 6
+                },
+                notification_url: "https://hookb.in/7ZZKJPB89aFa99D3y3eo",
+                statement_descriptor: "OLIVER_PETSHOP",
+                external_reference: "59",
+                shipments:{
+                    mode:"not_specified",
+                    cost:totalEnvio,
+                    receiver_address:{
+                        street_name:address
+                    }
+                }
+            }
+
+            fetch('https://api.mercadopago.com/checkout/preferences',{
                 method:'POST',
                 headers,
-                body:JSON.stringify(dataToRequest)
-            }).then(res=>res.json()).then(datamp=>{
-                // console.log(datamp);
-                const {response} = datamp.info;
-                setLoading(false);
-                window.location.assign(response.init_point);
-            }).catch(err=>{
-                console.log(err);
-                setLoading(false);
-                setError(err.message);
+                body:JSON.stringify(preference)
+            }).then(res=>res.json()).then(data=>{
+                console.log(data);
+                //antes de dirigir al init_point, guardar datos de la venta
             })
             return;
         }
