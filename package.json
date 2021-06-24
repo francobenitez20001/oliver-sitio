@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next && NEXT_PUBLIC_PUBLIC_URL=http://localhost:3000",
+    "dev": "next",
     "build": "NEXT_PUBLIC_PUBLIC_URL=https://developers.oliverpetshop.com.ar next build",
     "start": "NEXT_PUBLIC_PUBLIC_URL=https://developers.oliverpetshop.com.ar next start"
   },

@@ -7,7 +7,7 @@ import DetalleProductos from '../../src/components/DetalleProductos';
 import Error from '../../src/components/Error';
 import { connect } from 'react-redux';
 import * as usuarioActions from '../../store/actions/usuarioActions';
-import {API} from '../../config/index';
+import {API, MP_AC_TOKEN, URL_PROCESAR_VENTA} from '../../config/index';
 import Loader from '../../src/components/Loader/index';
 import MediosDePago from '../../src/components/MediosDePago';
 import Router from 'next/router';
@@ -70,25 +70,11 @@ const Checkout = (props) => {
         }
         if(idMedioPago == '1'){
             //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
-            //localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
+            localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
+            
             let headers = new Headers();
-            headers.append('Authorization',`Bearer APP_USR-2687910292298842-062215-dedefffbf200c367904e03c489d2cbdc-779530591`);
+            headers.append('Authorization',`Bearer ${MP_AC_TOKEN}`);
             headers.append("Content-Type", "application/json");
-            // fetch(`${API}/mercadopago`,{
-            //     method:'POST',
-            //     headers,
-            //     body:JSON.stringify(dataToRequest)
-            // }).then(res=>res.json()).then(datamp=>{
-            //     // console.log(datamp);
-            //     const {response} = datamp.info;
-            //     setLoading(false);
-            //     window.location.assign(response.init_point);
-            // }).catch(err=>{
-            //     console.log(err);
-            //     setLoading(false);
-            //     setError(err.message);
-            // })
-            // console.log(dataToRequest);
             let items = [];
             productos.map(prd=>{
                 items.push({
@@ -115,9 +101,9 @@ const Checkout = (props) => {
                     }
                 },
                 back_urls: {
-                    success: "https://developers.oliverpetshop.com.ar",
-                    failure: "https://developers.oliverpetshop.com.ar",
-                    pending: "https://developers.oliverpetshop.com.ar"
+                    success: URL_PROCESAR_VENTA,
+                    failure: URL_PROCESAR_VENTA,
+                    pending: URL_PROCESAR_VENTA
                 },
                 payment_methods: {
                     excluded_payment_types: [
@@ -142,8 +128,7 @@ const Checkout = (props) => {
                 headers,
                 body:JSON.stringify(preference)
             }).then(res=>res.json()).then(data=>{
-                console.log(data);
-                //antes de dirigir al init_point, guardar datos de la venta
+                window.location.assign(data.init_point);
             })
             return;
         }

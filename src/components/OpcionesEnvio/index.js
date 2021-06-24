@@ -39,7 +39,7 @@ const OpcionesEnvio = (props) => {
     return (
         <>
             <div className="containerCajaEnvio my-2" onChange={()=>handleChange('normal')} onClick={()=>handleChange('normal')}>
-                <input type="radio" name="envio" checked={tipoEnvio.normal}/>
+                <input type="radio" name="envio" checked={tipoEnvio.normal} onChange={()=>handleChange('normal')}/>
                 <div className="descripcion_ubicacion py-0 px-2">
                     <span className="d-block">Esperar el día correspondiente a mi zona</span>
                     <span className="text-muted direccionDetallada">Te llevamos tu pedido el día que hagamos envíos a la zona donde pertenece tu dirección.</span>
