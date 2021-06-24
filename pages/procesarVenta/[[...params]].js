@@ -17,13 +17,17 @@ const {init:inicializarStoreVenta,setCostoEnvio:setDataEnvioEnVenta} = ventasAct
 
 const ProcesarVenta = (props) => {
     const [error, setError] = useState(false);
-    const {carritoReducer,ventaReducer,carritoTraerProductos,enviosGuardar,zonasGuardar,inicializarStoreVenta,setDataEnvioEnVenta,traerZonas} = props;
+    const {carritoReducer,ventaReducer,carritoTraerProductos,enviosGuardar,zonasGuardar,inicializarStoreVenta,setDataEnvioEnVenta,traerZonas,status,payment_id,collection_id} = props;
     const {usuario,logueado} = props.usuarioReducer;
     const {zonas,zona} = props.zonasReducer;
     const {idMedioPago,tipoEnvio,productos,cantidad,subtotal,porcentaje_descuento,descuento,total} = props.ventaReducer;
 
     useEffect(() => {
-        traerZonas();
+        if(status == "approved"){
+            traerZonas();
+            return;
+        }
+        setError(true);
     }, [])
 
     useEffect(() => {
@@ -48,10 +52,6 @@ const ProcesarVenta = (props) => {
             return;
         }
         const {idUsuario} = usuario;
-        let f = new Date();
-        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
-        let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
-        let fecha = `${f.getFullYear()}-${mes}-${dia}`;
         let dataToRequest = {
             envio:{
                 idZona:zona.idZona,
@@ -64,13 +64,13 @@ const ProcesarVenta = (props) => {
                 total,
                 idUsuario,
                 productos,
-                fecha,
-                operacion_id:props.collection_id || null,
+                payment_id,
+                collection_id,
                 idMedioPago
             }
         }
-        //console.log(dataToRequest);
-        registrarVenta(dataToRequest);
+        console.log(dataToRequest);
+        //registrarVenta(dataToRequest);
     }, [ventaReducer])
     
     const registrarVenta = async data=>{
@@ -78,7 +78,7 @@ const ProcesarVenta = (props) => {
             const headers = new Headers();
             headers.append('token',usuario.token);
             headers.append("Content-Type", "application/json");
-            let url = (!data.venta.operacion_id)?`${API}/registrarVenta?mercadoPago=false`:`${API}/registrarVenta?mercadoPago=true`;
+            let url = `${API}/registrarVenta`;
             const reqVenta = await fetch(url,{
                 headers,
                 method:'POST',
@@ -122,8 +122,8 @@ const ProcesarVenta = (props) => {
 }
 
 ProcesarVenta.getInitialProps = async({query})=>{
-    const {collection_id} = query;
-    return {collection_id};
+    const {payment_id,status,collection_id} = query;
+    return {collection_id,status,payment_id};
 }
 
 const mapStateToProps = ({carritoReducer,enviosReducer,usuarioReducer,zonasReducer,ventaReducer})=>{
