@@ -40,34 +40,6 @@ const Checkout = (props) => {
         setError(false);
         setLoading(true);
         const {idUsuario,token,nombre,email,telefono,address} = usuario;
-        let f = new Date();
-        let mes = ((f.getMonth())<10)?`0${f.getMonth()+1}`:`${f.getMonth()}`;
-        let dia = ((f.getDate())<10)?`0${f.getDate()}`:`${f.getDate()}`;
-        let fecha = `${f.getFullYear()}-${mes}-${dia}`;
-        let dataToRequest = {
-            envio:{
-                idZona,
-                tipo:tipoEnvio
-            },
-            venta:{
-                subtotal,
-                porcentaje_descuento,
-                descuento,
-                total,
-                idUsuario,
-                productos,
-                fecha,
-                operacion_id:null,
-                idMedioPago,
-                totalEnvio
-            },
-            usuario:{
-                nombre,
-                email,
-                telefono,
-                address
-            }
-        }
         if(idMedioPago == '1'){
             //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
             localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
@@ -132,6 +104,21 @@ const Checkout = (props) => {
             })
             return;
         }
+        let dataToRequest = {
+            envio:{
+                idZona,
+                tipo:tipoEnvio
+            },
+            venta:{
+                subtotal,
+                porcentaje_descuento,
+                descuento,
+                total,
+                idUsuario,
+                productos,
+                idMedioPago
+            }
+        }
         return registrarVenta(dataToRequest,token);
     }
     
@@ -140,7 +127,7 @@ const Checkout = (props) => {
             const headers = new Headers();
             headers.append('token',token);
             headers.append("Content-Type", "application/json");
-            let url = `${API}/registrarVenta?mercadoPago=false`;
+            let url = `${API}/ventas/registrarVenta`;
             const reqVenta = await fetch(url,{
                 headers,
                 method:'POST',

@@ -1,5 +1,5 @@
 const API = 'https://api.oliverpetshop.com.ar';
-const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL;
+const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 const URL_PROCESAR_VENTA = process.env.NEXT_PUBLIC_URL_PROCESAR_VENTA;
 const MP_AC_TOKEN = process.env.NEXT_PUBLIC_MP_AC_TOKEN;
 const URL_CLOUD_STORAGE = 'https://storage.googleapis.com/web-oliver';

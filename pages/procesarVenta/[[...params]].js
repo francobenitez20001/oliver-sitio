@@ -53,7 +53,7 @@ const ProcesarVenta = (props) => {
         const {idUsuario} = usuario;
         let dataToRequest = {
             envio:{
-                idZona:zona.idZona,
+                idZona:zona ? zona.idZona : null,
                 tipo:tipoEnvio
             },
             venta:{
