@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     logueado:false,
     loading:false,
     error:null,
-    actionSuccess:null
+    actionSuccess:null,
+    ultimasCompras:[]
 };
 
 const usuarioReducer = (state=INITIAL_STATE,action)=>{
