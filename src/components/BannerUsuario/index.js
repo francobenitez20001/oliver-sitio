@@ -8,9 +8,10 @@ const BannerUsuario = (props) => {
     return (
         (usuario)?
         <section className="banner_usuario">
-            <div className="row">
+            <h3>Mi perfil</h3>
+            <div className="row align-items-center my-2">
                 <div className="col-12 col-md-6">
-                    <AvatarUsuario usuario={usuario} abrirModalFoto={props.abrirModalFoto}/>
+                    <AvatarUsuario usuario={usuario} abrirModalFoto={props.abrirModalFoto} abrirModalUsuario={props.abrirModalUsuario}/>
                 </div>
                 <div className="col-12 col-md-6">
                     <EstadisticasUsuario/>
@@ -25,7 +26,8 @@ const BannerUsuario = (props) => {
                 } 
                 @media(max-width:768px){
                     section{
-                        margin:50px 0px
+                        margin:50px 0px;
+                        padding: 30px 0px 0px 0px;
                     }
                 }   
             `}</style>

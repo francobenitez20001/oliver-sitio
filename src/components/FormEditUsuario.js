@@ -80,18 +80,18 @@ const FormEditUsuario = (props) => {
             {(successAction!='' && !props.usuarioReducer.error)?<div className="alert alert-success text-center"><b>{successAction}</b></div>:null}
             {(props.usuarioReducer.error)?<div className="alert alert-danger text-center"><b>{props.usuarioReducer.error}</b></div>:null}
             <div className="row">
-                <div className="col-12 col-md-6 my-4 d-flex align-items-center">
+                <div className="col-12 my-4 d-flex align-items-center">
                     <input disabled={formDisabled.nombre} onChange={handleChange} value={formValues.nombre} type="text" name="nombre" id="nombre" className="form-control mr-auto" placeholder="Nombre"/>
                     <FontAwesomeIcon className='iconoHabilitarInput' icon={(formDisabled.nombre)?faPencilAlt:faTimesCircle} onClick={()=>switchInput('nombre')} required/>
                 </div>
-                <div className="col-12 col-md-6 my-4 d-flex align-items-center">
+                <div className="col-12 my-4 d-flex align-items-center">
                     <input disabled={formDisabled.telefono} onChange={handleChange} value={formValues.telefono} type="text" name="telefono" id="telefono" className="form-control mr-auto" placeholder="Telefono"/>
                     <FontAwesomeIcon className='iconoHabilitarInput' icon={(formDisabled.telefono)?faPencilAlt:faTimesCircle} onClick={()=>switchInput('telefono')}/>
                 </div>
-                <div className="col-12 col-md-6 my-4 d-flex align-items-center">
+                <div className="col-12 my-4 d-flex align-items-center">
                     <input disabled={formDisabled.email} onChange={handleChange} value={formValues.email} type="email" name="email" id="email" className="form-control mr-auto"/>
                 </div>
-                <div className="col-12 col-md-6 my-4 d-flex align-items-center">
+                <div className="col-12 my-4 d-flex align-items-center">
                     <PlacesAutocomplete value={formValues.address} onChange={handleChangeUbicacion} onSelect={handleSelectUbicacion}>
                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                         <div className="mr-auto w-100">

@@ -1,14 +1,14 @@
 const EstadisticasUsuario = () => {
     return (
         <div className="estadisticas_usuario">
-            <div className="col-6 text-center">
+            <div className="col-12 text-center">
                 <h2>0</h2>
                 <span>Compras</span>
             </div>
-            <div className="col-6 text-center">
+            {/* <div className="col-6 text-center">
                 <h2>0</h2>
                 <span>Puntos</span>
-            </div>
+            </div> */}
             <style jsx>{`
                 .estadisticas_usuario{
                     background-color:#fff;
@@ -20,15 +20,16 @@ const EstadisticasUsuario = () => {
                     padding: 10px 20px;
                     border-radius: 5px;
                 }
-                h2{
-                    font-weight:bold
+                h2,span{
+                    font-weight:bold;
+                    color:#FFB347;
                 }
 
                 @media(max-width:768px){
                     .estadisticas_usuario{
                         float:initial;
                         width:100%;
-                        margin-top:10px;
+                        margin:10px 0px 0px 0px;
                     }
                 }
             `}</style>

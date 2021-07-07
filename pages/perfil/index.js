@@ -8,6 +8,7 @@ import ProductosUsuario from '../../src/components/ProductosUsuario';
 import Modal from '../../src/components/Modal/index';
 import FormModificarFotoUsuario from '../../src/components/FormModificarFotoUsuario';
 import FormModificarPw from '../../src/components/formModificarPw';
+import Footer from '../../src/components/Footer/index';
 import { connect } from "react-redux";
 import * as productosActions from '../../store/actions/productosActions';
 const {restablecerFiltros} = productosActions;
@@ -16,6 +17,7 @@ const Perfil = (props) => {
     const [activeTab, setActiveTab] = React.useState('1');
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
     const [renderModalProfile, setRenderModalProfile] = React.useState(false);
+    const [renderModalFormUsuario, setRenderModalFormUsuario] = React.useState(false);
     const [renderModalPw, setRenderModalPw] = React.useState(false);
     useEffect(() => {
         document.getElementsByTagName('body')[0].style.overflowY="auto";
@@ -23,17 +25,15 @@ const Perfil = (props) => {
             props.restablecerFiltros()
         }
     }, [])
+
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
     }
 
     const solapas = [
         {
-            nombre:'General'
-        },
-        // {
-        //     nombre:'Mis compras'
-        // }
+            nombre:'Últimas compras'
+        }
     ];
 
     const abrirModal = ()=>{
@@ -43,33 +43,47 @@ const Perfil = (props) => {
     const abrirModalFoto = ()=>{
         setRenderModalProfile(true);
         setRenderModalPw(false);
+        setRenderModalFormUsuario(false);
+        abrirModal();
+    }
+
+    const abrirModalFormUsuario = () => {
+        setRenderModalProfile(false);
+        setRenderModalPw(false);
+        setRenderModalFormUsuario(true);
         abrirModal();
     }
 
     const abrirModalPw = ()=>{
         setRenderModalPw(true);
         setRenderModalProfile(false);
+        setRenderModalFormUsuario(false);
         abrirModal();
+    }
+
+    const renderContenidoModal = () => {
+        if(renderModalProfile){
+            return <FormModificarFotoUsuario/>
+        }
+        if(renderModalPw){
+            return <FormModificarPw/>
+        }
+        if(renderModalFormUsuario){
+            return <FormEditUsuario/>
+        }
     }
 
     return (
         <>
             <Head title='Oliver Petshop - Mi perfil'/>
             <div className="container">
-                <BannerUsuario abrirModalFoto={abrirModalFoto}/>
+                <BannerUsuario abrirModalFoto={abrirModalFoto} abrirModalUsuario={abrirModalFormUsuario}/>
                 <TabsNav toggle={toggle} activeTab={activeTab} solapas={solapas}/>
             </div>
             <div className="container-form">
                 <div className="container pt-3">
                     <TabContent activeTab={activeTab}>
-                        <TabPane tabId="1">
-                            <Row>
-                                <Col sm="12">
-                                    <FormEditUsuario abrirModalPw={abrirModalPw}/>
-                                </Col>
-                            </Row>
-                        </TabPane>
-                        <TabPane tabId="2" className="tab-productos">
+                        <TabPane tabId="1" className="tab-productos">
                             <Row>
                                 <Col sm="12">
                                     <ProductosUsuario/>
@@ -81,21 +95,21 @@ const Perfil = (props) => {
             </div>
             {(modalIsOpen)?
             <Modal closeModal={abrirModal}>
-                {(renderModalProfile)?
-                    <FormModificarFotoUsuario/>
-                :
-                    <FormModificarPw/>
-                }
+                {renderContenidoModal()}
             </Modal>:null}
+            <br/><br/>
+            <Footer/>
             <style jsx>{`
                 .container-form{
                     background-color:#fff;
+                    height: auto;
                 }
                 @media(min-width:768px){
                     .container-form{
                         height:55vh;
                         display:flex;
-                        align-items:center
+                        align-items:center;
+                        height: calc(100vh - 310px);
                     }
                 }   
             `}</style>
