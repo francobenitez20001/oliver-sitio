@@ -26,7 +26,7 @@ const BannerUsuario = (props) => {
                 } 
                 @media(max-width:768px){
                     section{
-                        margin:50px 0px;
+                        margin:80px 0px 100px 0px;
                         padding: 30px 0px 0px 0px;
                     }
                 }   

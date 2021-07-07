@@ -27,6 +27,7 @@
 
 .Modal .modal_content{
     border:none!important;
+    padding: 40px 0px 0px 0px;
 }
 
 .Modal .modal_dialog.show{
@@ -34,10 +35,10 @@
 }
 
 .Modal .modal_dialog .close_modal{
-    position: fixed;
-    top: 35px;
+    position: absolute;
+    top: 5px;
     background-color: #FFB347;
-    right:610px;
+    right:5px;
     padding: 10px;
     color: white;
     border-radius: 20px;
@@ -56,11 +57,6 @@
         background-color: white;
         padding: 10px 16px 10px 16px;
         border-radius: 13px;
-    }
-
-    .Modal .modal_dialog .close_modal{
-        top: 40px;
-        right:30px;
     }
 
     .Modal .modal_dialog h3{

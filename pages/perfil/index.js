@@ -58,7 +58,6 @@ const Perfil = (props) => {
         setRenderModalPw(true);
         setRenderModalProfile(false);
         setRenderModalFormUsuario(false);
-        abrirModal();
     }
 
     const renderContenidoModal = () => {
@@ -69,7 +68,7 @@ const Perfil = (props) => {
             return <FormModificarPw/>
         }
         if(renderModalFormUsuario){
-            return <FormEditUsuario/>
+            return <FormEditUsuario abrirModalPw={abrirModalPw}/>
         }
     }
 
@@ -97,7 +96,6 @@ const Perfil = (props) => {
             <Modal closeModal={abrirModal}>
                 {renderContenidoModal()}
             </Modal>:null}
-            <br/><br/>
             <Footer/>
             <style jsx>{`
                 .container-form{
