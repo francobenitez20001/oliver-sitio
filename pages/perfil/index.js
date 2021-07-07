@@ -11,7 +11,10 @@ import FormModificarPw from '../../src/components/formModificarPw';
 import Footer from '../../src/components/Footer/index';
 import { connect } from "react-redux";
 import * as productosActions from '../../store/actions/productosActions';
+import * as usuarioActions from '../../store/actions/usuarioActions';
+
 const {restablecerFiltros} = productosActions;
+const {traerVentas:traerVentasDelUsuario} = usuarioActions;
 
 const Perfil = (props) => {
     const [activeTab, setActiveTab] = React.useState('1');
@@ -19,12 +22,20 @@ const Perfil = (props) => {
     const [renderModalProfile, setRenderModalProfile] = React.useState(false);
     const [renderModalFormUsuario, setRenderModalFormUsuario] = React.useState(false);
     const [renderModalPw, setRenderModalPw] = React.useState(false);
+
     useEffect(() => {
         document.getElementsByTagName('body')[0].style.overflowY="auto";
         if(props.productosReducer.filtrando){
             props.restablecerFiltros()
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const {usuario,logueado} = props.usuarioReducer;
+        if(usuario && logueado){
+            props.traerVentasDelUsuario();
+        }
+    }, [props.usuarioReducer.usuario])
 
     const toggle = tab => {
         if(activeTab !== tab) setActiveTab(tab);
@@ -73,6 +84,7 @@ const Perfil = (props) => {
     }
 
     return (
+        !props.usuarioReducer.logueado ? <div className="alert alert-warning text-center">No hay datos para mostrar</div>:
         <>
             <Head title='Oliver Petshop - Mi perfil'/>
             <div className="container">
@@ -114,12 +126,13 @@ const Perfil = (props) => {
         </>
     );
 }
-const mapStateToProps = (productosReducer)=>{
-    return productosReducer
+const mapStateToProps = ({productosReducer,usuarioReducer})=>{
+    return {productosReducer,usuarioReducer}
 }
 
 const mapDispatchToProps = {
-    restablecerFiltros
+    restablecerFiltros,
+    traerVentasDelUsuario
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Perfil);

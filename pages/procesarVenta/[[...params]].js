@@ -63,20 +63,14 @@ const ProcesarVenta = (props) => {
                 descuento,
                 total,
                 productos,
-<<<<<<< HEAD
-                payment_id,
-                collection_id,
-                idMedioPago
-=======
                 collection_id,
                 payment_id,
                 idMedioPago,
                 idUsuario
->>>>>>> 0d4e75415a8ae68b8a5169cc8e9195f9ffc32f2e
             }
         }
-        console.log(dataToRequest);
-        //registrarVenta(dataToRequest);
+        //console.log(dataToRequest);
+        registrarVenta(dataToRequest);
     }, [ventaReducer])
     
     const registrarVenta = async data=>{
@@ -84,11 +78,7 @@ const ProcesarVenta = (props) => {
             const headers = new Headers();
             headers.append('token',usuario.token);
             headers.append("Content-Type", "application/json");
-<<<<<<< HEAD
-            let url = `${API}/registrarVenta`;
-=======
             let url = `${API}/ventas/registrarVenta`;
->>>>>>> 0d4e75415a8ae68b8a5169cc8e9195f9ffc32f2e
             const reqVenta = await fetch(url,{
                 headers,
                 method:'POST',
@@ -132,13 +122,8 @@ const ProcesarVenta = (props) => {
 }
 
 ProcesarVenta.getInitialProps = async({query})=>{
-<<<<<<< HEAD
     const {payment_id,status,collection_id} = query;
     return {collection_id,status,payment_id};
-=======
-    const {collection_id,payment_id,status} = query;
-    return {collection_id,payment_id,status};
->>>>>>> 0d4e75415a8ae68b8a5169cc8e9195f9ffc32f2e
 }
 
 const mapStateToProps = ({carritoReducer,enviosReducer,usuarioReducer,zonasReducer,ventaReducer})=>{

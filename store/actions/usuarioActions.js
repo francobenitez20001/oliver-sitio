@@ -1,5 +1,5 @@
 import {API,PUBLIC_URL} from '../../config/index';
-import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD} from '../types/usuarioTypes';
+import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD, UPDATE_VENTAS} from '../types/usuarioTypes';
 
 export const login = (data)=>async(dispatch)=>{
     dispatch({
@@ -362,4 +362,25 @@ export const updatePassword = (data,token) => async dispatch=>{
             payload:error
         });
     }
+}
+
+export const traerVentas = () => async (dispatch,getState) =>{
+    dispatch({
+        type:LOADING
+    });
+    let {idUsuario,token} = getState().usuarioReducer.usuario;
+    let headers = new Headers();
+    headers.append('token',token);
+    const req = await fetch(`${API}/ventas/usuario/${idUsuario}`,{headers});
+    const response = await req.json();
+    if(req.status === 200){
+        return dispatch({
+            type:UPDATE_VENTAS,
+            payload:response.info
+        })
+    }
+    return dispatch({
+        type:ERROR,
+        payload:response
+    })
 }

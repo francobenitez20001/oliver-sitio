@@ -1,8 +1,10 @@
-const EstadisticasUsuario = () => {
+import { connect } from "react-redux";
+
+const EstadisticasUsuario = (props) => {
     return (
         <div className="estadisticas_usuario">
             <div className="col-12 text-center">
-                <h2>0</h2>
+                <h2>{props.compras}</h2>
                 <span>Compras</span>
             </div>
             {/* <div className="col-6 text-center">
@@ -36,5 +38,11 @@ const EstadisticasUsuario = () => {
         </div>
     );
 }
- 
-export default EstadisticasUsuario;
+
+const mapStateToProps = ({usuarioReducer})=>usuarioReducer;
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(EstadisticasUsuario);

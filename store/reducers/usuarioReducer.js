@@ -1,4 +1,4 @@
-import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD} from '../types/usuarioTypes';
+import {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD, UPDATE_VENTAS} from '../types/usuarioTypes';
 
 const INITIAL_STATE = {
     usuario:null,
@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     loading:false,
     error:null,
     actionSuccess:null,
-    ultimasCompras:[]
+    ultimasCompras:[],
+    compras:0
 };
 
 const usuarioReducer = (state=INITIAL_STATE,action)=>{
@@ -25,6 +26,14 @@ const usuarioReducer = (state=INITIAL_STATE,action)=>{
             return {...state,loading:false,error:null,usuario:action.payload}
         case UPDATE_PASSWORD:
             return {...state,loading:false,error:null,actionSuccess:'Se ha cambiado la contraseña de manera correcta, será redirigido automaticamente a nuestra web y deberá iniciar sesión con su nueva contraseña.'}
+        case UPDATE_VENTAS:
+            return {
+                ...state,
+                loading:false,
+                error:null,
+                ultimasCompras:action.payload.ventas,
+                compras:action.payload.cantidad_ventas
+            }
         default:
             return state;
     }

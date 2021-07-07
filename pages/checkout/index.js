@@ -27,7 +27,7 @@ const Checkout = (props) => {
         document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
     }, []);
 
-    console.log(URL_PROCESAR_VENTA);
+    //console.log(URL_PROCESAR_VENTA);
 
     const handleClick = ()=>{
         const {usuario} = props.usuarioReducer;
@@ -45,11 +45,6 @@ const Checkout = (props) => {
         if(idMedioPago == '1'){
             //guardo data de envio para luego de hacer el checkout de mercado pago, envio los datos al servidor para registrar la venta con el envio correspondiente.
             localStorage.setItem('dataEnvio',JSON.stringify({tipo:tipoEnvio,zona:idZona}));
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> 0d4e75415a8ae68b8a5169cc8e9195f9ffc32f2e
             let headers = new Headers();
             headers.append('Authorization',`Bearer ${MP_AC_TOKEN}`);
             headers.append("Content-Type", "application/json");
@@ -87,9 +82,9 @@ const Checkout = (props) => {
                     excluded_payment_types: [
                         { id: "ticket" }
                     ],
-                    installments: 6
+                    installments: 1
                 },
-                notification_url: "https://hookb.in/7ZZKJPB89aFa99D3y3eo",
+                // notification_url: "https://hookb.in/7ZZKJPB89aFa99D3y3eo",
                 statement_descriptor: "OLIVER_PETSHOP",
                 external_reference: "",
                 shipments:{
@@ -105,11 +100,7 @@ const Checkout = (props) => {
                 method:'POST',
                 headers,
                 body:JSON.stringify(preference)
-<<<<<<< HEAD
-            }).then(res=>res.json()).then(async data=>{
-=======
             }).then(res=>res.json()).then(data=>{
->>>>>>> 0d4e75415a8ae68b8a5169cc8e9195f9ffc32f2e
                 window.location.assign(data.init_point);
             })
             return;

@@ -5,5 +5,6 @@ const LOADING = 'usuario_loading';
 const ERROR = 'usuario_error';
 const UPDATE_USER = 'usuario_cambiarfoto';
 const UPDATE_PASSWORD = 'usuario_cambiarpassword';
+const UPDATE_VENTAS = 'usuario_update_ventas';
 
-export {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD}
+export {VERIFICAR_SESION,LOGIN,LOGOUT,LOADING,ERROR,UPDATE_USER,UPDATE_PASSWORD,UPDATE_VENTAS}

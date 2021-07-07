@@ -1,21 +1,22 @@
 import ProductoCarrito from "../Carrito/ProductoCarrito";
+import {connect} from 'react-redux';
+import Loader from "../Loader";
 
 const ProductosUsuario = (props) => {
-    const productos = [1,2,3,4,5,6,7,8,9];
-    const eliminar = ()=>console.log('eliminar');
+    const {ultimasCompras,loading} = props;
     return (
-        productos.map(item=>(
+        loading ? <Loader/> :
+        ultimasCompras.map(ven=>(
             <ProductoCarrito
-            key={item}
-            idSubProducto="1"
-            producto="Dog pron Adulto"
-            peso="5"
-            total="1500"
-            foto="https://storage.googleapis.com/web-oliver/-VitalCrops-DogPro-Adulto-15k.jpg"
-            cantidad="1"
-            eliminarProducto={eliminar}/>
+            key={ven.idVenta}
+            idSubProducto={1}
+            producto={ven.productos.length>1 ? `${ven.productos[0].subProducto} y otros productos` : ven.productos[0].subProducto}
+            fecha={ven.fecha}
+            totalExplicito={ven.total}
+            foto={ven.productos[0].foto}
+            cantidad={ven.productos.length}/>
         ))
     );
 }
- 
-export default ProductosUsuario;
+const mapStateToProps = ({usuarioReducer}) => usuarioReducer; 
+export default connect(mapStateToProps,{})(ProductosUsuario);
