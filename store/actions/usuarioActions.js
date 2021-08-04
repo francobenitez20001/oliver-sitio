@@ -14,7 +14,7 @@ export const login = (data)=>async(dispatch)=>{
         }
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
-        return fetch(`${API}/login`,{
+        return fetch(`${API}/auth/login`,{
             method:'POST',
             body:JSON.stringify(data),
             headers
@@ -77,7 +77,7 @@ export const verificarSesion=(token=null)=>async(dispatch)=>{
             let headers = new Headers();
             let tokenSend = (token)?token:dataUsuario.token;
             headers.append('token',tokenSend);
-            const request = await fetch(`${API}/verify-sesion`,{
+            const request = await fetch(`${API}/auth/verify-sesion`,{
                 method:'GET',
                 headers
             });
@@ -111,7 +111,7 @@ export const register=(data)=>(dispatch)=>{
     try {
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
-        return fetch(`${API}/register`,{
+        return fetch(`${API}/auth/register`,{
             method:'POST',
             body:JSON.stringify(data),
             headers
@@ -152,7 +152,7 @@ export const singInWithGoogle = tokenId => async(dispatch)=>{
     try {
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
-        return fetch(`${API}/google/tokensignin`,{
+        return fetch(`${API}/auth/google`,{
             method:'POST',
             headers,
             body:JSON.stringify({token:tokenId})
@@ -196,7 +196,7 @@ export const actualizarFoto = (data,id) =>async(dispatch)=>{
         let headers = new Headers();
         let token = JSON.parse(localStorage.getItem('oliverpetshop_usuario')).token;
         headers.append("token", token);
-        const request = await fetch(`${API}/actualizarFotoUsuarioDesdeWeb/${id}`,{
+        const request = await fetch(`${API}/usuario/actualizarFotoUsuarioDesdeWeb/${id}`,{
             method:'PUT',
             headers,
             body:data
@@ -227,7 +227,7 @@ export const actualizarUsuario = (data,id)=>async dispatch=>{
         if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
         headers.append('token',token);
         headers.append("Content-Type", "application/json");
-        const request = await fetch(`${API}/actualizarUsuarioDesdeWeb/${id}`,{
+        const request = await fetch(`${API}/usuario/actualizarUsuarioDesdeWeb/${id}`,{
             method:'PUT',
             headers,
             body:JSON.stringify(data)
@@ -263,7 +263,7 @@ export const actualizarAddress = (data,id)=>async dispatch=>{
         if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
         headers.append('token',token);
         headers.append("Content-Type", "application/json");
-        const request = await fetch(`${API}/actualizarDireccion/${id}`,{
+        const request = await fetch(`${API}/usuario/actualizarDireccion/${id}`,{
             method:'PUT',
             headers,
             body:JSON.stringify(data)
@@ -299,7 +299,7 @@ export const sendEmailForResetPassword = idUsuario=> async dispatch=>{
         if(!token) return dispatch({type:ERROR,payload:'Token incorrecto'});
         headers.append('token',token);
         headers.append("Content-Type", "application/json");
-        const request = await fetch(`${API}/resetPassword`,{
+        const request = await fetch(`${API}/usuario/reset-password`,{
             method:'POST',
             headers,
             body:JSON.stringify({idUsuario})
@@ -341,7 +341,7 @@ export const updatePassword = (data,token) => async dispatch=>{
         let headers = new Headers();
         headers.append('refresh-token',token);
         headers.append("Content-Type", "application/json");
-        const request = await fetch(`${API}/new-password`,{
+        const request = await fetch(`${API}/usuario/new-password`,{
             method:'PUT',
             headers,
             body:JSON.stringify(data)

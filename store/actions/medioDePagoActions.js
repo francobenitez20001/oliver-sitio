@@ -7,7 +7,7 @@ export const traerMedios = ()=>async (dispatch,getState)=>{
         let {token} = getState().usuarioReducer.usuario;
         let headers = new Headers();
         headers.append('token',token);
-        const reqMedios = await fetch(`${API}/mediosDePago`,{method:'GET',headers});
+        const reqMedios = await fetch(`${API}/medioDePago`,{method:'GET',headers});
         if(reqMedios.status != 200) return dispatch({type:ERROR,payload:reqMedios.statusText});
         const dataMedios = await reqMedios.json();
         return dispatch({

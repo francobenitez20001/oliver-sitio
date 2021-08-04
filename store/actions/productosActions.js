@@ -10,21 +10,23 @@ export const traerProductos = ()=>async (dispatch,getState)=>{
         //obtengo el estado actualizado de los filtros
         const {filtrando,filtros:{categoria,subcategoria,marca,search,orden},paginacion:{desde,limiteMobile,limiteDesktop}} = getState().productosReducer;
 
-        let url = `${API}`;
-        if(!filtrando){
-            url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
-        }else{
+        let url = `${API}/productos`;
+        if(filtrando){
             if(search.trim() !== ""){
-                url += `/productos/buscar?busqueda=${search}&desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`
+                url += `/buscar?busqueda=${search}&`;
             }else{
-                url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
+                url +=`/filtro/filtrar?`;
                 if(categoria) { url += `categoria=${categoria}&` }
                 if(subcategoria) { url += `subcategoria=${subcategoria}&` }
-                if(marca) { url += `marca=${marca}`}
+                if(marca) { url += `marca=${marca}&`}
             }
+        }else{
+            url += '?';
         }
 
-        // console.log(url);
+        url += `desde=${desde}&limite=${isMobile() ? limiteMobile : limiteDesktop}`;
+
+        console.log(url);
         
         return fetch(url).then(res=>res.json()).then(data=>{
             dispatch({
@@ -48,19 +50,24 @@ export const traerMas = ()=>async (dispatch,getState)=>{
         //obtengo el estado actualizado de los filtros
         const {productos,filtrando,filtros:{categoria,subcategoria,marca,search,orden},paginacion:{desde,limiteMobile,limiteDesktop}} = getState().productosReducer;
 
-        let url = `${API}`;
-        if(!filtrando){
-            url += `/producto?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`;
-        }else{
+        let url = `${API}/productos`;
+
+        if(filtrando){
             if(search.trim() !== ""){
-                url += `/productos/buscar?busqueda=${search}&desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}`
+                url += `/buscar?busqueda=${search}&`;
             }else{
-                url+=`/productos/filtro/filtrar?desde=${desde}&limite=${isMobile() ? limiteMobile :limiteDesktop}&`;
+                url +=`/filtro/filtrar?`;
                 if(categoria) { url += `categoria=${categoria}&` }
                 if(subcategoria) { url += `subcategoria=${subcategoria}&` }
-                if(marca) { url += `marca=${marca}`}
+                if(marca) { url += `marca=${marca}&`}
             }
+        }else{
+            url += '?';
         }
+
+        url += `desde=${desde}&limite=${isMobile() ? limiteMobile : limiteDesktop}`;
+
+        console.log(url);
 
         return fetch(url).then(res=>res.json()).then(data=>{
             if(data.data.length===0){
@@ -88,7 +95,7 @@ export const traerPorId = id=>async(dispatch)=>{
         type:LOADING
     });
     try {
-        return fetch(`${API}/producto/${id}`).then(res=>res.json()).then(data=>{
+        return fetch(`${API}/productos/${id}`).then(res=>res.json()).then(data=>{
             dispatch({
                 type:TRAER_UNO,
                 payload:data
