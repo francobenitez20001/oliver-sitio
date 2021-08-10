@@ -135,7 +135,7 @@ const Productos = (props) => {
             }
             <style jsx>{`
                 .feedProductos{
-                    height:75vh;
+                    max-height:75vh;
                     overflow-y:scroll;
                 }    
                 .btn-vermas{
