@@ -123,6 +123,7 @@ const Productos = (props) => {
                 <div className="row feedProductos">
                     {!props.productos ? null :
                         props.productos.map(prd=>(
+                            prd.precioFinal === 0 ? null :
                             <div key={prd.idProducto} className="col-6 col-md-3">
                                 <CardProducto imagen={prd.foto} prd={prd}/>
                             </div>
